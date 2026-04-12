@@ -11,7 +11,7 @@
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;
-  background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.85)), url('assets/image1.jpg') center/cover fixed;
+  background: #000;
   color: #fff;
 }
 
@@ -27,7 +27,7 @@ header {
   z-index: 1000;
 }
 
-/* HERO */
+/* HERO TEXT */
 .hero {
   height: 100vh;
   display: flex;
@@ -48,7 +48,6 @@ header {
   to { text-shadow: 0 0 25px rgba(128,0,0,0.9); }
 }
 
-/* Subtitle */
 .subtitle {
   font-size: 34px;
   letter-spacing: 0.12em;
@@ -57,6 +56,24 @@ header {
     0 0 5px rgba(255,255,255,0.3),
     0 0 10px rgba(128,0,0,0.6),
     0 0 20px rgba(128,0,0,0.8);
+}
+
+/* HERO IMAGE SECTION */
+.hero-image {
+  position: relative;
+  height: 100vh;
+  background: url('assets/hero.jpg') center/cover no-repeat;
+  display: flex;
+  align-items: flex-end;
+}
+
+.hero-caption {
+  width: 100%;
+  background: rgba(0,0,0,0.6);
+  padding: 20px;
+  font-family: 'Bebas Neue';
+  font-size: 1.8rem;
+  letter-spacing: 0.1em;
 }
 
 /* SECTIONS */
@@ -70,8 +87,6 @@ header {
 h2 {
   font-family: 'Bebas Neue';
   font-size: 2.5rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
 }
 
 /* ARTISTS */
@@ -100,11 +115,6 @@ h2 {
   height: 220px;
   object-fit: cover;
   border-radius: 10px;
-  transition: transform 0.4s ease;
-}
-
-.artist:hover img {
-  transform: scale(1.08);
 }
 
 /* MUSIC PLAYER */
@@ -137,10 +147,17 @@ button:hover {
 
 <header>MSP 790 PAYBACK MUSIC</header>
 
-<!-- HERO -->
+<!-- HERO TEXT -->
 <div class="hero">
   <h1>MSP 790 PAYBACK MUSIC</h1>
   <p class="subtitle">Uptown Boogie Down Bronx New York Finest</p>
+</div>
+
+<!-- HERO IMAGE -->
+<div class="hero-image">
+  <div class="hero-caption">
+    Pictured: OG StarMoney
+  </div>
 </div>
 
 <!-- ARTISTS -->
@@ -150,7 +167,7 @@ button:hover {
   <div class="artist-grid">
 
     <div class="artist" onclick="playTrack('star')">
-      <img src="assets/og-starmoney.svg">
+      <img src="assets/star-money-meet-the-artist1.jpg">
       <h3>OG StarMoney</h3>
     </div>
 
