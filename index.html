@@ -15,6 +15,7 @@ body {
   color: #fff;
 }
 
+/* HEADER */
 header {
   position: fixed;
   width: 100%;
@@ -23,8 +24,10 @@ header {
   text-align: center;
   font-family: 'Bebas Neue';
   font-size: 1.5rem;
+  z-index: 1000;
 }
 
+/* HERO */
 .hero {
   height: 100vh;
   display: flex;
@@ -33,6 +36,7 @@ header {
   align-items: center;
 }
 
+/* Animated logo */
 .hero h1 {
   font-family: 'Bebas Neue';
   font-size: 4rem;
@@ -44,13 +48,18 @@ header {
   to { text-shadow: 0 0 25px rgba(128,0,0,0.9); }
 }
 
+/* Subtitle */
 .subtitle {
-  font-size: 32px;
+  font-size: 34px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  text-shadow: 0 0 15px rgba(128,0,0,0.8);
+  text-shadow:
+    0 0 5px rgba(255,255,255,0.3),
+    0 0 10px rgba(128,0,0,0.6),
+    0 0 20px rgba(128,0,0,0.8);
 }
 
+/* SECTIONS */
 .section {
   padding: 80px 20px;
   max-width: 1000px;
@@ -61,8 +70,11 @@ header {
 h2 {
   font-family: 'Bebas Neue';
   font-size: 2.5rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
+/* ARTISTS */
 .artist-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
@@ -79,17 +91,23 @@ h2 {
 }
 
 .artist:hover {
-  transform: scale(1.05);
+  transform: scale(1.05) translateY(-5px);
   box-shadow: 0 10px 30px rgba(128,0,0,0.6);
 }
 
 .artist img {
   width: 100%;
-  height: 200px;
+  height: 220px;
   object-fit: cover;
   border-radius: 10px;
+  transition: transform 0.4s ease;
 }
 
+.artist:hover img {
+  transform: scale(1.08);
+}
+
+/* MUSIC PLAYER */
 .music-player iframe {
   width: 100%;
   height: 120px;
@@ -97,6 +115,7 @@ h2 {
   border-radius: 10px;
 }
 
+/* BUTTON */
 button {
   padding: 12px;
   background: #800000;
@@ -118,6 +137,7 @@ button:hover {
 
 <header>MSP 790 PAYBACK MUSIC</header>
 
+<!-- HERO -->
 <div class="hero">
   <h1>MSP 790 PAYBACK MUSIC</h1>
   <p class="subtitle">Uptown Boogie Down Bronx New York Finest</p>
@@ -129,13 +149,13 @@ button:hover {
 
   <div class="artist-grid">
 
-    <div class="artist" onclick="playTrack('track1')">
-      <img src="assets/og.jpg">
+    <div class="artist" onclick="playTrack('star')">
+      <img src="assets/og-starmoney.svg">
       <h3>OG StarMoney</h3>
     </div>
 
-    <div class="artist">
-      <img src="assets/kmoney.jpg">
+    <div class="artist" onclick="playTrack('k')">
+      <img src="assets/k-money.svg">
       <h3>K-Money</h3>
     </div>
 
@@ -145,7 +165,6 @@ button:hover {
 <!-- MUSIC PLAYER -->
 <div class="section music-player">
   <h2>Now Playing</h2>
-
   <iframe id="player" src=""></iframe>
 </div>
 
@@ -153,8 +172,12 @@ button:hover {
 function playTrack(track) {
   const player = document.getElementById('player');
 
-  if(track === 'track1') {
+  if(track === 'star') {
     player.src = "https://www.youtube.com/embed/YOUR_VIDEO_ID";
+  }
+
+  if(track === 'k') {
+    player.src = "https://www.youtube.com/embed/YOUR_VIDEO_ID_2";
   }
 }
 </script>
