@@ -6,303 +6,228 @@
 <title>MSP 790 PAYBACK MUSIC</title>
 
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;700&display=swap');
 
-  body {
-    margin: 0;
-    font-family: 'Inter', sans-serif;
-    background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.8)), url('assets/image1.jpg') center/cover fixed;
-    color: #fff;
-    overflow-x: hidden;
-  }
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.8)), url('assets/image1.jpg') center/cover fixed;
+  color: #fff;
+  overflow-x: hidden;
+}
 
-  header {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    background: rgba(0,0,0,0.7);
-    backdrop-filter: blur(8px);
-    padding: 15px;
-    text-align: center;
-    font-family: 'Bebas Neue';
-    font-size: 1.5rem;
-    z-index: 1000;
-  }
-  header small {
-    display: block;
-    margin-top: 3px;
-    font-family: 'Inter', sans-serif;
-    font-size: 0.75rem;
-    letter-spacing: 0.08em;
-    font-weight: 700;
-    color: #d4d4d4;
-  }
+header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(8px);
+  padding: 15px;
+  text-align: center;
+  font-family: 'Bebas Neue';
+  font-size: 1.5rem;
+  z-index: 1000;
+}
 
-  .hero {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.55), rgba(0,0,0,0.8)), url('assets/image1.jpg') center/cover;
-  }
+.hero {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
 
-  .hero h1 {
-    font-family: 'Bebas Neue';
-    font-size: 4rem;
-  }
-  .hero .subtitle {
-    margin-top: 18px;
-    letter-spacing: 0.08em;
-    font-weight: 700;
-  }
+.hero h1 {
+  font-family: 'Bebas Neue';
+  font-size: 4rem;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 1s ease forwards;
+}
 
-  .section {
-    padding: 80px 20px;
-    max-width: 900px;
-    margin: auto;
-    opacity: 0;
-    transform: translateY(40px);
-    transition: all 0.6s ease;
-  }
+.hero .subtitle {
+  margin-top: 18px;
+  font-size: 34px;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  text-transform: uppercase;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 1.2s ease forwards;
 
-  .section.visible {
+  /* Glow effect */
+  text-shadow:
+    0 0 5px rgba(255,255,255,0.3),
+    0 0 10px rgba(128,0,0,0.6),
+    0 0 20px rgba(128,0,0,0.8);
+}
+
+/* Fade animation */
+@keyframes fadeUp {
+  to {
     opacity: 1;
     transform: translateY(0);
   }
+}
 
-  .takeover {
-    height: 100vh;
-  }
+/* Scroll interaction (slight fade + scale) */
+.hero.scrolled .subtitle {
+  transform: scale(0.95);
+  opacity: 0.7;
+}
 
-  .overlay {
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    background: rgba(0,0,0,0.75);
-    opacity: 0;
-    transform: scale(0.95);
-    transition: all 0.6s ease;
-  }
-  .overlay-photo {
-    width: min(85vw, 640px);
-    border-radius: 10px;
-    margin-bottom: 12px;
-    display: block;
-  }
-  .overlay-subtitle {
-    margin: 0 0 28px;
-    letter-spacing: 0.06em;
-    font-weight: 700;
-  }
+.section {
+  padding: 80px 20px;
+  max-width: 900px;
+  margin: auto;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.6s ease;
+}
 
-  .overlay.active {
-    opacity: 1;
-    transform: scale(1);
-  }
+.section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
 
-  .card {
-    background: #111;
-    padding: 20px;
-    border-radius: 12px;
-    margin-top: 20px;
-  }
+.takeover {
+  height: 100vh;
+}
 
-  .artist {
-    text-align: center;
-    transition: transform 0.3s ease;
-  }
+.overlay {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,0.75);
+  opacity: 0;
+  transform: scale(0.95);
+  transition: all 0.6s ease;
+}
 
-  .artist:hover {
-    transform: scale(1.05);
-  }
-  .artist img {
-    width: 100%;
-    height: 220px;
-    object-fit: cover;
-    border-radius: 10px;
-    display: block;
-  }
+.overlay.active {
+  opacity: 1;
+  transform: scale(1);
+}
 
-  iframe {
-    width: 100%;
-    height: 400px;
-    border: none;
-    border-radius: 10px;
-    margin-top: 20px;
-  }
+.card {
+  background: #111;
+  padding: 20px;
+  border-radius: 12px;
+  margin-top: 20px;
+}
 
-  input, textarea {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    border-radius: 6px;
-    border: none;
-  }
+.artist {
+  text-align: center;
+}
 
-  button {
-    margin-top: 15px;
-    padding: 12px;
-    background: #800000;
-    border: none;
-    color: #fff;
-    border-radius: 8px;
-    cursor: pointer;
-  }
+.artist img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 10px;
+}
 
-  /* Success animation */
-  #form-status {
-    opacity: 0;
-    transform: translateY(10px);
-    transition: all 0.4s ease;
-  }
+iframe {
+  width: 100%;
+  height: 400px;
+  border-radius: 10px;
+  margin-top: 20px;
+}
 
-  #form-status.show {
-    opacity: 1;
-    transform: translateY(0);
-  }
+input, textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 6px;
+  border: none;
+}
 
-  .success {
-    color: #00ff88;
-    font-weight: bold;
-  }
+button {
+  margin-top: 15px;
+  padding: 12px;
+  background: #800000;
+  border: none;
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+}
 
-  .error {
-    color: #ff4d4d;
-    font-weight: bold;
-  }
+#form-status {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.4s ease;
+}
+
+#form-status.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.success { color: #00ff88; }
+.error { color: #ff4d4d; }
+
 </style>
 </head>
+
 <body>
 
 <header>
   MSP 790 PAYBACK MUSIC
 </header>
 
-<div class="hero">
+<div class="hero" id="hero">
   <h1>MSP 790 PAYBACK MUSIC</h1>
-  <p class="subtitle">Uptown Boogiedown Bronx New York Finest</p>
+  <p class="subtitle">Uptown Boogie Down Bronx New York Finest</p>
 </div>
 
 <div class="takeover">
   <div id="overlay" class="overlay">
-    <img class="overlay-photo" src="assets/hero.jpg" alt="OG StarMoney">
-    <p class="overlay-subtitle">Pictured: OG StarMoney</p>
-    <p>
-      From 183rd and Davidson to everywhere.
-      <br><br>
-      We are a collective of artists shaped by experience, loyalty, and ambition. Every track, every visual, every move reflects the life we live and the future we’re building.
-      <br><br>
-      This is more than music.<br>
-      This is a statement.
-    </p>
+    <p>From 183rd and Davidson to everywhere.</p>
   </div>
 </div>
 
-<!-- TEAM -->
-<div class="section" id="team">
+<div class="section">
   <h2>Meet the Artists</h2>
-
-  <div class="artist card">
-    <img src="assets/star-money-meet-the-artist1.jpg" alt="OG StarMoney">
-    <h3>OG StarMoney</h3>
-    <p>Professional Dance Choreographer From THE BRONX NY, Song Writer, Rapper, CEO.</p>
-  </div>
-
-  <div class="artist card">
-    <img src="assets/k-money.svg" alt="K-Money">
-    <h3>K-Money</h3>
-    <p>General Consultant, Singer, Photographer & Videographer, CFO.</p>
-  </div>
 </div>
 
-<!-- SUBMISSION FORM -->
-<div class="section" id="submit">
+<div class="section">
   <h2>Join the Movement</h2>
-  <p>Got something real? Send it through.</p>
-
-  <form action="https://formspree.io/f/xdapqqll" method="POST">
-    <input type="text" name="name" placeholder="Your Name" required>
-    <input type="email" name="email" placeholder="Your Email" required>
-    <textarea name="message" placeholder="Tell us about your music"></textarea>
-    <input type="hidden" name="_subject" value="New MSP 790 Submission">
-    <button type="submit">Submit</button>
-    <p id="form-status" style="margin-top:10px;"></p>
-  </form>
-</div>
-
-<!-- MEDIA -->
-<div class="section" id="media">
-  <h2>Media</h2>
-
-  <iframe src="https://www.youtube.com/embed/Vt05I9jqteY" allowfullscreen></iframe>
-
-  <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DWvRNnlGMty/"></blockquote>
-
 </div>
 
 <script>
-// takeover
 const overlay = document.getElementById('overlay');
+const hero = document.getElementById('hero');
+
 window.addEventListener('scroll', () => {
   const rect = overlay.parentElement.getBoundingClientRect();
-  if (rect.top < window.innerHeight * 0.3) overlay.classList.add('active');
-  else overlay.classList.remove('active');
+
+  if (rect.top < window.innerHeight * 0.3) {
+    overlay.classList.add('active');
+  } else {
+    overlay.classList.remove('active');
+  }
+
+  // scroll effect on subtitle
+  if (window.scrollY > 100) {
+    hero.classList.add('scrolled');
+  } else {
+    hero.classList.remove('scrolled');
+  }
 
   // reveal sections
   document.querySelectorAll('.section').forEach(sec => {
     const r = sec.getBoundingClientRect();
-    if (r.top < window.innerHeight * 0.85) sec.classList.add('visible');
-  });
-
-  if (window.instgrm) window.instgrm.Embeds.process();
-});
-
-// form submission animation
-const form = document.querySelector("form");
-const status = document.getElementById("form-status");
-
-if (form) {
-  form.addEventListener("submit", async function(e) {
-    e.preventDefault();
-    const data = new FormData(form);
-
-    status.classList.remove("show", "success", "error");
-    status.innerHTML = "Sending...";
-    status.classList.add("show");
-
-    const response = await fetch(form.action, {
-      method: form.method,
-      body: data,
-      headers: {
-        'Accept': 'application/json'
-      }
-    });
-
-    if (response.ok) {
-      status.innerHTML = "🔥 Submission received";
-      status.classList.add("success");
-      form.reset();
-
-      setTimeout(() => {
-        status.classList.remove("show");
-      }, 3000);
-
-    } else {
-      status.innerHTML = "❌ Something went wrong";
-      status.classList.add("error");
+    if (r.top < window.innerHeight * 0.85) {
+      sec.classList.add('visible');
     }
   });
-}
+});
 </script>
-
-<script async src="https://www.instagram.com/embed.js"></script>
 
 </body>
 </html>
