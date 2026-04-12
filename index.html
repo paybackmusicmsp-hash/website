@@ -8,145 +8,347 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;700&display=swap');
 
+/* BACKGROUND + INTRO ANIMATION */
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;
+  background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.8)), url('assets/image1.jpg') center/cover fixed;
   color: #fff;
-  background: url('assets/image1.jpg') center/cover fixed;
+  overflow-x: hidden;
+
+  animation: bgIntro 1.2s ease-out forwards;
+}
+
+/* FLASH OVERLAY */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: white;
+  opacity: 0.08;
+  pointer-events: none;
+  animation: flashFade 0.6s ease-out forwards;
+  z-index: 9999;
+}
+
+/* ANIMATIONS */
+@keyframes bgIntro {
+  0% {
+    filter: brightness(0.2) blur(6px);
+    transform: scale(1.08);
+  }
+  60% {
+    filter: brightness(1.1) blur(2px);
+  }
+  100% {
+    filter: brightness(1) blur(0);
+    transform: scale(1);
+  }
+}
+
+@keyframes flashFade {
+  from { opacity: 0.25; }
+  to { opacity: 0; }
 }
 
 /* HEADER */
 header {
   position: fixed;
+  top: 0;
   width: 100%;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(8px);
+  padding: 15px;
   text-align: center;
-  padding: 10px;
   font-family: 'Bebas Neue';
-  background: rgba(0,0,0,0.6);
+  font-size: 1.5rem;
   z-index: 1000;
 }
+header small {
+  display: block;
+  margin-top: 3px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  color: #d4d4d4;
+}
 
-/* HERO LOGO AREA */
+/* HERO */
 .hero {
   height: 100vh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
+  text-align: center;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.55), rgba(0,0,0,0.8)), url('assets/image1.jpg') center/cover;
 }
 
 .hero h1 {
   font-family: 'Bebas Neue';
   font-size: 4rem;
-  text-shadow: 0 0 20px rgba(128,0,0,0.8);
+  text-shadow: 0 0 10px rgba(128,0,0,0.5),
+               0 0 25px rgba(128,0,0,0.8);
 }
 
-/* SPOTLIGHT CARD */
-.spotlight {
-  max-width: 700px;
-  margin: -100px auto 40px auto;
-  background: rgba(0,0,0,0.75);
-  border-radius: 12px;
-  padding: 20px;
+.hero .subtitle {
+  margin-top: 6px;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+}
+
+/* SECTIONS */
+.section {
+  padding: 80px 20px;
+  max-width: 900px;
+  margin: auto;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.6s ease;
+}
+.section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* TAKEOVER */
+.takeover {
+  height: 100vh;
+}
+
+.overlay {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   text-align: center;
-  box-shadow: 0 0 40px rgba(0,0,0,0.8);
+  background: rgba(0,0,0,0.78);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  transform: scale(0.95);
+  transition: all 0.6s ease;
 }
 
-.spotlight img {
+.overlay.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.overlay-photo {
+  width: min(85vw, 640px);
+  border-radius: 10px;
+  margin-bottom: 12px;
+}
+
+.overlay-subtitle {
+  margin: 0 0 18px;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(128,0,0,0.6);
+}
+
+/* CARDS */
+.card {
+  background: #111;
+  padding: 20px;
+  border-radius: 12px;
+  margin-top: 20px;
+  transition: all 0.3s ease;
+}
+.card:hover {
+  box-shadow: 0 10px 30px rgba(128,0,0,0.5);
+  transform: translateY(-5px);
+}
+
+/* ARTISTS */
+.artist {
+  text-align: center;
+}
+.artist img {
   width: 100%;
+  height: 220px;
+  object-fit: cover;
   border-radius: 10px;
 }
 
-/* TEXT */
-h2 {
-  font-family: 'Bebas Neue';
-  margin-top: 15px;
-}
-
-.tagline {
-  margin-top: 10px;
-  font-size: 1rem;
-  opacity: 0.9;
-}
-
-.description {
+/* MEDIA */
+iframe {
+  width: 100%;
+  height: 400px;
+  border: none;
+  border-radius: 10px;
   margin-top: 20px;
-  line-height: 1.6;
 }
 
 /* FORM */
-.form-section {
-  max-width: 600px;
-  margin: 60px auto;
-  background: rgba(0,0,0,0.8);
-  padding: 25px;
-  border-radius: 12px;
-}
-
-.form-section input,
-.form-section textarea {
+input, textarea {
   width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-  border: none;
+  padding: 10px;
+  margin-top: 10px;
   border-radius: 6px;
+  border: none;
 }
 
-.form-section button {
-  width: 100%;
+button {
+  margin-top: 15px;
   padding: 12px;
   background: #800000;
-  color: white;
   border: none;
-  border-radius: 6px;
+  color: #fff;
+  border-radius: 8px;
   cursor: pointer;
 }
-
-.form-section button:hover {
+button:hover {
   background: #a00000;
 }
+
+/* FORM STATUS */
+#form-status {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.4s ease;
+}
+#form-status.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+.success { color: #00ff88; font-weight: bold; }
+.error { color: #ff4d4d; font-weight: bold; }
+
 </style>
 </head>
 
 <body>
 
-<header>MSP 790 PAYBACK MUSIC</header>
+<header>
+  MSP 790 PAYBACK MUSIC
+  <small>Uptown Boogie Down Bronx New York Finest</small>
+</header>
 
 <!-- HERO -->
 <div class="hero">
   <h1>MSP 790 PAYBACK MUSIC</h1>
+  <p class="subtitle">Uptown Boogie Down Bronx New York Finest</p>
 </div>
 
-<!-- SPOTLIGHT -->
-<div class="spotlight">
-  <img src="assets/star-money-meet-the-artist1.jpg">
+<!-- TAKEOVER -->
+<div class="takeover">
+  <div id="overlay" class="overlay">
+    <img class="overlay-photo" src="assets/hero.jpg">
+    <p class="overlay-subtitle">Pictured: OG StarMoney</p>
+    <p>
+      From 183rd and Davidson to everywhere.
+      <br><br>
+      We are a collective of artists shaped by experience, loyalty, and ambition.
+      Every track, every visual, every move reflects the life we live and the future we’re building.
+      <br><br>
+      This is more than music.<br>
+      This is a statement.
+    </p>
+  </div>
+</div>
 
-  <h2>Pictured: OG StarMoney</h2>
+<!-- ARTISTS -->
+<div class="section" id="team">
+  <h2>Meet the Artists</h2>
 
-  <div class="tagline">
-    From 183rd and Davidson to everywhere.
+  <div class="artist card">
+    <img src="assets/star-money-meet-the-artist1.jpg">
+    <h3>OG StarMoney</h3>
+    <p>Professional Dance Choreographer From THE BRONX NY, Song Writer, Rapper, CEO.</p>
   </div>
 
-  <div class="description">
-    We are a collective of artists shaped by experience, loyalty, and ambition.
-    Every track, every visual, every move reflects the life we live and the future we’re building.
-    <br><br>
-    This is more than music.<br>
-    This is a statement.
+  <div class="artist card">
+    <img src="assets/k-money.svg">
+    <h3>K-Money</h3>
+    <p>General Consultant, Singer, Photographer & Videographer, CFO.</p>
   </div>
 </div>
 
-<!-- SUBMISSION FORM -->
-<div class="form-section">
-  <h2>Join MSP</h2>
+<!-- SUBMISSION -->
+<div class="section" id="submit">
+  <h2>Join the Movement</h2>
+  <p>Got something real? Send it through.</p>
 
-  <input type="text" placeholder="Name">
-  <input type="email" placeholder="Email">
-  <input type="text" placeholder="Artist Name">
-  <textarea rows="4" placeholder="Tell us about yourself"></textarea>
-
-  <button>Submit</button>
+  <form action="https://formspree.io/f/xdapqqll" method="POST">
+    <input type="text" name="name" placeholder="Your Name" required>
+    <input type="email" name="email" placeholder="Your Email" required>
+    <textarea name="message" placeholder="Tell us about your music"></textarea>
+    <input type="hidden" name="_subject" value="New MSP 790 Submission">
+    <button type="submit">Submit</button>
+    <p id="form-status"></p>
+  </form>
 </div>
+
+<!-- MEDIA -->
+<div class="section" id="media">
+  <h2>Media</h2>
+
+  <iframe src="https://www.youtube.com/embed/Vt05I9jqteY" allowfullscreen></iframe>
+  <iframe src="https://www.instagram.com/p/DWvRNnlGMty/embed/" allowfullscreen></iframe>
+</div>
+
+<script>
+const overlay = document.getElementById('overlay');
+
+window.addEventListener('scroll', () => {
+  const rect = overlay.parentElement.getBoundingClientRect();
+
+  if (rect.top < window.innerHeight * 0.3) {
+    overlay.classList.add('active');
+  } else {
+    overlay.classList.remove('active');
+  }
+
+  document.querySelectorAll('.section').forEach(sec => {
+    const r = sec.getBoundingClientRect();
+    if (r.top < window.innerHeight * 0.85) {
+      sec.classList.add('visible');
+    }
+  });
+
+  if (window.instgrm) window.instgrm.Embeds.process();
+});
+
+/* FORM */
+const form = document.querySelector("form");
+const status = document.getElementById("form-status");
+
+form.addEventListener("submit", async function(e) {
+  e.preventDefault();
+  const data = new FormData(form);
+
+  status.classList.remove("show", "success", "error");
+  status.innerHTML = "Sending...";
+  status.classList.add("show");
+
+  const response = await fetch(form.action, {
+    method: form.method,
+    body: data,
+    headers: { 'Accept': 'application/json' }
+  });
+
+  if (response.ok) {
+    status.innerHTML = "🔥 Submission received";
+    status.classList.add("success");
+    form.reset();
+
+    setTimeout(() => {
+      status.classList.remove("show");
+    }, 3000);
+
+  } else {
+    status.innerHTML = "❌ Something went wrong";
+    status.classList.add("error");
+  }
+});
+</script>
+
+<script async src="https://www.instagram.com/embed.js"></script>
 
 </body>
 </html>
