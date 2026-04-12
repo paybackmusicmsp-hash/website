@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" role="img" aria-labelledby="title desc">
+  <title id="title">K-Money Portrait</title>
+  <desc id="desc">Stylized high-contrast artist placeholder portrait.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0%" stop-color="#050505"/>
+      <stop offset="100%" stop-color="#2a1414"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="600" fill="url(#bg)"/>
+  <circle cx="450" cy="220" r="95" fill="#181818" stroke="#bb3a3a" stroke-width="6"/>
+  <rect x="300" y="320" width="300" height="180" rx="20" fill="#181818" stroke="#bb3a3a" stroke-width="6"/>
+  <text x="450" y="560" text-anchor="middle" fill="#f0d5d5" font-size="44" font-family="Arial, sans-serif">K-MONEY</text>
+</svg>
