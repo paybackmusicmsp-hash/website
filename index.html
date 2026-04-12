@@ -11,100 +11,99 @@
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;
-  background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.9)), url('assets/hero.jpg') center/cover no-repeat fixed;
   color: #fff;
+  background: url('assets/image1.jpg') center/cover fixed;
 }
 
 /* HEADER */
 header {
   position: fixed;
   width: 100%;
-  background: rgba(0,0,0,0.7);
-  padding: 15px;
   text-align: center;
+  padding: 10px;
   font-family: 'Bebas Neue';
-  font-size: 1.5rem;
+  background: rgba(0,0,0,0.6);
+  z-index: 1000;
 }
 
-/* HERO TEXT */
+/* HERO LOGO AREA */
 .hero {
   height: 100vh;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 }
 
-/* LOGO */
 .hero h1 {
   font-family: 'Bebas Neue';
   font-size: 4rem;
-  animation: glowPulse 3s infinite alternate;
+  text-shadow: 0 0 20px rgba(128,0,0,0.8);
 }
 
-@keyframes glowPulse {
-  from { text-shadow: 0 0 10px rgba(128,0,0,0.4); }
-  to { text-shadow: 0 0 25px rgba(128,0,0,0.9); }
-}
-
-.subtitle {
-  font-size: 32px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  text-shadow: 0 0 15px rgba(128,0,0,0.8);
-}
-
-/* CAPTION */
-.caption {
-  text-align: center;
-  font-family: 'Bebas Neue';
-  font-size: 1.5rem;
-  margin-top: -40px;
-  margin-bottom: 40px;
-  opacity: 0.8;
-}
-
-/* SECTIONS */
-.section {
-  padding: 60px 20px;
-  max-width: 1000px;
-  margin: auto;
-  text-align: center;
-}
-
-/* ARTISTS */
-.artist-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
-  gap: 20px;
-}
-
-.artist {
-  background: #111;
+/* SPOTLIGHT CARD */
+.spotlight {
+  max-width: 700px;
+  margin: -100px auto 40px auto;
+  background: rgba(0,0,0,0.75);
   border-radius: 12px;
-  padding: 15px;
-  transition: 0.3s;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 0 40px rgba(0,0,0,0.8);
+}
+
+.spotlight img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+/* TEXT */
+h2 {
+  font-family: 'Bebas Neue';
+  margin-top: 15px;
+}
+
+.tagline {
+  margin-top: 10px;
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+.description {
+  margin-top: 20px;
+  line-height: 1.6;
+}
+
+/* FORM */
+.form-section {
+  max-width: 600px;
+  margin: 60px auto;
+  background: rgba(0,0,0,0.8);
+  padding: 25px;
+  border-radius: 12px;
+}
+
+.form-section input,
+.form-section textarea {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 6px;
+}
+
+.form-section button {
+  width: 100%;
+  padding: 12px;
+  background: #800000;
+  color: white;
+  border: none;
+  border-radius: 6px;
   cursor: pointer;
 }
 
-.artist:hover {
-  transform: scale(1.05);
-  box-shadow: 0 10px 30px rgba(128,0,0,0.6);
-}
-
-.artist img {
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
-  border-radius: 10px;
-}
-
-/* PLAYER */
-.music-player iframe {
-  width: 100%;
-  height: 120px;
-  margin-top: 20px;
-  border-radius: 10px;
+.form-section button:hover {
+  background: #a00000;
 }
 </style>
 </head>
@@ -113,52 +112,41 @@ header {
 
 <header>MSP 790 PAYBACK MUSIC</header>
 
+<!-- HERO -->
 <div class="hero">
   <h1>MSP 790 PAYBACK MUSIC</h1>
-  <p class="subtitle">Uptown Boogie Down Bronx New York Finest</p>
 </div>
 
-<!-- ✅ THIS IS THE CORRECT WAY TO ADD IT -->
-<div class="caption">
-  Pictured: OG StarMoney
-</div>
+<!-- SPOTLIGHT -->
+<div class="spotlight">
+  <img src="assets/star-money-meet-the-artist1.jpg">
 
-<div class="section">
-  <h2>Artists</h2>
+  <h2>Pictured: OG StarMoney</h2>
 
-  <div class="artist-grid">
+  <div class="tagline">
+    From 183rd and Davidson to everywhere.
+  </div>
 
-    <div class="artist" onclick="playTrack('star')">
-      <img src="assets/star-money-meet-the-artist1.jpg">
-      <h3>OG StarMoney</h3>
-    </div>
-
-    <div class="artist" onclick="playTrack('k')">
-      <img src="assets/k-money.svg">
-      <h3>K-Money</h3>
-    </div>
-
+  <div class="description">
+    We are a collective of artists shaped by experience, loyalty, and ambition.
+    Every track, every visual, every move reflects the life we live and the future we’re building.
+    <br><br>
+    This is more than music.<br>
+    This is a statement.
   </div>
 </div>
 
-<div class="section music-player">
-  <h2>Now Playing</h2>
-  <iframe id="player" src=""></iframe>
+<!-- SUBMISSION FORM -->
+<div class="form-section">
+  <h2>Join MSP</h2>
+
+  <input type="text" placeholder="Name">
+  <input type="email" placeholder="Email">
+  <input type="text" placeholder="Artist Name">
+  <textarea rows="4" placeholder="Tell us about yourself"></textarea>
+
+  <button>Submit</button>
 </div>
-
-<script>
-function playTrack(track) {
-  const player = document.getElementById('player');
-
-  if(track === 'star') {
-    player.src = "https://www.youtube.com/embed/YOUR_VIDEO_ID";
-  }
-
-  if(track === 'k') {
-    player.src = "https://www.youtube.com/embed/YOUR_VIDEO_ID_2";
-  }
-}
-</script>
 
 </body>
 </html>
