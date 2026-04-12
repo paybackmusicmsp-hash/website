@@ -13,13 +13,12 @@ body {
   font-family: 'Inter', sans-serif;
   color: #fff;
   overflow-x: hidden;
-  background: url('assets/image1.jpg') center/cover fixed;
+  background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.8)), url('assets/image1.jpg') center/cover fixed;
 
-  /* background intro */
   animation: bgReveal 1.2s ease-out forwards;
 }
 
-/* FLASH EFFECT */
+/* FLASH */
 body::before {
   content: "";
   position: fixed;
@@ -31,20 +30,17 @@ body::before {
   z-index: 9999;
 }
 
-/* HERO */
+/* HERO (TOP TEXT ONLY) */
 .hero {
-  padding-top: 50px;
-  padding-bottom: 20px;
+  padding: 40px 20px 20px;
   text-align: center;
 
   opacity: 0;
   transform: translateY(-40px);
-
   animation: heroIntro 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   animation-delay: 0.3s;
 }
 
-/* TITLE */
 .hero h1 {
   font-family: 'Bebas Neue';
   font-size: 3.5rem;
@@ -56,170 +52,226 @@ body::before {
   animation-delay: 0.6s;
 
   text-shadow:
-    0 0 5px rgba(128,0,0,0.3),
-    0 0 20px rgba(128,0,0,0.6),
-    0 0 40px rgba(128,0,0,0.8);
+    0 0 10px rgba(128,0,0,0.6),
+    0 0 30px rgba(128,0,0,0.8);
 }
 
-/* SUBTITLE */
 .hero .subtitle {
   margin-top: 6px;
   font-weight: 700;
   letter-spacing: 0.12em;
   font-size: 1.25rem;
   opacity: 0;
-
   animation: fadeIn 1.2s ease forwards;
   animation-delay: 1s;
 }
 
-/* SPOTLIGHT */
-.spotlight {
-  max-width: 700px;
-  margin: 40px auto;
-  background: rgba(0,0,0,0.75);
-  border-radius: 12px;
-  padding: 20px;
-  text-align: center;
-  box-shadow: 0 0 40px rgba(0,0,0,0.8);
+/* TAKEOVER */
+.takeover {
+  height: 100vh;
 }
 
-.spotlight img {
+.overlay {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: rgba(0,0,0,0.78);
+  backdrop-filter: blur(6px);
+
+  opacity: 0;
+  transform: scale(0.95);
+  transition: all 0.6s ease;
+}
+
+.overlay.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.overlay-subtitle {
+  margin-bottom: 12px;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+}
+
+.overlay-photo {
+  width: min(85vw, 640px);
+  border-radius: 10px;
+  margin-bottom: 12px;
+}
+
+/* SECTIONS */
+.section {
+  padding: 80px 20px;
+  max-width: 900px;
+  margin: auto;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.6s ease;
+}
+.section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* CARDS */
+.card {
+  background: #111;
+  padding: 20px;
+  border-radius: 12px;
+  margin-top: 20px;
+}
+
+/* ARTISTS */
+.artist img {
   width: 100%;
+  height: 220px;
+  object-fit: cover;
   border-radius: 10px;
 }
 
-/* TEXT */
-h2 {
-  font-family: 'Bebas Neue';
-  margin-top: 15px;
-  letter-spacing: 0.08em;
-}
-
-.tagline {
-  margin-top: 10px;
-  font-size: 1rem;
-  opacity: 0.9;
-}
-
-.description {
-  margin-top: 20px;
-  line-height: 1.6;
-}
-
 /* FORM */
-.form-section {
-  max-width: 600px;
-  margin: 60px auto;
-  background: rgba(0,0,0,0.8);
-  padding: 25px;
-  border-radius: 12px;
-}
-
-.form-section input,
-.form-section textarea {
+input, textarea {
   width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-  border: none;
+  padding: 10px;
+  margin-top: 10px;
   border-radius: 6px;
+  border: none;
 }
 
-.form-section button {
-  width: 100%;
+button {
+  margin-top: 15px;
   padding: 12px;
   background: #800000;
-  color: white;
   border: none;
-  border-radius: 6px;
-  cursor: pointer;
+  color: #fff;
+  border-radius: 8px;
 }
 
-.form-section button:hover {
-  background: #a00000;
+/* MEDIA */
+iframe {
+  width: 100%;
+  height: 400px;
+  border-radius: 10px;
+  margin-top: 20px;
 }
 
 /* ANIMATIONS */
 @keyframes heroIntro {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes glowIn {
-  from {
-    opacity: 0;
-    text-shadow: none;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 @keyframes fadeIn {
-  to {
-    opacity: 1;
-  }
+  to { opacity: 1; }
 }
 
 @keyframes flash {
-  to {
-    opacity: 0;
-  }
+  to { opacity: 0; }
 }
 
 @keyframes bgReveal {
-  from {
-    filter: brightness(0.3) blur(6px);
-    transform: scale(1.05);
-  }
-  to {
-    filter: brightness(1) blur(0);
-    transform: scale(1);
-  }
+  from { filter: brightness(0.3) blur(6px); }
+  to { filter: brightness(1) blur(0); }
 }
 </style>
 </head>
 
 <body>
 
-<!-- HERO (TOP INTRO) -->
+<!-- HERO TEXT -->
 <div class="hero">
   <h1>MSP 790 PAYBACK MUSIC</h1>
   <div class="subtitle">Uptown Boogie Down Bronx New York Finest</div>
 </div>
 
-<!-- SPOTLIGHT -->
-<div class="spotlight">
-  <img src="assets/star-money-meet-the-artist1.jpg">
+<!-- TAKEOVER -->
+<div class="takeover">
+  <div id="overlay" class="overlay">
 
-  <h2>Pictured: OG StarMoney</h2>
+    <p class="overlay-subtitle">Pictured: OG StarMoney</p>
 
-  <div class="tagline">
-    From 183rd and Davidson to everywhere.
-  </div>
+    <img class="overlay-photo" src="assets/hero.jpg">
 
-  <div class="description">
-    We are a collective of artists shaped by experience, loyalty, and ambition.
-    Every track, every visual, every move reflects the life we live and the future we’re building.
-    <br><br>
-    This is more than music.<br>
-    This is a statement.
+    <p>
+      From 183rd and Davidson to everywhere.
+      <br><br>
+      We are a collective of artists shaped by experience, loyalty, and ambition.
+      Every track, every visual, every move reflects the life we live and the future we’re building.
+      <br><br>
+      This is more than music.<br>
+      This is a statement.
+    </p>
   </div>
 </div>
 
-<!-- FORM -->
-<div class="form-section">
-  <h2>Join MSP</h2>
+<!-- ARTISTS -->
+<div class="section" id="team">
+  <h2>Meet the Artists</h2>
 
-  <input type="text" placeholder="Name">
-  <input type="email" placeholder="Email">
-  <input type="text" placeholder="Artist Name">
-  <textarea rows="4" placeholder="Tell us about yourself"></textarea>
+  <div class="artist card">
+    <img src="assets/star-money-meet-the-artist1.jpg">
+    <h3>OG StarMoney</h3>
+    <p>Professional Dance Choreographer From THE BRONX NY, Song Writer, Rapper, CEO.</p>
+  </div>
 
-  <button>Submit</button>
+  <div class="artist card">
+    <img src="assets/k-money.svg">
+    <h3>K-Money</h3>
+    <p>General Consultant, Singer, Photographer & Videographer, CFO.</p>
+  </div>
 </div>
+
+<!-- SUBMISSION -->
+<div class="section" id="submit">
+  <h2>Join the Movement</h2>
+  <p>Got something real? Send it through.</p>
+
+  <form action="https://formspree.io/f/xdapqqll" method="POST">
+    <input type="text" name="name" placeholder="Your Name" required>
+    <input type="email" name="email" placeholder="Your Email" required>
+    <textarea name="message" placeholder="Tell us about your music"></textarea>
+    <button type="submit">Submit</button>
+  </form>
+</div>
+
+<!-- MEDIA -->
+<div class="section" id="media">
+  <h2>Media</h2>
+
+  <iframe src="https://www.youtube.com/embed/Vt05I9jqteY" allowfullscreen></iframe>
+  <iframe src="https://www.instagram.com/p/DWvRNnlGMty/embed/" allowfullscreen></iframe>
+</div>
+
+<script>
+const overlay = document.getElementById('overlay');
+
+window.addEventListener('scroll', () => {
+  const rect = overlay.parentElement.getBoundingClientRect();
+
+  if (rect.top < window.innerHeight * 0.3) {
+    overlay.classList.add('active');
+  } else {
+    overlay.classList.remove('active');
+  }
+
+  document.querySelectorAll('.section').forEach(sec => {
+    const r = sec.getBoundingClientRect();
+    if (r.top < window.innerHeight * 0.85) {
+      sec.classList.add('visible');
+    }
+  });
+});
+</script>
 
 </body>
 </html>
