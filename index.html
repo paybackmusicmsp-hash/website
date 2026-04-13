@@ -130,6 +130,10 @@ body {
   z-index: 2;
 }
 
+.music-player h2 {
+  margin-bottom: 10px;
+}
+
 /* TEAM */
 .section {
   max-width: 900px;
@@ -217,8 +221,9 @@ body {
 <!-- MUSIC PLAYER -->
 <div class="music-player">
   <h2>Now Playing</h2>
-  <audio id="bg-music" loop playsinline>
+  <audio controls>
     <source src="assets/song.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
   </audio>
 </div>
 
@@ -250,24 +255,6 @@ body {
 
   <button>Submit</button>
 </div>
-
-<script>
-const audio = document.getElementById("bg-music");
-
-// Try autoplay immediately
-window.addEventListener("load", () => {
-  audio.play().catch(() => {
-    console.log("Autoplay blocked, waiting for interaction");
-  });
-});
-
-// Force play on ANY interaction
-["click", "scroll", "keydown", "touchstart"].forEach(event => {
-  document.addEventListener(event, () => {
-    audio.play();
-  }, { once: true });
-});
-</script>
 
 </body>
 </html>
