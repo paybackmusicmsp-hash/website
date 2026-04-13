@@ -42,15 +42,24 @@ header {
   font-family: 'Bebas Neue';
   font-size: 4rem;
   text-shadow: 0 0 20px rgba(128,0,0,0.8);
+  background: rgba(0,0,0,0.5);
+  padding: 8px 16px;
+}
+
+.hero .mid,
+.hero .sub,
+.hero .top-role,
+.hero .bottom-role {
+  background: rgba(0,0,0,0.5);
+  padding: 6px 14px;
+  margin-top: 8px;
 }
 
 .hero .mid {
-  margin-top: 10px;
   font-size: 1.2rem;
 }
 
 .hero .sub {
-  margin-top: 6px;
   font-size: 1.6rem;
   font-weight: 700;
 }
@@ -64,38 +73,29 @@ header {
     0 0 5px red,
     0 0 15px red,
     0 0 25px red;
-  background: rgba(0,0,0,0.55);
-  padding: 6px 14px;
 }
 
-.hero .top-role {
-  margin-bottom: 10px;
-}
-
-.hero .bottom-role {
-  margin-top: 10px;
-}
-
-/* ✅ UPDATED PILLARS */
+/* PILLARS (FIXED SIZE) */
 .pillar-left,
 .pillar-right {
   position: fixed;
-  top: 0;
-  height: 100vh; /* match full image height */
+  top: 80px;
+  height: 75vh;
+  max-width: 220px;
   z-index: 1;
   pointer-events: none;
 }
 
-/* Right pillar */
+/* RIGHT */
 .pillar-right {
-  right: -400px;
+  right: -250px;
   animation: slideInRight 1.2s ease forwards;
 }
 
-/* Left pillar */
+/* LEFT */
 .pillar-left {
-  left: -400px;
-  opacity: 0.3;
+  left: -250px;
+  opacity: 0.35;
   animation: slideInLeft 1.2s ease forwards;
 }
 
@@ -139,6 +139,11 @@ header {
   border-radius: 12px;
   margin-top: 20px;
   text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.artist:hover {
+  transform: scale(1.05);
 }
 
 .artist img {
@@ -184,10 +189,11 @@ header {
 
 <header>MSP 790 PAYBACK MUSIC</header>
 
-<!-- ✅ PILLARS (NOW FULL HEIGHT AT TOP) -->
+<!-- PILLARS -->
 <img src="assets/pillar-left.png" class="pillar-left">
 <img src="assets/pillar-right.png" class="pillar-right">
 
+<!-- HERO -->
 <div class="hero">
   <div class="top-role">CEO OG StarMoney</div>
 
@@ -199,6 +205,7 @@ header {
   <div class="bottom-role">CFO K-Money</div>
 </div>
 
+<!-- SPOTLIGHT -->
 <div class="spotlight">
   <img src="assets/hero.jpg">
 
@@ -215,6 +222,7 @@ header {
   </div>
 </div>
 
+<!-- TEAM -->
 <div class="section">
   <h2>Meet the Artists</h2>
 
@@ -231,8 +239,9 @@ header {
   </div>
 </div>
 
+<!-- FORM -->
 <div class="form-section">
-  <h2>Join MSP</h2>
+  <h2>Join The Movement</h2>
 
   <input type="text" placeholder="Name">
   <input type="email" placeholder="Email">
