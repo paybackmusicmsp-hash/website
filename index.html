@@ -75,13 +75,15 @@ header {
     0 0 25px red;
 }
 
-/* PILLARS (FIXED SIZE) */
+/* PILLARS (FIXED SIZE - FIXED SQUASH) */
 .pillar-left,
 .pillar-right {
   position: fixed;
   top: 80px;
   height: 75vh;
+  width: auto;
   max-width: 220px;
+  object-fit: contain;
   z-index: 1;
   pointer-events: none;
 }
@@ -105,23 +107,6 @@ header {
 
 @keyframes slideInLeft {
   to { left: 0; }
-}
-
-/* SPOTLIGHT */
-.spotlight {
-  max-width: 700px;
-  margin: 40px auto;
-  background: rgba(0,0,0,0.75);
-  border-radius: 12px;
-  padding: 20px;
-  text-align: center;
-  position: relative;
-  z-index: 2;
-}
-
-.spotlight img {
-  width: 100%;
-  border-radius: 10px;
 }
 
 /* TEAM */
@@ -203,23 +188,6 @@ header {
   <div class="sub">Uptown Boogie Down Bronx New York Finest</div>
 
   <div class="bottom-role">CFO K-Money</div>
-</div>
-
-<!-- SPOTLIGHT -->
-<div class="spotlight">
-  <img src="assets/hero.jpg">
-
-  <div class="tagline">
-    From 183rd and Davidson to everywhere.
-  </div>
-
-  <div class="description">
-    We are a collective of artists shaped by experience, loyalty, and ambition.
-    Every track, every visual, every move reflects the life we live and the future we’re building.
-    <br><br>
-    This is more than music.<br>
-    This is a statement.
-  </div>
 </div>
 
 <!-- TEAM -->
