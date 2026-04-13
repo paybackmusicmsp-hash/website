@@ -15,7 +15,6 @@ body {
   background: url('assets/image1.jpg') center/cover fixed;
 }
 
-/* HEADER */
 header {
   position: fixed;
   width: 100%;
@@ -26,7 +25,6 @@ header {
   z-index: 1000;
 }
 
-/* HERO */
 .hero {
   height: 100vh;
   display: flex;
@@ -38,29 +36,18 @@ header {
 .hero h1 {
   font-family: 'Bebas Neue';
   font-size: 4rem;
-  text-shadow: 0 0 20px rgba(128,0,0,0.9);
-  background: rgba(0,0,0,0.5);
-  padding: 10px 20px;
-  border-radius: 8px;
+  text-shadow: 0 0 20px rgba(128,0,0,0.8);
 }
 
 .hero .mid {
   margin-top: 10px;
   font-size: 1.2rem;
-  letter-spacing: 2px;
-  background: rgba(0,0,0,0.5);
-  padding: 5px 15px;
-  border-radius: 6px;
 }
 
 .hero .sub {
   margin-top: 6px;
   font-size: 1.4rem;
-  letter-spacing: 2px;
   font-weight: 700;
-  background: rgba(0,0,0,0.5);
-  padding: 6px 15px;
-  border-radius: 6px;
 }
 
 /* PILLAR SECTION */
@@ -86,20 +73,14 @@ header {
   animation: slideInLeft 1.2s ease forwards;
 }
 
-/* SLIDE ANIMATIONS */
 @keyframes slideInRight {
-  to {
-    right: 0;
-  }
+  to { right: 0; }
 }
 
 @keyframes slideInLeft {
-  to {
-    left: 0;
-  }
+  to { left: 0; }
 }
 
-/* TOP / BOTTOM TEXT (POP) */
 .pillar-text-top,
 .pillar-text-bottom {
   position: absolute;
@@ -109,9 +90,12 @@ header {
   font-size: 2rem;
   letter-spacing: 2px;
   color: #fff;
-  text-shadow: 0 0 10px red, 0 0 20px red;
-  background: rgba(0,0,0,0.5);
-  padding: 8px;
+  text-shadow:
+    0 0 5px red,
+    0 0 15px red,
+    0 0 25px red;
+  background: rgba(0,0,0,0.55);
+  padding: 10px 0;
 }
 
 .pillar-text-top {
@@ -135,19 +119,6 @@ header {
 .spotlight img {
   width: 100%;
   border-radius: 10px;
-}
-
-.spotlight h2,
-.spotlight .tagline,
-.spotlight .description {
-  background: rgba(0,0,0,0.5);
-  padding: 6px 10px;
-  border-radius: 6px;
-  display: inline-block;
-}
-
-.spotlight .description {
-  display: block;
 }
 
 /* TEAM */
@@ -206,27 +177,21 @@ header {
 
 <header>MSP 790 PAYBACK MUSIC</header>
 
-<!-- HERO -->
 <div class="hero">
   <h1>MSP 790 PAYBACK MUSIC</h1>
   <div class="mid">183rd Davidson</div>
   <div class="sub">Uptown Boogie Down Bronx New York Finest</div>
 </div>
 
-<!-- PILLAR SECTION -->
 <div class="pillar-section">
-
   <div class="pillar-text-top">CEO OG StarMoney</div>
   <div class="pillar-text-bottom">CFO K-Money</div>
 
   <img src="assets/pillar-left.png" class="pillar-left">
   <img src="assets/pillar-right.png" class="pillar-right">
-
 </div>
 
-<!-- SPOTLIGHT -->
 <div class="spotlight">
-  <h2>Pictured: OG StarMoney</h2>
   <img src="assets/hero.jpg">
 
   <div class="tagline">
@@ -242,7 +207,6 @@ header {
   </div>
 </div>
 
-<!-- TEAM -->
 <div class="section">
   <h2>Meet the Artists</h2>
 
@@ -259,7 +223,6 @@ header {
   </div>
 </div>
 
-<!-- FORM -->
 <div class="form-section">
   <h2>Join MSP</h2>
 
