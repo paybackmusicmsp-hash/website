@@ -130,10 +130,6 @@ body {
   z-index: 2;
 }
 
-.music-player h2 {
-  margin-bottom: 10px;
-}
-
 /* TEAM */
 .section {
   max-width: 900px;
@@ -198,7 +194,7 @@ body {
 <body>
 
 <!-- PILLARS -->
-<img src="assets/pillar-left(1).png" class="pillar-left">
+<img src="assets/pillar-left.png" class="pillar-left">
 <img src="assets/pillar-right.png" class="pillar-right">
 
 <!-- HERO -->
@@ -221,9 +217,8 @@ body {
 <!-- MUSIC PLAYER -->
 <div class="music-player">
   <h2>Now Playing</h2>
-  <audio controls>
-    <source src="assets/jong.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
+  <audio id="bg-music" loop>
+    <source src="assets/song.mp3" type="audio/mpeg">
   </audio>
 </div>
 
@@ -255,6 +250,20 @@ body {
 
   <button>Submit</button>
 </div>
+
+<script>
+const audio = document.getElementById("bg-music");
+
+// Try to autoplay on load
+window.addEventListener("load", () => {
+  audio.play().catch(() => {});
+});
+
+// Guaranteed fallback (first interaction)
+document.addEventListener("click", () => {
+  audio.play();
+}, { once: true });
+</script>
 
 </body>
 </html>
