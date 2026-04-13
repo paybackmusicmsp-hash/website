@@ -25,7 +25,6 @@ body {
   align-items: center;
 }
 
-/* CENTER CONTENT (UNCHANGED TEXT) */
 .scene-center {
   text-align: center;
   z-index: 2;
@@ -37,94 +36,102 @@ body {
   text-shadow: 0 0 20px rgba(128,0,0,0.8);
 }
 
-.scene-center .subtitle {
-  margin-top: 10px;
-  font-size: 1rem;
-  opacity: 0.9;
+.scene-center .mid {
+  font-size: 1.2rem;
+  margin-top: 8px;
+  letter-spacing: 0.1em;
 }
 
-/* LEFT + RIGHT */
+.scene-center .subtitle {
+  margin-top: 6px;
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+/* SIDE ARTISTS */
 .pillar-left,
 .pillar-right {
   position: absolute;
   bottom: 0;
-  z-index: 1;
+}
+
+/* 🔥 START OFF SCREEN */
+.pillar-right {
+  right: -300px;
+  animation: slideInRight 1s ease forwards;
 }
 
 .pillar-left {
-  left: 0;
+  left: -300px;
+  animation: slideInLeft 1s ease forwards;
 }
 
-.pillar-right {
-  right: 0;
-}
-
+/* IMAGE SIZE */
 .pillar-left img,
 .pillar-right img {
   height: 90vh;
   object-fit: contain;
 }
 
+/* 🔥 ANIMATIONS */
+@keyframes slideInRight {
+  to {
+    right: 0;
+  }
+}
+
+@keyframes slideInLeft {
+  to {
+    left: 0;
+  }
+}
+
 /* MAIN CONTENT */
 .main {
-  max-width: 700px;
+  max-width: 900px;
   margin: auto;
-  padding: 40px 20px;
+  padding: 60px 20px;
 }
 
-/* SPOTLIGHT (UNCHANGED) */
-.spotlight {
-  background: rgba(0,0,0,0.75);
-  border-radius: 12px;
-  padding: 20px;
+/* ARTISTS */
+.artist {
+  margin-top: 30px;
   text-align: center;
-  margin-bottom: 40px;
 }
 
-.spotlight img {
+.artist img {
   width: 100%;
+  height: 220px;
+  object-fit: cover;
   border-radius: 10px;
 }
 
 h2 {
   font-family: 'Bebas Neue';
-  margin-top: 15px;
-}
-
-.tagline {
-  margin-top: 10px;
-  font-size: 1rem;
-  opacity: 0.9;
-}
-
-.description {
-  margin-top: 20px;
-  line-height: 1.6;
+  margin-top: 40px;
 }
 
 /* FORM */
 .form-section {
-  background: rgba(0,0,0,0.8);
-  padding: 25px;
-  border-radius: 12px;
+  margin-top: 60px;
 }
 
-.form-section input,
-.form-section textarea {
+input, textarea {
   width: 100%;
   padding: 12px;
-  margin: 10px 0;
-  border: none;
+  margin-top: 10px;
   border-radius: 6px;
+  border: none;
 }
 
-.form-section button {
-  width: 100%;
+button {
+  margin-top: 15px;
   padding: 12px;
   background: #800000;
-  color: white;
   border: none;
-  border-radius: 6px;
+  color: #fff;
+  border-radius: 8px;
 }
 
 /* MOBILE */
@@ -139,7 +146,6 @@ h2 {
 
 <body>
 
-<!-- PILLAR SCENE -->
 <div class="pillar-scene">
 
   <div class="pillar-left">
@@ -151,33 +157,28 @@ h2 {
     <img src="assets/RIGHT-ARTIST.png">
   </div>
 
-  <!-- YOUR TEXT (UNCHANGED) -->
   <div class="scene-center">
     <h1>MSP 790 PAYBACK MUSIC</h1>
+    <div class="mid">183rd Davidson</div>
     <div class="subtitle">Uptown Boogie Down Bronx New York Finest</div>
   </div>
 
 </div>
 
-<!-- ORIGINAL CONTENT -->
 <div class="main">
 
-  <div class="spotlight">
-    <h2>Pictured: OG StarMoney</h2>
+  <h2>Meet the Artists</h2>
 
+  <div class="artist">
     <img src="assets/star-money-meet-the-artist1.jpg">
+    <h3>OG StarMoney</h3>
+    <p>Professional Dance Choreographer From THE BRONX NY, Song Writer, Rapper, CEO.</p>
+  </div>
 
-    <div class="tagline">
-      From 183rd and Davidson to everywhere.
-    </div>
-
-    <div class="description">
-      We are a collective of artists shaped by experience, loyalty, and ambition.
-      Every track, every visual, every move reflects the life we live and the future we’re building.
-      <br><br>
-      This is more than music.<br>
-      This is a statement.
-    </div>
+  <div class="artist">
+    <img src="assets/k-money.svg">
+    <h3>K-Money</h3>
+    <p>General Consultant, Singer, Photographer & Videographer, CFO.</p>
   </div>
 
   <div class="form-section">
