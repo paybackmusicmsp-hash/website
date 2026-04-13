@@ -118,6 +118,22 @@ body {
   background: rgba(0,0,0,0.6);
 }
 
+/* MUSIC PLAYER */
+.music-player {
+  max-width: 600px;
+  margin: 40px auto;
+  background: rgba(0,0,0,0.8);
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.music-player audio {
+  width: 100%;
+}
+
 /* TEAM */
 .section {
   max-width: 900px;
@@ -145,22 +161,6 @@ body {
   height: 220px;
   object-fit: cover;
   border-radius: 10px;
-}
-
-/* MUSIC PLAYER */
-.music-player {
-  max-width: 600px;
-  margin: 40px auto;
-  background: rgba(0,0,0,0.8);
-  padding: 20px;
-  border-radius: 12px;
-  text-align: center;
-  position: relative;
-  z-index: 2;
-}
-
-.music-player audio {
-  width: 100%;
 }
 
 /* FORM */
@@ -221,9 +221,8 @@ body {
 <!-- MUSIC PLAYER -->
 <div class="music-player">
   <h2>Now Playing</h2>
-  <audio controls>
+  <audio id="bg-music" autoplay muted loop playsinline>
     <source src="assets/song.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
   </audio>
 </div>
 
@@ -255,6 +254,16 @@ body {
 
   <button>Submit</button>
 </div>
+
+<script>
+const audio = document.getElementById("bg-music");
+
+// Unmute on first user interaction (required by browsers)
+document.addEventListener("click", () => {
+  audio.muted = false;
+  audio.play();
+}, { once: true });
+</script>
 
 </body>
 </html>
