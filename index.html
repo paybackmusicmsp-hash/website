@@ -15,6 +15,7 @@ body {
   background: url('assets/image1.jpg') center/cover fixed;
 }
 
+/* HEADER */
 header {
   position: fixed;
   width: 100%;
@@ -25,6 +26,7 @@ header {
   z-index: 1000;
 }
 
+/* HERO */
 .hero {
   height: 100vh;
   display: flex;
@@ -32,6 +34,8 @@ header {
   align-items: center;
   flex-direction: column;
   text-align: center;
+  position: relative;
+  z-index: 2;
 }
 
 .hero h1 {
@@ -47,11 +51,10 @@ header {
 
 .hero .sub {
   margin-top: 6px;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   font-weight: 700;
 }
 
-/* NEW: CEO/CFO text (ONLY change) */
 .hero .top-role,
 .hero .bottom-role {
   font-family: 'Bebas Neue';
@@ -73,25 +76,25 @@ header {
   margin-top: 10px;
 }
 
-/* PILLAR SECTION */
-.pillar-section {
-  position: relative;
-  height: 500px;
+/* ✅ UPDATED PILLARS */
+.pillar-left,
+.pillar-right {
+  position: fixed;
+  top: 0;
+  height: 100vh; /* match full image height */
+  z-index: 1;
+  pointer-events: none;
 }
 
+/* Right pillar */
 .pillar-right {
-  position: absolute;
-  right: -300px;
-  top: 0;
-  height: 100%;
+  right: -400px;
   animation: slideInRight 1.2s ease forwards;
 }
 
+/* Left pillar */
 .pillar-left {
-  position: absolute;
-  left: -300px;
-  top: 0;
-  height: 100%;
+  left: -400px;
   opacity: 0.3;
   animation: slideInLeft 1.2s ease forwards;
 }
@@ -112,6 +115,8 @@ header {
   border-radius: 12px;
   padding: 20px;
   text-align: center;
+  position: relative;
+  z-index: 2;
 }
 
 .spotlight img {
@@ -124,6 +129,8 @@ header {
   max-width: 900px;
   margin: auto;
   padding: 60px 20px;
+  position: relative;
+  z-index: 2;
 }
 
 .artist {
@@ -148,6 +155,8 @@ header {
   background: rgba(0,0,0,0.8);
   padding: 25px;
   border-radius: 12px;
+  position: relative;
+  z-index: 2;
 }
 
 .form-section input,
@@ -175,8 +184,11 @@ header {
 
 <header>MSP 790 PAYBACK MUSIC</header>
 
-<div class="hero">
+<!-- ✅ PILLARS (NOW FULL HEIGHT AT TOP) -->
+<img src="assets/pillar-left.png" class="pillar-left">
+<img src="assets/pillar-right.png" class="pillar-right">
 
+<div class="hero">
   <div class="top-role">CEO OG StarMoney</div>
 
   <h1>MSP 790 PAYBACK MUSIC</h1>
@@ -185,12 +197,6 @@ header {
   <div class="sub">Uptown Boogie Down Bronx New York Finest</div>
 
   <div class="bottom-role">CFO K-Money</div>
-
-</div>
-
-<div class="pillar-section">
-  <img src="assets/pillar-left.png" class="pillar-left">
-  <img src="assets/pillar-right.png" class="pillar-right">
 </div>
 
 <div class="spotlight">
