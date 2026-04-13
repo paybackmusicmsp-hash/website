@@ -130,10 +130,6 @@ body {
   z-index: 2;
 }
 
-.music-player audio {
-  width: 100%;
-}
-
 /* TEAM */
 .section {
   max-width: 900px;
@@ -221,7 +217,7 @@ body {
 <!-- MUSIC PLAYER -->
 <div class="music-player">
   <h2>Now Playing</h2>
-  <audio id="bg-music" autoplay muted loop playsinline>
+  <audio id="bg-music" loop playsinline>
     <source src="assets/song.mp3" type="audio/mpeg">
   </audio>
 </div>
@@ -258,11 +254,19 @@ body {
 <script>
 const audio = document.getElementById("bg-music");
 
-// Unmute on first user interaction (required by browsers)
-document.addEventListener("click", () => {
-  audio.muted = false;
-  audio.play();
-}, { once: true });
+// Try autoplay immediately
+window.addEventListener("load", () => {
+  audio.play().catch(() => {
+    console.log("Autoplay blocked, waiting for interaction");
+  });
+});
+
+// Force play on ANY interaction
+["click", "scroll", "keydown", "touchstart"].forEach(event => {
+  document.addEventListener(event, () => {
+    audio.play();
+  }, { once: true });
+});
 </script>
 
 </body>
