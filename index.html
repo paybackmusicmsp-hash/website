@@ -15,6 +15,63 @@ body {
   background: url('assets/Untitled(5).png') center/cover fixed;
 }
 
+/* ENTER SCREEN */
+.enter-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  cursor: pointer;
+  transition: opacity 0.8s ease;
+}
+
+.enter-screen.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.enter-screen h1 {
+  font-family: 'Bebas Neue';
+  font-size: 3rem;
+  letter-spacing: 3px;
+  position: relative;
+  color: white;
+}
+
+/* GLITCH EFFECT */
+.enter-screen h1::before,
+.enter-screen h1::after {
+  content: "ENTER SITE";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  color: red;
+  opacity: 0.7;
+  clip-path: inset(0 0 50% 0);
+  animation: glitch 1s infinite;
+}
+
+.enter-screen h1::after {
+  color: cyan;
+  clip-path: inset(50% 0 0 0);
+}
+
+@keyframes glitch {
+  0% { transform: translate(0,0); }
+  20% { transform: translate(-2px,2px); }
+  40% { transform: translate(2px,-2px); }
+  60% { transform: translate(-1px,1px); }
+  80% { transform: translate(1px,-1px); }
+  100% { transform: translate(0,0); }
+}
+
 /* HERO */
 .hero {
   height: 100vh;
@@ -193,6 +250,16 @@ body {
 
 <body>
 
+<!-- ENTER SCREEN -->
+<div class="enter-screen" id="enterScreen">
+  <h1>ENTER SITE</h1>
+</div>
+
+<!-- AUDIO -->
+<audio id="bg-music" loop>
+  <source src="assets/song.mp3" type="audio/mpeg">
+</audio>
+
 <!-- PILLARS -->
 <img src="assets/pillar-left.png" class="pillar-left">
 <img src="assets/pillar-right.png" class="pillar-right">
@@ -217,7 +284,7 @@ body {
 <!-- MUSIC PLAYER -->
 <div class="music-player">
   <h2>Now Playing</h2>
-  <audio id="bg-music" loop>
+  <audio controls>
     <source src="assets/song.mp3" type="audio/mpeg">
   </audio>
 </div>
@@ -252,17 +319,16 @@ body {
 </div>
 
 <script>
+const enterScreen = document.getElementById("enterScreen");
 const audio = document.getElementById("bg-music");
 
-// Try to autoplay on load
-window.addEventListener("load", () => {
-  audio.play().catch(() => {});
-});
-
-// Guaranteed fallback (first interaction)
-document.addEventListener("click", () => {
+enterScreen.addEventListener("click", () => {
   audio.play();
-}, { once: true });
+  enterScreen.classList.add("fade-out");
+  setTimeout(() => {
+    enterScreen.style.display = "none";
+  }, 800);
+});
 </script>
 
 </body>
