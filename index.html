@@ -31,6 +31,7 @@ header {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  text-align: center;
 }
 
 .hero h1 {
@@ -48,6 +49,28 @@ header {
   margin-top: 6px;
   font-size: 1.4rem;
   font-weight: 700;
+}
+
+/* NEW: CEO/CFO text (ONLY change) */
+.hero .top-role,
+.hero .bottom-role {
+  font-family: 'Bebas Neue';
+  font-size: 2rem;
+  letter-spacing: 2px;
+  text-shadow:
+    0 0 5px red,
+    0 0 15px red,
+    0 0 25px red;
+  background: rgba(0,0,0,0.55);
+  padding: 6px 14px;
+}
+
+.hero .top-role {
+  margin-bottom: 10px;
+}
+
+.hero .bottom-role {
+  margin-top: 10px;
 }
 
 /* PILLAR SECTION */
@@ -79,31 +102,6 @@ header {
 
 @keyframes slideInLeft {
   to { left: 0; }
-}
-
-.pillar-text-top,
-.pillar-text-bottom {
-  position: absolute;
-  width: 100%;
-  text-align: center;
-  font-family: 'Bebas Neue';
-  font-size: 2rem;
-  letter-spacing: 2px;
-  color: #fff;
-  text-shadow:
-    0 0 5px red,
-    0 0 15px red,
-    0 0 25px red;
-  background: rgba(0,0,0,0.55);
-  padding: 10px 0;
-}
-
-.pillar-text-top {
-  top: 20px;
-}
-
-.pillar-text-bottom {
-  bottom: 20px;
 }
 
 /* SPOTLIGHT */
@@ -178,15 +176,19 @@ header {
 <header>MSP 790 PAYBACK MUSIC</header>
 
 <div class="hero">
+
+  <div class="top-role">CEO OG StarMoney</div>
+
   <h1>MSP 790 PAYBACK MUSIC</h1>
+
   <div class="mid">183rd Davidson</div>
   <div class="sub">Uptown Boogie Down Bronx New York Finest</div>
+
+  <div class="bottom-role">CFO K-Money</div>
+
 </div>
 
 <div class="pillar-section">
-  <div class="pillar-text-top">CEO OG StarMoney</div>
-  <div class="pillar-text-bottom">CFO K-Money</div>
-
   <img src="assets/pillar-left.png" class="pillar-left">
   <img src="assets/pillar-right.png" class="pillar-right">
 </div>
