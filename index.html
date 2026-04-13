@@ -147,6 +147,22 @@ body {
   border-radius: 10px;
 }
 
+/* MUSIC PLAYER */
+.music-player {
+  max-width: 600px;
+  margin: 40px auto;
+  background: rgba(0,0,0,0.8);
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.music-player audio {
+  width: 100%;
+}
+
 /* FORM */
 .form-section {
   max-width: 600px;
@@ -200,6 +216,15 @@ body {
 <!-- LOYALTY SECTION -->
 <div class="loyalty-section">
   <h2>Loyalty is everything, Death Before Dishonor</h2>
+</div>
+
+<!-- MUSIC PLAYER -->
+<div class="music-player">
+  <h2>Now Playing</h2>
+  <audio controls>
+    <source src="assets/song.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
 </div>
 
 <!-- TEAM -->
