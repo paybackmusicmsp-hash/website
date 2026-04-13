@@ -13,68 +13,80 @@ body {
   font-family: 'Inter', sans-serif;
   color: #fff;
   background: url('assets/image1.jpg') center/cover fixed;
-  overflow-x: hidden;
 }
 
-/* PILLAR SCENE */
-.pillar-scene {
-  position: relative;
+/* HEADER */
+header {
+  position: fixed;
+  width: 100%;
+  text-align: center;
+  padding: 10px;
+  font-family: 'Bebas Neue';
+  background: rgba(0,0,0,0.6);
+  z-index: 1000;
+}
+
+/* HERO */
+.hero {
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 }
 
-.scene-center {
-  text-align: center;
-  z-index: 2;
-}
-
-.scene-center h1 {
+.hero h1 {
   font-family: 'Bebas Neue';
   font-size: 4rem;
-  text-shadow: 0 0 20px rgba(128,0,0,0.8);
+  text-shadow: 0 0 20px rgba(128,0,0,0.9);
+  background: rgba(0,0,0,0.5);
+  padding: 10px 20px;
+  border-radius: 8px;
 }
 
-.scene-center .mid {
+.hero .mid {
+  margin-top: 10px;
   font-size: 1.2rem;
-  margin-top: 8px;
-  letter-spacing: 0.1em;
+  letter-spacing: 2px;
+  background: rgba(0,0,0,0.5);
+  padding: 5px 15px;
+  border-radius: 6px;
 }
 
-.scene-center .subtitle {
+.hero .sub {
   margin-top: 6px;
   font-size: 1.4rem;
+  letter-spacing: 2px;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  background: rgba(0,0,0,0.5);
+  padding: 6px 15px;
+  border-radius: 6px;
 }
 
-/* SIDE ARTISTS */
-.pillar-left,
+/* PILLAR SECTION */
+.pillar-section {
+  position: relative;
+  height: 500px;
+}
+
 .pillar-right {
   position: absolute;
-  bottom: 0;
-}
-
-/* 🔥 START OFF SCREEN */
-.pillar-right {
   right: -300px;
-  animation: slideInRight 1s ease forwards;
+  top: 0;
+  height: 100%;
+  animation: slideInRight 1.2s ease forwards;
 }
 
 .pillar-left {
+  position: absolute;
   left: -300px;
-  animation: slideInLeft 1s ease forwards;
+  top: 0;
+  height: 100%;
+  opacity: 0.3;
+  animation: slideInLeft 1.2s ease forwards;
 }
 
-/* IMAGE SIZE */
-.pillar-left img,
-.pillar-right img {
-  height: 90vh;
-  object-fit: contain;
-}
-
-/* 🔥 ANIMATIONS */
+/* SLIDE ANIMATIONS */
 @keyframes slideInRight {
   to {
     right: 0;
@@ -87,16 +99,69 @@ body {
   }
 }
 
-/* MAIN CONTENT */
-.main {
+/* TOP / BOTTOM TEXT (POP) */
+.pillar-text-top,
+.pillar-text-bottom {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  font-family: 'Bebas Neue';
+  font-size: 2rem;
+  letter-spacing: 2px;
+  color: #fff;
+  text-shadow: 0 0 10px red, 0 0 20px red;
+  background: rgba(0,0,0,0.5);
+  padding: 8px;
+}
+
+.pillar-text-top {
+  top: 20px;
+}
+
+.pillar-text-bottom {
+  bottom: 20px;
+}
+
+/* SPOTLIGHT */
+.spotlight {
+  max-width: 700px;
+  margin: 40px auto;
+  background: rgba(0,0,0,0.75);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+}
+
+.spotlight img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.spotlight h2,
+.spotlight .tagline,
+.spotlight .description {
+  background: rgba(0,0,0,0.5);
+  padding: 6px 10px;
+  border-radius: 6px;
+  display: inline-block;
+}
+
+.spotlight .description {
+  display: block;
+}
+
+/* TEAM */
+.section {
   max-width: 900px;
   margin: auto;
   padding: 60px 20px;
 }
 
-/* ARTISTS */
 .artist {
-  margin-top: 30px;
+  background: #111;
+  padding: 20px;
+  border-radius: 12px;
+  margin-top: 20px;
   text-align: center;
 }
 
@@ -107,66 +172,78 @@ body {
   border-radius: 10px;
 }
 
-h2 {
-  font-family: 'Bebas Neue';
-  margin-top: 40px;
-}
-
 /* FORM */
 .form-section {
-  margin-top: 60px;
+  max-width: 600px;
+  margin: 60px auto;
+  background: rgba(0,0,0,0.8);
+  padding: 25px;
+  border-radius: 12px;
 }
 
-input, textarea {
+.form-section input,
+.form-section textarea {
   width: 100%;
   padding: 12px;
-  margin-top: 10px;
-  border-radius: 6px;
+  margin: 10px 0;
   border: none;
+  border-radius: 6px;
 }
 
-button {
-  margin-top: 15px;
+.form-section button {
+  width: 100%;
   padding: 12px;
   background: #800000;
+  color: white;
   border: none;
-  color: #fff;
-  border-radius: 8px;
-}
-
-/* MOBILE */
-@media (max-width: 900px) {
-  .pillar-left,
-  .pillar-right {
-    display: none;
-  }
+  border-radius: 6px;
+  cursor: pointer;
 }
 </style>
 </head>
 
 <body>
 
-<div class="pillar-scene">
+<header>MSP 790 PAYBACK MUSIC</header>
 
-  <div class="pillar-left">
-    <!-- placeholder -->
-    <!-- <img src="assets/LEFT-ARTIST.png"> -->
-  </div>
+<!-- HERO -->
+<div class="hero">
+  <h1>MSP 790 PAYBACK MUSIC</h1>
+  <div class="mid">183rd Davidson</div>
+  <div class="sub">Uptown Boogie Down Bronx New York Finest</div>
+</div>
 
-  <div class="pillar-right">
-    <img src="assets/RIGHT-ARTIST.png">
-  </div>
+<!-- PILLAR SECTION -->
+<div class="pillar-section">
 
-  <div class="scene-center">
-    <h1>MSP 790 PAYBACK MUSIC</h1>
-    <div class="mid">183rd Davidson</div>
-    <div class="subtitle">Uptown Boogie Down Bronx New York Finest</div>
-  </div>
+  <div class="pillar-text-top">CEO OG StarMoney</div>
+  <div class="pillar-text-bottom">CFO K-Money</div>
+
+  <img src="assets/pillar-left.png" class="pillar-left">
+  <img src="assets/pillar-right.png" class="pillar-right">
 
 </div>
 
-<div class="main">
+<!-- SPOTLIGHT -->
+<div class="spotlight">
+  <h2>Pictured: OG StarMoney</h2>
+  <img src="assets/hero.jpg">
 
+  <div class="tagline">
+    From 183rd and Davidson to everywhere.
+  </div>
+
+  <div class="description">
+    We are a collective of artists shaped by experience, loyalty, and ambition.
+    Every track, every visual, every move reflects the life we live and the future we’re building.
+    <br><br>
+    This is more than music.<br>
+    This is a statement.
+  </div>
+</div>
+
+<!-- TEAM -->
+<div class="section">
   <h2>Meet the Artists</h2>
 
   <div class="artist">
@@ -180,18 +257,18 @@ button {
     <h3>K-Money</h3>
     <p>General Consultant, Singer, Photographer & Videographer, CFO.</p>
   </div>
+</div>
 
-  <div class="form-section">
-    <h2>Join MSP</h2>
+<!-- FORM -->
+<div class="form-section">
+  <h2>Join MSP</h2>
 
-    <input type="text" placeholder="Name">
-    <input type="email" placeholder="Email">
-    <input type="text" placeholder="Artist Name">
-    <textarea rows="4" placeholder="Tell us about yourself"></textarea>
+  <input type="text" placeholder="Name">
+  <input type="email" placeholder="Email">
+  <input type="text" placeholder="Artist Name">
+  <textarea rows="4" placeholder="Tell us about yourself"></textarea>
 
-    <button>Submit</button>
-  </div>
-
+  <button>Submit</button>
 </div>
 
 </body>
