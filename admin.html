@@ -1,108 +1,94 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Admin</title>
+<title>Dashboard</title>
 
 <style>
-body{background:black;color:white;font-family:Arial}
-.header{background:#800000;padding:15px;text-align:center}
-.dashboard{display:flex}
-
-.sidebar{width:250px;background:#111;padding:15px}
-.service{padding:8px;background:#222;margin:5px 0;cursor:pointer}
-.service.active{background:#800000}
-
-.main{flex:1;padding:20px}
-
-.tabs button{margin:5px;padding:8px;background:#222;color:white;border:none}
-.tabs .active{background:#800000}
-
-.card{
-  background:#1a1a1a;
-  padding:10px;
-  margin:10px 0;
-  border-left:4px solid red;
-  animation:fade .4s;
-}
-
+body{background:#0a0a0a;color:white;font-family:Arial}
+.header{padding:15px;background:#111}
+.card{background:#111;padding:15px;margin:10px;border-radius:10px}
 .status.pending{color:gold}
 .status.accepted{color:lime}
 .status.declined{color:red}
-
-@keyframes fade{from{opacity:0}to{opacity:1}}
 </style>
 </head>
 
 <body>
 
-<div class="header">MSP 790 Dashboard</div>
-
-<div class="dashboard">
-
-<div class="sidebar">
-<div class="service active" onclick="filter('all')">All</div>
-<div class="service" onclick="filter('Video Editing')">Video Editing</div>
-<div class="service" onclick="filter('Video Production')">Video Production</div>
-<div class="service" onclick="filter('Video Filming')">Video Filming</div>
-<div class="service" onclick="filter('Audio Production')">Audio</div>
-<div class="service" onclick="filter('Dance Lessons')">Dance</div>
-<div class="service" onclick="filter('Website Creation')">Web</div>
-</div>
-
-<div class="main">
-
-<div class="tabs">
-<button onclick="tab('all')" class="active">All</button>
-<button onclick="tab('pending')">Pending</button>
-<button onclick="tab('accepted')">Accepted</button>
-<button onclick="tab('declined')">Declined</button>
+<div class="header">
+Dashboard | <button onclick="logout()">Logout</button>
 </div>
 
 <div id="list"></div>
 
-</div>
-</div>
-
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
 <script>
-firebase.initializeApp({apiKey:"AIzaSy...",projectId:"booking-8bc2d"});
-const db=firebase.firestore();
-
-let data=[],filt="all",tabState="all";
-
-function filter(s){filt=s;render()}
-function tab(t){tabState=t;render()}
-
-db.collection("bookings").onSnapshot(s=>{
-  data=[];
-  s.forEach(d=>data.push({id:d.id,...d.data()}));
-  render();
+firebase.initializeApp({
+  apiKey:"AIzaSy...",
+  authDomain:"booking-8bc2d.firebaseapp.com",
+  projectId:"booking-8bc2d"
 });
 
-function render(){
-  let html="";
-  data.forEach(d=>{
-    if(filt!="all"&&d.service!=filt)return;
-    if(tabState!="all"&&d.status!=tabState)return;
+const db = firebase.firestore();
 
-    html+=`
+// 🔐 PROTECT PAGE
+firebase.auth().onAuthStateChanged(user=>{
+  if(!user) location="login.html";
+});
+
+// LOAD BOOKINGS
+db.collection("bookings").onSnapshot(s=>{
+  list.innerHTML="";
+  s.forEach(doc=>{
+    let d=doc.data();
+
+    list.innerHTML+=`
     <div class="card">
-    <h3>${d.name}</h3>
-    <p>${d.service}</p>
-    <p>${d.date}</p>
-    <div class="status ${d.status}">${d.status}</div>
+      <h3>${d.name}</h3>
+      <p>${d.service}</p>
+      <p>${d.date}</p>
 
-    <button onclick="acc('${d.id}')">Accept</button>
-    <button onclick="dec('${d.id}')">Decline</button>
+      <div class="status ${d.status}">${d.status}</div>
+
+      <button onclick="accept('${doc.id}', '${d.email}')">Accept</button>
+      <button onclick="decline('${doc.id}', '${d.email}')">Decline</button>
     </div>`;
   });
-  list.innerHTML=html;
+});
+
+// ACCEPT → EMAIL + TRACK
+function accept(id,email){
+  db.collection("bookings").doc(id).update({status:"accepted"});
+
+  sendEmail(email,"approved","Your booking is approved.");
 }
 
-function acc(id){db.collection("bookings").doc(id).update({status:"accepted"})}
-function dec(id){db.collection("bookings").doc(id).update({status:"declined"})}
+// DECLINE
+function decline(id,email){
+  db.collection("bookings").doc(id).update({status:"declined"});
+  sendEmail(email,"declined","Booking declined.");
+}
+
+// EMAIL (EmailJS)
+function sendEmail(to,type,message){
+  emailjs.send("YOUR_SERVICE","YOUR_TEMPLATE",{
+    to_email:to,
+    message:message
+  });
+}
+
+// LOGOUT
+function logout(){
+  firebase.auth().signOut();
+}
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script>
+emailjs.init("YOUR_PUBLIC_KEY");
 </script>
 
 </body>
