@@ -145,8 +145,25 @@ button {
 </div>
 
 <script>
-document.getElementById("bookingForm").addEventListener("submit", function() {
-  alert("Request sent. We’ll contact you within 24–48 hours.");
+const form = document.getElementById("bookingForm");
+
+form.addEventListener("submit", function(e) {
+  e.preventDefault(); // stop default submit
+
+  fetch(form.action, {
+    method: "POST",
+    body: new FormData(form),
+    headers: {
+      'Accept': 'application/json'
+    }
+  }).then(response => {
+    if (response.ok) {
+      alert("Request sent. We’ll contact you within 24–48 hours.");
+      form.reset();
+    } else {
+      alert("Something went wrong. Try again.");
+    }
+  });
 });
 </script>
 
