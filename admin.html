@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MSP 790 Admin</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  background: black;
+  color: white;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+}
+
+.card {
+  background: #111;
+  padding: 15px;
+  margin: 15px 0;
+  border-radius: 10px;
+}
+
+button {
+  margin: 5px;
+  padding: 8px 12px;
+  border: none;
+  cursor: pointer;
+}
+
+.accept { background: green; color: white; }
+.decline { background: red; color: white; }
+.status {
+  margin-top: 10px;
+  font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Admin Dashboard</h1>
+
+<div id="bookings"></div>
+
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+<script>
+// 🔐 SIMPLE PASSWORD LOCK
+const pass = prompt("Enter admin password:");
+if (pass !== "msp790") {
+  document.body.innerHTML = "<h2 style='text-align:center;'>Access Denied</h2>";
+}
+
+// 🔥 YOUR FIREBASE CONFIG
+const firebaseConfig = {
+  apiKey: "AIzaSyC1pKUto9-16yt6jcYxzyPOfF4VBWeAit4",
+  authDomain: "booking-8bc2d.firebaseapp.com",
+  projectId: "booking-8bc2d"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+// 🔄 LOAD BOOKINGS LIVE
+db.collection("bookings").orderBy("created", "desc").onSnapshot(snapshot => {
+  const container = document.getElementById("bookings");
+  container.innerHTML = "";
+
+  snapshot.forEach(doc => {
+    const data = doc.data();
+
+    container.innerHTML += `
+      <div class="card">
+        <h3>${data.name}</h3>
+        <p><strong>Service:</strong> ${data.service}</p>
+        <p><strong>Date:</strong> ${data.date}</p>
+        <p><strong>Time:</strong> ${data.time}</p>
+        <p><strong>Email:</strong> ${data.email}</p>
+        <p><strong>Details:</strong> ${data.details}</p>
+
+        <div class="status">Status: ${data.status}</div>
+
+        <button class="accept" onclick="updateStatus('${doc.id}','accepted')">Accept</button>
+        <button class="decline" onclick="updateStatus('${doc.id}','declined')">Decline</button>
+        <a href="mailto:${data.email}">
+          <button>Email</button>
+        </a>
+      </div>
+    `;
+  });
+});
+
+// ✅ UPDATE STATUS
+function updateStatus(id, status) {
+  db.collection("bookings").doc(id).update({ status });
+}
+</script>
+
+</body>
+</html>
