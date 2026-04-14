@@ -1,237 +1,108 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>MSP 790 Admin Dashboard</title>
+<title>Admin</title>
 
 <style>
-body {
-  margin: 0;
-  font-family: Arial;
-  background: black;
-  color: white;
+body{background:black;color:white;font-family:Arial}
+.header{background:#800000;padding:15px;text-align:center}
+.dashboard{display:flex}
+
+.sidebar{width:250px;background:#111;padding:15px}
+.service{padding:8px;background:#222;margin:5px 0;cursor:pointer}
+.service.active{background:#800000}
+
+.main{flex:1;padding:20px}
+
+.tabs button{margin:5px;padding:8px;background:#222;color:white;border:none}
+.tabs .active{background:#800000}
+
+.card{
+  background:#1a1a1a;
+  padding:10px;
+  margin:10px 0;
+  border-left:4px solid red;
+  animation:fade .4s;
 }
 
-/* HEADER */
-.header {
-  background: #800000;
-  padding: 20px;
-  text-align: center;
-  font-size: 1.8rem;
-  font-weight: bold;
-}
+.status.pending{color:gold}
+.status.accepted{color:lime}
+.status.declined{color:red}
 
-/* DASHBOARD GRID */
-.dashboard {
-  display: grid;
-  grid-template-columns: 1fr 3fr;
-  gap: 20px;
-  padding: 20px;
-}
-
-/* SIDEBAR */
-.sidebar {
-  background: #111;
-  padding: 20px;
-  border-radius: 10px;
-}
-
-.sidebar h3 {
-  margin-top: 0;
-}
-
-.service {
-  margin: 8px 0;
-  padding: 8px;
-  background: #222;
-  border-radius: 6px;
-}
-
-/* MAIN PANEL */
-.main {
-  background: #111;
-  padding: 20px;
-  border-radius: 10px;
-}
-
-/* STATS */
-.stats {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.stat {
-  flex: 1;
-  background: #222;
-  padding: 15px;
-  text-align: center;
-  border-radius: 8px;
-}
-
-/* BOOKING CARD */
-.card {
-  background: #1a1a1a;
-  padding: 15px;
-  margin-top: 15px;
-  border-radius: 10px;
-  border-left: 4px solid #800000;
-}
-
-.card h3 {
-  margin: 0;
-}
-
-.status {
-  font-size: 0.9rem;
-  margin-top: 5px;
-  color: #aaa;
-}
-
-select, button {
-  margin-top: 10px;
-  padding: 8px;
-}
-
-button {
-  background: #800000;
-  color: white;
-  border: none;
-  cursor: pointer;
-  margin-right: 5px;
-}
-
-button:hover {
-  opacity: 0.8;
-}
+@keyframes fade{from{opacity:0}to{opacity:1}}
 </style>
 </head>
 
 <body>
 
-<div class="header">
-MSP 790 Admin Dashboard
-</div>
+<div class="header">MSP 790 Dashboard</div>
 
 <div class="dashboard">
 
-<!-- SIDEBAR -->
 <div class="sidebar">
-  <h3>Services</h3>
-
-  <div class="service">🎬 Video Editing</div>
-  <div class="service">🎥 Video Production</div>
-  <div class="service">📹 Video Filming</div>
-  <div class="service">🎧 Audio Production</div>
-  <div class="service">💃 Dance Lessons</div>
-  <div class="service">💻 Website Creation</div>
-
-  <hr>
-
-  <h3>Business Info</h3>
-  <p>Hours:</p>
-  <p>Mon–Fri<br>2PM – 7PM</p>
-
-  <p style="color:red;">Deposit required after approval</p>
+<div class="service active" onclick="filter('all')">All</div>
+<div class="service" onclick="filter('Video Editing')">Video Editing</div>
+<div class="service" onclick="filter('Video Production')">Video Production</div>
+<div class="service" onclick="filter('Video Filming')">Video Filming</div>
+<div class="service" onclick="filter('Audio Production')">Audio</div>
+<div class="service" onclick="filter('Dance Lessons')">Dance</div>
+<div class="service" onclick="filter('Website Creation')">Web</div>
 </div>
 
-<!-- MAIN -->
 <div class="main">
 
-  <!-- STATS -->
-  <div class="stats">
-    <div class="stat">
-      <h2 id="total">0</h2>
-      <p>Total Requests</p>
-    </div>
-    <div class="stat">
-      <h2 id="pending">0</h2>
-      <p>Pending</p>
-    </div>
-    <div class="stat">
-      <h2 id="accepted">0</h2>
-      <p>Accepted</p>
-    </div>
-  </div>
-
-  <h2>Bookings</h2>
-  <div id="list"></div>
-
+<div class="tabs">
+<button onclick="tab('all')" class="active">All</button>
+<button onclick="tab('pending')">Pending</button>
+<button onclick="tab('accepted')">Accepted</button>
+<button onclick="tab('declined')">Declined</button>
 </div>
 
+<div id="list"></div>
+
+</div>
 </div>
 
-<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
 <script>
-firebase.initializeApp({
-  apiKey: "AIzaSyC1pKUto9-16yt6jcYxzyPOfF4VBWeAit4",
-  authDomain: "booking-8bc2d.firebaseapp.com",
-  projectId: "booking-8bc2d"
+firebase.initializeApp({apiKey:"AIzaSy...",projectId:"booking-8bc2d"});
+const db=firebase.firestore();
+
+let data=[],filt="all",tabState="all";
+
+function filter(s){filt=s;render()}
+function tab(t){tabState=t;render()}
+
+db.collection("bookings").onSnapshot(s=>{
+  data=[];
+  s.forEach(d=>data.push({id:d.id,...d.data()}));
+  render();
 });
 
-const db = firebase.firestore();
+function render(){
+  let html="";
+  data.forEach(d=>{
+    if(filt!="all"&&d.service!=filt)return;
+    if(tabState!="all"&&d.status!=tabState)return;
 
-db.collection("bookings").orderBy("created","desc").onSnapshot(snap => {
+    html+=`
+    <div class="card">
+    <h3>${d.name}</h3>
+    <p>${d.service}</p>
+    <p>${d.date}</p>
+    <div class="status ${d.status}">${d.status}</div>
 
-  const list = document.getElementById("list");
-  list.innerHTML = "";
-
-  let total = 0, pending = 0, accepted = 0;
-
-  snap.forEach(doc => {
-    const d = doc.data();
-    total++;
-
-    if (d.status === "pending") pending++;
-    if (d.status === "accepted") accepted++;
-
-    list.innerHTML += `
-      <div class="card">
-        <h3>${d.name}</h3>
-        <p>${d.service}</p>
-        <p>${d.date} @ ${d.time}</p>
-        <p>${d.details}</p>
-
-        <div class="status">Status: ${d.status}</div>
-
-        <select id="r-${doc.id}">
-          <option>Scheduling conflict</option>
-          <option>Not a good fit</option>
-          <option>Incomplete info</option>
-          <option>Outside scope</option>
-        </select>
-
-        <br>
-
-        <button onclick="accept('${doc.id}','${d.email}')">Accept</button>
-        <button onclick="decline('${doc.id}','${d.email}')">Decline</button>
-        <button onclick="emailClient('${d.email}')">Email</button>
-      </div>
-    `;
+    <button onclick="acc('${d.id}')">Accept</button>
+    <button onclick="dec('${d.id}')">Decline</button>
+    </div>`;
   });
-
-  document.getElementById("total").innerText = total;
-  document.getElementById("pending").innerText = pending;
-  document.getElementById("accepted").innerText = accepted;
-});
-
-function accept(id,email){
-  db.collection("bookings").doc(id).update({status:"accepted"});
-  window.location.href = `mailto:${email}?subject=Booking Approved&body=Your booking has been approved. Proceed to payment.`;
+  list.innerHTML=html;
 }
 
-function decline(id,email){
-  const reason = document.getElementById("r-"+id).value;
-  db.collection("bookings").doc(id).update({status:"declined",reason});
-  window.location.href = `mailto:${email}?subject=Booking Update&body=Booking declined: ${reason}`;
-}
-
-function emailClient(email){
-  window.location.href = `mailto:${email}`;
-}
+function acc(id){db.collection("bookings").doc(id).update({status:"accepted"})}
+function dec(id){db.collection("bookings").doc(id).update({status:"declined"})}
 </script>
 
 </body>
