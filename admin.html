@@ -37,11 +37,17 @@ firebase.initializeApp({
 const db = firebase.firestore();
 
 // 🔐 THIS FIXES YOUR LOOP ISSUE
-firebase.auth().onAuthStateChanged(user=>{
-  if(!user){
-    window.location.href="login.html";
-  } else {
+firebase.auth().onAuthStateChanged(user => {
+  if (user) {
+    console.log("Logged in:", user.email);
     loadBookings();
+  } else {
+    console.log("Not logged in");
+    setTimeout(() => {
+      if (!firebase.auth().currentUser) {
+        window.location.href = "login.html";
+      }
+    }, 500); // gives Firebase time to restore session
   }
 });
 
