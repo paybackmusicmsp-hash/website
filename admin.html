@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Admin</title>
+<title>Admin Dashboard</title>
+
 <style>
 body { background:black; color:white; font-family:Arial; padding:20px; }
-.card { background:#111; padding:15px; margin:10px 0; }
-button { margin:5px; }
+.card { background:#111; padding:15px; margin:10px 0; border-radius:8px; }
+button { margin:5px; padding:8px; }
+select { margin-top:10px; }
 </style>
 </head>
 
 <body>
 
-<h1>Dashboard</h1>
+<h1>Booking Dashboard</h1>
 <div id="list"></div>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -19,7 +21,7 @@ button { margin:5px; }
 
 <script>
 firebase.initializeApp({
-  apiKey: "AIzaSy...",
+  apiKey: "AIzaSyC1pKUto9-16yt6jcYxzyPOfF4VBWeAit4",
   authDomain: "booking-8bc2d.firebaseapp.com",
   projectId: "booking-8bc2d"
 });
@@ -37,13 +39,17 @@ db.collection("bookings").orderBy("created","desc").onSnapshot(snap => {
       <div class="card">
         <h3>${d.name}</h3>
         <p>${d.service}</p>
-        <p>${d.date} ${d.time}</p>
+        <p>${d.date} @ ${d.time}</p>
+        <p>Status: ${d.status}</p>
 
         <select id="r-${doc.id}">
           <option>Scheduling conflict</option>
           <option>Not a good fit</option>
           <option>Incomplete info</option>
+          <option>Outside scope</option>
         </select>
+
+        <br>
 
         <button onclick="accept('${doc.id}','${d.email}')">Accept</button>
         <button onclick="decline('${doc.id}','${d.email}')">Decline</button>
@@ -54,13 +60,13 @@ db.collection("bookings").orderBy("created","desc").onSnapshot(snap => {
 
 function accept(id,email){
   db.collection("bookings").doc(id).update({status:"accepted"});
-  window.location.href = `mailto:${email}?subject=Approved&body=Your booking is approved. Proceed to payment.`;
+  window.location.href = `mailto:${email}?subject=Booking Approved&body=Your booking has been approved. Proceed to payment.`;
 }
 
 function decline(id,email){
   const reason = document.getElementById("r-"+id).value;
   db.collection("bookings").doc(id).update({status:"declined",reason});
-  window.location.href = `mailto:${email}?subject=Update&body=Booking declined: ${reason}`;
+  window.location.href = `mailto:${email}?subject=Booking Update&body=Booking declined: ${reason}`;
 }
 </script>
 
