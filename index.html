@@ -15,14 +15,10 @@ body {
   font-family: 'Inter', sans-serif;
   color: #fff;
   background: url('assets/Untitled(5).png') center/cover fixed;
-  opacity: 0;
-  transition: opacity 0.6s ease;
   isolation: isolate;
 }
 
-body.active { opacity: 1; }
-
-/* ENTER SCREEN (FIXED ONLY) */
+/* ENTER SCREEN */
 .enter-screen {
   position: fixed;
   inset: 0;
@@ -60,7 +56,6 @@ body.active { opacity: 1; }
   animation: glitch2 1.2s infinite;
 }
 
-/* animations */
 @keyframes pulse {
   0%,100% { transform: scale(1); }
   50% { transform: scale(1.1); }
@@ -195,7 +190,7 @@ body.play-anim .pillar-right {
   border-radius: 10px;
 }
 
-/* SOCIAL ICONS (RESTORED) */
+/* SOCIAL ICONS */
 .artist-icons {
   margin-top: 10px;
 }
@@ -208,7 +203,7 @@ body.play-anim .pillar-right {
   color: red;
 }
 
-/* JOIN BUTTON (RESTORED) */
+/* JOIN BUTTON */
 .join-section {
   text-align: center;
   padding: 60px 20px;
@@ -276,11 +271,14 @@ body.play-anim .pillar-right {
 </div>
 
 <script>
-document.getElementById("enterScreen").onclick = () => {
-  document.getElementById("bg-music").play().catch(()=>{});
-  document.body.classList.add("active","play-anim");
-  document.getElementById("enterScreen").style.display = "none";
-};
+const enterScreen = document.getElementById("enterScreen");
+const audio = document.getElementById("bg-music");
+
+enterScreen.addEventListener("click", () => {
+  audio.play().catch(()=>{});
+  enterScreen.style.display = "none";
+  document.body.classList.add("play-anim");
+});
 </script>
 
 </body>
