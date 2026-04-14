@@ -1,26 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Payment</title>
+<title>Invoice</title>
+
 <style>
 body{background:black;color:white;text-align:center;padding:40px}
 .box{background:#111;padding:30px;border-radius:10px}
-.btn{display:block;margin:10px;padding:12px;background:#800000;color:white;text-decoration:none}
+.btn{display:block;margin:10px;padding:12px;background:#800000;color:white}
 </style>
 </head>
 
 <body>
 
 <div class="box">
-<h1>Deposit</h1>
-<p>$50–$100 required</p>
+<h1>Invoice</h1>
 
-<a class="btn" href="#">CashApp</a>
-<a class="btn" href="#">PayPal</a>
-<a class="btn" href="#">Zelle</a>
+<p id="invoice"></p>
+<p>Deposit Required</p>
 
-<p style="color:red;">Only pay after approval</p>
+<a class="btn" href="https://cash.app/$YourTag" target="_blank">CashApp</a>
+<a class="btn" href="https://paypal.me/yourname" target="_blank">PayPal</a>
+
 </div>
+
+<script>
+const id = new URLSearchParams(window.location.search).get("id");
+document.getElementById("invoice").innerText = "Invoice #" + id;
+</script>
 
 </body>
 </html>
