@@ -1,36 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Book MSP 790</title>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 <style>
-body {
-  margin: 0;
-  font-family: Arial;
-  background: black;
-  color: white;
-  text-align: center;
-  padding: 40px;
-}
-.container { max-width: 600px; margin: auto; }
+body { background:black; color:white; font-family:Arial; text-align:center; padding:40px; }
+.container { max-width:600px; margin:auto; }
 .box { background:#111; padding:15px; margin:10px 0; border-radius:8px; }
-input, select, textarea {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-}
-button {
-  width: 100%;
-  padding: 12px;
-  background:#800000;
-  color:white;
-  border:none;
-}
+input, select, textarea { width:100%; padding:10px; margin:10px 0; }
+button { width:100%; padding:12px; background:#800000; color:white; border:none; }
 </style>
 </head>
 
@@ -42,110 +24,83 @@ button {
 
 <div class="box">🎬 Video Editing</div>
 <div class="box">🎥 Directing</div>
-<div class="box">📹 Filming</div>
 <div class="box">🎧 Music Production</div>
-<div class="box">💃 Dance Lessons</div>
-<div class="box">💻 Website Creation</div>
 
-<div class="box">
-  <h3>Availability</h3>
-  Mon–Fri | 2PM–7PM
-</div>
-
-<div class="box">
-  <h3>Pricing</h3>
-  $75 – $300+ (varies)
-</div>
-
-<h2>Request Booking</h2>
+<div class="box">Mon–Fri | 2PM–7PM</div>
 
 <form id="bookingForm">
 
-<input type="text" name="name" placeholder="Name" required>
-<input type="email" name="email" placeholder="Email" required>
+<input name="name" placeholder="Name" required>
+<input name="email" type="email" placeholder="Email" required>
 
 <select name="service" required>
-<option value="">Select Service</option>
+<option value="">Service</option>
 <option>Video Editing</option>
 <option>Directing</option>
-<option>Filming</option>
 <option>Music Production</option>
-<option>Dance Lessons</option>
-<option>Website Creation</option>
 </select>
 
-<input type="text" id="calendar" placeholder="Pick a date" required>
-<p id="dateWarning" style="color:red; display:none;">Date is taken</p>
-
+<input id="calendar" placeholder="Pick date" required>
 <input type="time" name="time" min="14:00" max="19:00" required>
 
 <textarea name="details" placeholder="Details" required></textarea>
 
-<button type="submit">Submit</button>
+<button type="submit">Submit Request</button>
 
 </form>
 
 </div>
 
-<!-- FIREBASE (SAFE VERSION) -->
+<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
 <script>
-const firebaseConfig = {
-  apiKey: "AIzaSyC1pKUto9-16yt6jcYxzyPOfF4VBWeAit4",
+firebase.initializeApp({
+  apiKey: "AIzaSy...",
   authDomain: "booking-8bc2d.firebaseapp.com",
   projectId: "booking-8bc2d"
-};
-
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-
-// CALENDAR
-let bookedDates = [];
-
-flatpickr("#calendar", {
-  dateFormat: "Y-m-d",
-  disable: [
-    date => (date.getDay() === 0 || date.getDay() === 6),
-    function(date) {
-      const d = date.toISOString().split("T")[0];
-      return bookedDates.includes(d);
-    }
-  ],
-  onChange: (selected, dateStr) => {
-    document.getElementById("dateWarning").style.display =
-      bookedDates.includes(dateStr) ? "block" : "none";
-  }
 });
 
-// LOAD BOOKED DATES FROM FIREBASE
-db.collection("bookings").onSnapshot(snapshot => {
+const db = firebase.firestore();
+let bookedDates = [];
+
+// load booked dates
+db.collection("bookings").onSnapshot(snap => {
   bookedDates = [];
-  snapshot.forEach(doc => {
-    const data = doc.data();
-    if (data.status === "accepted") {
-      bookedDates.push(data.date);
+  snap.forEach(doc => {
+    if (doc.data().status === "accepted") {
+      bookedDates.push(doc.data().date);
     }
   });
 });
 
-// SUBMIT FORM
-document.getElementById("bookingForm").addEventListener("submit", async (e) => {
+// calendar
+flatpickr("#calendar", {
+  dateFormat: "Y-m-d",
+  disable: [
+    d => d.getDay() === 0 || d.getDay() === 6,
+    d => bookedDates.includes(d.toISOString().split("T")[0])
+  ]
+});
+
+// submit
+document.getElementById("bookingForm").addEventListener("submit", async e => {
   e.preventDefault();
-  const form = e.target;
+  const f = e.target;
 
   await db.collection("bookings").add({
-    name: form.name.value,
-    email: form.email.value,
-    service: form.service.value,
+    name: f.name.value,
+    email: f.email.value,
+    service: f.service.value,
     date: document.getElementById("calendar").value,
-    time: form.time.value,
-    details: form.details.value,
+    time: f.time.value,
+    details: f.details.value,
     status: "pending",
     created: new Date()
   });
 
+  alert("Request received.");
   window.location.href = "pay.html";
 });
 </script>
