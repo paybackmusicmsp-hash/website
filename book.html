@@ -1,157 +1,148 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Book MSP 790 Services</title>
+<title>Book MSP 790</title>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 <style>
 body {
-  margin: 0;
-  font-family: Arial;
-  background: black;
-  color: white;
-  text-align: center;
-  padding: 40px;
+  margin:0;
+  font-family:Arial;
+  background:black;
+  color:white;
+  text-align:center;
 }
+
 .container {
-  max-width: 600px;
-  margin: auto;
+  max-width:650px;
+  margin:auto;
+  padding:40px 20px 120px;
+  animation:fade 0.6s;
 }
+
+@keyframes fade {
+  from{opacity:0} to{opacity:1}
+}
+
 .box {
-  background: #111;
-  padding: 15px;
-  margin: 10px 0;
-  border-radius: 8px;
+  background:#111;
+  padding:15px;
+  margin:10px 0;
+  border-radius:10px;
+  transition:.3s;
 }
-input, textarea, select {
-  width: 100%;
-  padding: 12px;
-  margin: 10px 0;
+.box:hover { transform:scale(1.03); box-shadow:0 0 10px red; }
+
+input,select,textarea {
+  width:100%;
+  padding:12px;
+  margin:10px 0;
 }
+
 button {
-  width: 100%;
-  padding: 12px;
-  background: #800000;
-  color: white;
-  border: none;
+  width:100%;
+  padding:14px;
+  background:#800000;
+  color:white;
+  border:none;
 }
-.notice { color: red; }
 </style>
 </head>
 
 <body>
 
 <div class="container">
-
-<h1>Book Our Services</h1>
+<h1>Book Services</h1>
 
 <div class="box">🎬 Video Editing</div>
-<div class="box">🎥 Directing</div>
-<div class="box">📹 Filming</div>
-<div class="box">🎧 Music Production</div>
+<div class="box">🎥 Video Production</div>
+<div class="box">📹 Video Filming</div>
+<div class="box">🎧 Audio Production</div>
 <div class="box">💃 Dance Lessons</div>
 <div class="box">💻 Website Creation</div>
 
 <div class="box">
-<h3>Availability</h3>
 <p>Mon–Fri | 2PM–7PM</p>
+<p>$75–$300+</p>
 </div>
-
-<div class="box">
-<h3>Pricing</h3>
-<p>$75 – $300+ (varies per project)</p>
-</div>
-
-<p class="notice">Weekends closed. Red dates unavailable.</p>
 
 <form id="bookingForm">
 <input name="name" placeholder="Name" required>
-<input name="email" type="email" placeholder="Email" required>
+<input name="email" type="email" required>
 
 <select name="service" required>
-<option value="">Select Service</option>
+<option value="">Service</option>
 <option>Video Editing</option>
-<option>Directing</option>
-<option>Filming</option>
-<option>Music Production</option>
+<option>Video Production</option>
+<option>Video Filming</option>
+<option>Audio Production</option>
 <option>Dance Lessons</option>
 <option>Website Creation</option>
 </select>
 
-<input id="calendar" placeholder="Pick a date" required>
-<p id="dateWarning" style="display:none; color:red;">Date is taken</p>
-
+<input id="calendar" required>
 <input type="time" name="time" min="14:00" max="19:00" required>
 
-<textarea name="details" placeholder="Project details" required></textarea>
+<textarea name="details" required></textarea>
 
-<button type="submit">Submit Request</button>
+<button>Submit Request</button>
 </form>
-
-<p>We will respond within 24–48 hours.</p>
-
 </div>
 
-<!-- Firebase -->
+<footer style="background:#111;position:fixed;bottom:0;width:100%;padding:15px;">
+MSP 790 |
+<a href="#">CashApp</a> |
+<a href="#">PayPal</a> |
+<a href="#">Zelle</a>
+</footer>
+
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
 <script>
 firebase.initializeApp({
-  apiKey: "AIzaSyC1pKUto9-16yt6jcYxzyPOfF4VBWeAit4",
-  authDomain: "booking-8bc2d.firebaseapp.com",
-  projectId: "booking-8bc2d"
+  apiKey:"AIzaSy...",
+  projectId:"booking-8bc2d"
 });
+const db=firebase.firestore();
 
-const db = firebase.firestore();
-let bookedDates = [];
+let booked=[];
 
-// LIVE BOOKINGS
-db.collection("bookings").onSnapshot(snapshot => {
-  bookedDates = [];
-  snapshot.forEach(doc => {
-    if (doc.data().status === "accepted") {
-      bookedDates.push(doc.data().date);
-    }
+db.collection("bookings").onSnapshot(s=>{
+  booked=[];
+  s.forEach(d=>{
+    if(d.data().status==="accepted") booked.push(d.data().date);
   });
 });
 
-// CALENDAR
-flatpickr("#calendar", {
-  dateFormat: "Y-m-d",
-  disable: [
-    d => d.getDay() === 0 || d.getDay() === 6,
-    d => bookedDates.includes(d.toISOString().split("T")[0])
-  ],
-  onChange: (sel, str) => {
-    document.getElementById("dateWarning").style.display =
-      bookedDates.includes(str) ? "block" : "none";
-  }
+flatpickr("#calendar",{
+  dateFormat:"Y-m-d",
+  disable:[
+    d=>d.getDay()==0||d.getDay()==6,
+    d=>booked.includes(d.toISOString().split("T")[0])
+  ]
 });
 
-// SUBMIT
-document.getElementById("bookingForm").addEventListener("submit", async e => {
+document.getElementById("bookingForm").onsubmit=async e=>{
   e.preventDefault();
-  const f = e.target;
+  let f=e.target;
 
   await db.collection("bookings").add({
-    name: f.name.value,
-    email: f.email.value,
-    service: f.service.value,
-    date: document.getElementById("calendar").value,
-    time: f.time.value,
-    details: f.details.value,
-    status: "pending",
-    created: new Date()
+    name:f.name.value,
+    email:f.email.value,
+    service:f.service.value,
+    date:calendar.value,
+    time:f.time.value,
+    details:f.details.value,
+    status:"pending",
+    created:new Date()
   });
 
-  alert("Request received.");
-  window.location.href = "pay.html";
-});
+  alert("Request sent");
+  location="pay.html";
+};
 </script>
 
 </body>
