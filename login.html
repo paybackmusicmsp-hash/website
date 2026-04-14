@@ -29,14 +29,19 @@ firebase.initializeApp({
 });
 
 function login(){
- firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-.then(() => {
-  return firebase.auth().signInWithEmailAndPassword(email.value, pass.value);
-})
-.then(() => {
-  window.location.href = "admin.html";
-});
-  .catch(err=>alert(err.message));
+  firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+  .then(() => {
+    return firebase.auth().signInWithEmailAndPassword(
+      document.getElementById("email").value,
+      document.getElementById("pass").value
+    );
+  })
+  .then(() => {
+    window.location.href = "admin.html";
+  })
+  .catch(err => {
+    alert(err.message);
+  });
 }
 </script>
 
