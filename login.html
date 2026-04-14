@@ -29,10 +29,19 @@ firebase.initializeApp({
 });
 
 function login(){
-  firebase.auth().signInWithEmailAndPassword(email.value, pass.value)
-  .then(()=>{
-    window.location.href = "admin.html";
-  })
+ firebase.auth().onAuthStateChanged(user => {
+  if (user) {
+    console.log("Logged in:", user.email);
+    loadBookings();
+  } else {
+    console.log("Not logged in");
+    setTimeout(() => {
+      if (!firebase.auth().currentUser) {
+        window.location.href = "login.html";
+      }
+    }, 500); // gives Firebase time to restore session
+  }
+});
   .catch(err=>alert(err.message));
 }
 </script>
