@@ -20,7 +20,7 @@ body {
   margin: auto;
 }
 
-input, textarea {
+input, textarea, select {
   width: 100%;
   padding: 12px;
   margin: 10px 0;
@@ -32,13 +32,31 @@ button {
   background: #800000;
   color: white;
   border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background: red;
+}
+
+.services {
+  margin-top: 40px;
+  text-align: left;
+}
+
+.service {
+  background: #111;
+  padding: 15px;
+  margin-top: 15px;
+  border-radius: 8px;
 }
 </style>
-</head>
 
+</head>
 <body>
 
 <div class="container">
+
   <h1>Join The Movement</h1>
 
   <p>
@@ -50,14 +68,62 @@ button {
     Loyalty. Consistency. Vision.
   </p>
 
+  <!-- 🔥 NEW SERVICES SECTION -->
+  <div class="services">
+
+    <div class="service">
+      <h3>🎬 Video Editing</h3>
+      <p>Professional editing for music videos, promos, and cinematic content.</p>
+    </div>
+
+    <div class="service">
+      <h3>🎥 Directing</h3>
+      <p>Creative direction to bring your vision to life and elevate your visuals.</p>
+    </div>
+
+    <div class="service">
+      <h3>📹 Filming</h3>
+      <p>High-quality video shoots using professional equipment and techniques.</p>
+    </div>
+
+    <div class="service">
+      <h3>🎧 Music Production</h3>
+      <p>Recording, songwriting, mixing, and mastering.</p>
+    </div>
+
+    <div class="service">
+      <h3>💃 Dance Lessons</h3>
+      <p>Choreography, performance training, and stage presence coaching.</p>
+    </div>
+
+  </div>
+
+  <!-- 🔥 EXTRA TEXT -->
+  <h2 style="margin-top:40px; color:red;">Serious Inquiries Only</h2>
+  <p>We work with people ready to invest in their craft and take things to the next level.</p>
+
+  <!-- FORM -->
   <input type="text" placeholder="Name">
   <input type="email" placeholder="Email">
   <input type="text" placeholder="Artist Name">
+
+  <!-- 🔥 NEW DROPDOWN -->
+  <select>
+    <option>Select Service</option>
+    <option>Video Editing</option>
+    <option>Directing</option>
+    <option>Filming</option>
+    <option>Music Production</option>
+    <option>Dance Lessons</option>
+    <option>Multiple Services</option>
+  </select>
+
   <textarea placeholder="Tell us about yourself"></textarea>
 
   <button>Submit</button>
 
   <p>Or contact us directly: paybackmusic@example.com</p>
+
 </div>
 
 </body>
