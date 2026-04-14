@@ -18,10 +18,9 @@ body {
   opacity: 0;
   transition: opacity 0.6s ease;
 }
-
 body.active { opacity: 1; }
 
-/* ENTER SCREEN */
+/* ENTER SCREEN (RESTORED + GLITCH) */
 .enter-screen {
   position: fixed;
   width: 100%;
@@ -37,13 +36,46 @@ body.active { opacity: 1; }
 .enter-screen h1 {
   font-family: 'Bebas Neue';
   font-size: 3rem;
-  text-shadow: 0 0 15px red;
+  letter-spacing: 3px;
+  text-shadow: 0 0 10px red, 0 0 25px red;
   animation: pulse 2s infinite;
+  position: relative;
+}
+
+.enter-screen h1::before,
+.enter-screen h1::after {
+  content: "ENTER SITE";
+  position: absolute;
+  left: 0;
+  width: 100%;
+}
+
+.enter-screen h1::before {
+  color: red;
+  animation: glitch 1s infinite;
+}
+.enter-screen h1::after {
+  color: white;
+  animation: glitch2 1.2s infinite;
 }
 
 @keyframes pulse {
   0%,100% { transform: scale(1); }
   50% { transform: scale(1.1); }
+}
+@keyframes glitch {
+  0% { transform: translate(0); }
+  25% { transform: translate(-2px,2px); }
+  50% { transform: translate(2px,-2px); }
+  75% { transform: translate(-2px,-2px); }
+  100% { transform: translate(0); }
+}
+@keyframes glitch2 {
+  0% { transform: translate(0); }
+  25% { transform: translate(2px,-2px); }
+  50% { transform: translate(-2px,2px); }
+  75% { transform: translate(2px,2px); }
+  100% { transform: translate(0); }
 }
 
 /* HERO */
@@ -55,34 +87,65 @@ body.active { opacity: 1; }
   align-items: center;
   flex-direction: column;
   text-align: center;
+  z-index: 2;
 }
 
+/* TEXT GLOW RESTORED */
 .hero h1 {
   font-family: 'Bebas Neue';
   font-size: 4rem;
+  text-shadow: 0 0 20px rgba(128,0,0,0.8);
   background: rgba(0,0,0,0.5);
   padding: 8px 16px;
 }
 
-.hero div {
+.hero .top-role,
+.hero .bottom-role,
+.hero .mid,
+.hero .sub {
   background: rgba(0,0,0,0.5);
   padding: 6px 14px;
   margin-top: 8px;
 }
 
-/* PILLARS */
-.pillar-left, .pillar-right {
+.hero .sub {
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.hero .top-role,
+.hero .bottom-role {
+  font-family: 'Bebas Neue';
+  font-size: 2rem;
+  letter-spacing: 2px;
+  text-shadow:
+    0 0 5px red,
+    0 0 15px red,
+    0 0 25px red;
+}
+
+/* PILLARS (FIXED + NOT SQUASHED) */
+.pillar-left,
+.pillar-right {
   position: absolute;
   top: 40px;
-  height: 95%;
+  height: 95vh;
+  width: auto;
   max-width: 420px;
+  object-fit: contain;
+  z-index: 1;
 }
 
 .pillar-left { left: -380px; }
 .pillar-right { right: -380px; }
 
-body.play-anim .pillar-left { animation: slideInLeft 1.2s forwards; }
-body.play-anim .pillar-right { animation: slideInRight 1.2s forwards; }
+/* ANIMATION ONLY AFTER ENTER */
+body.play-anim .pillar-left {
+  animation: slideInLeft 1.2s ease forwards;
+}
+body.play-anim .pillar-right {
+  animation: slideInRight 1.2s ease forwards;
+}
 
 @keyframes slideInLeft { to { left: 0; } }
 @keyframes slideInRight { to { right: 0; } }
@@ -93,27 +156,38 @@ body.play-anim .pillar-right { animation: slideInRight 1.2s forwards; }
   display: flex;
   justify-content: center;
   align-items: center;
+  background: rgba(0,0,0,0.85);
 }
 
-/* JOIN BUTTON */
+.loyalty-section h2 {
+  font-family: 'Bebas Neue';
+  font-size: 3rem;
+  text-shadow: 0 0 10px red, 0 0 20px red;
+}
+
+/* JOIN BUTTON (ADDED ONLY) */
 .join-section {
   text-align: center;
   padding: 60px 20px;
 }
 
 .join-btn {
-  padding: 15px 30px;
+  padding: 14px 30px;
   background: #800000;
   color: white;
   text-decoration: none;
   font-size: 1.2rem;
   border-radius: 8px;
 }
+.join-btn:hover {
+  background: #a00000;
+}
 </style>
 </head>
 
 <body>
 
+<!-- ENTER -->
 <div class="enter-screen" id="enterScreen">
   <h1>ENTER SITE</h1>
 </div>
@@ -122,32 +196,40 @@ body.play-anim .pillar-right { animation: slideInRight 1.2s forwards; }
   <source src="assets/jong.mp3" type="audio/mpeg">
 </audio>
 
+<!-- HERO -->
 <div class="hero">
+
   <img src="assets/pillar-left.png" class="pillar-left">
   <img src="assets/pillar-right.png" class="pillar-right">
 
-  <div>The Founder & CEO OG StarMoney</div>
+  <div class="top-role">The Founder & CEO OG StarMoney</div>
   <h1>MSP 790 PAYBACK MUSIC</h1>
-  <div>183rd Davidson</div>
-  <div>Uptown Boogie Down Bronx New York Finest</div>
-  <div>CFO K-Money Music</div>
+  <div class="mid">183rd Davidson</div>
+  <div class="sub">Uptown Boogie Down Bronx New York Finest</div>
+  <div class="bottom-role">CFO K-Money Music</div>
 </div>
 
+<!-- LOYALTY -->
 <div class="loyalty-section">
   <h2>Loyalty is everything, Death Before Dishonor</h2>
 </div>
 
+<!-- JOIN -->
 <div class="join-section">
   <h2>Join The Movement</h2>
   <a href="join.html" class="join-btn">Apply Now</a>
 </div>
 
 <script>
-document.getElementById("enterScreen").onclick = () => {
-  document.getElementById("bg-music").play();
-  document.body.classList.add("active","play-anim");
+const enterScreen = document.getElementById("enterScreen");
+const audio = document.getElementById("bg-music");
+
+enterScreen.addEventListener("click", () => {
+  audio.play();
   enterScreen.style.display = "none";
-};
+  document.body.classList.add("active");
+  document.body.classList.add("play-anim");
+});
 </script>
 
 </body>
