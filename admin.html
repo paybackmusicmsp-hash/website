@@ -11,50 +11,56 @@ button { margin:5px; }
 
 <body>
 
-<h1>Admin Dashboard</h1>
-<div id="bookings"></div>
+<h1>Dashboard</h1>
+<div id="list"></div>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
 <script>
-const pass = prompt("Enter password");
-if (pass !== "msp790") {
-  document.body.innerHTML = "Access Denied";
-}
-
 firebase.initializeApp({
-  apiKey: "AIzaSyC1pKUto9-16yt6jcYxzyPOfF4VBWeAit4",
+  apiKey: "AIzaSy...",
   authDomain: "booking-8bc2d.firebaseapp.com",
   projectId: "booking-8bc2d"
 });
 
 const db = firebase.firestore();
 
-db.collection("bookings").orderBy("created","desc").onSnapshot(snapshot => {
-  const container = document.getElementById("bookings");
-  container.innerHTML = "";
+db.collection("bookings").orderBy("created","desc").onSnapshot(snap => {
+  const el = document.getElementById("list");
+  el.innerHTML = "";
 
-  snapshot.forEach(doc => {
+  snap.forEach(doc => {
     const d = doc.data();
 
-    container.innerHTML += `
+    el.innerHTML += `
       <div class="card">
         <h3>${d.name}</h3>
         <p>${d.service}</p>
-        <p>${d.date} @ ${d.time}</p>
-        <p>Status: ${d.status}</p>
+        <p>${d.date} ${d.time}</p>
 
-        <button onclick="update('${doc.id}','accepted')">Accept</button>
-        <button onclick="update('${doc.id}','declined')">Decline</button>
-        <a href="mailto:${d.email}"><button>Email</button></a>
+        <select id="r-${doc.id}">
+          <option>Scheduling conflict</option>
+          <option>Not a good fit</option>
+          <option>Incomplete info</option>
+        </select>
+
+        <button onclick="accept('${doc.id}','${d.email}')">Accept</button>
+        <button onclick="decline('${doc.id}','${d.email}')">Decline</button>
       </div>
     `;
   });
 });
 
-function update(id, status) {
-  db.collection("bookings").doc(id).update({ status });
+function accept(id,email){
+  db.collection("bookings").doc(id).update({status:"accepted"});
+  window.location.href = `mailto:${email}?subject=Approved&body=Your booking is approved. Proceed to payment.`;
+}
+
+function decline(id,email){
+  const reason = document.getElementById("r-"+id).value;
+  db.collection("bookings").doc(id).update({status:"declined",reason});
+  window.location.href = `mailto:${email}?subject=Update&body=Booking declined: ${reason}`;
 }
 </script>
 
