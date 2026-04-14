@@ -1,50 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Admin Login</title>
-
+<title>Login</title>
 <style>
-body {
-  background:black;
-  color:white;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
-  font-family:Arial;
-}
-
-.box {
-  background:#111;
-  padding:30px;
-  border-radius:10px;
-  width:300px;
-}
-
-input {
-  width:100%;
-  padding:10px;
-  margin:10px 0;
-}
-
-button {
-  width:100%;
-  padding:10px;
-  background:#800000;
-  color:white;
-  border:none;
-}
+body{background:black;color:white;display:flex;justify-content:center;align-items:center;height:100vh;font-family:Arial}
+.box{background:#111;padding:30px;border-radius:10px;width:300px}
+input,button{width:100%;padding:10px;margin:10px 0}
+button{background:#800000;color:white;border:none}
 </style>
 </head>
-
 <body>
 
 <div class="box">
 <h2>Admin Login</h2>
-
 <input id="email" placeholder="Email">
 <input id="pass" type="password" placeholder="Password">
-
 <button onclick="login()">Login</button>
 </div>
 
@@ -55,22 +25,15 @@ button {
 firebase.initializeApp({
   apiKey: "AIzaSyC1pKUto9-16yt6jcYxzyPOfF4VBWeAit4",
   authDomain: "booking-8bc2d.firebaseapp.com",
-  projectId: "booking-8bc2d",
-  storageBucket: "booking-8bc2d.firebasestorage.app",
-  messagingSenderId: "837679820389",
-  appId: "1:837679820389:web:1ea8e1ec11913a939ea08c",
-  measurementId: "G-BHCQC0HT01"
+  projectId: "booking-8bc2d"
 });
 
 function login(){
-  firebase.auth().signInWithEmailAndPassword(
-    email.value,
-    pass.value
-  ).then(()=>{
-    location="admin.html";
-  }).catch(err=>{
-    alert(err.message);
-  });
+  firebase.auth().signInWithEmailAndPassword(email.value, pass.value)
+  .then(()=>{
+    window.location.href = "admin.html";
+  })
+  .catch(err=>alert(err.message));
 }
 </script>
 
