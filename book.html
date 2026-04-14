@@ -1,18 +1,99 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Book</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book MSP 790</title>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 <style>
-body{background:black;color:white;font-family:Arial;text-align:center;padding:40px}
-.container{max-width:600px;margin:auto;padding-bottom:120px}
-.card{background:#111;padding:15px;margin:10px;border-radius:10px}
-input,select,textarea{width:100%;padding:10px;margin:10px 0}
-button{background:#800000;color:white;padding:12px;width:100%}
-footer{position:fixed;bottom:0;width:100%;background:#111;padding:10px}
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #0a0a0a;
+  color: white;
+  text-align: center;
+}
+
+.container {
+  max-width: 600px;
+  margin: auto;
+  padding: 40px 20px 120px;
+}
+
+/* SERVICES */
+.service {
+  background: #111;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: left;
+  transition: 0.3s;
+}
+
+.service:hover {
+  border: 1px solid #800000;
+  box-shadow: 0 0 10px rgba(128,0,0,0.4);
+}
+
+.service-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+  margin-top: 10px;
+  color: #aaa;
+}
+
+.service.active .service-content {
+  max-height: 150px;
+}
+
+/* FORM */
+input, select, textarea {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid #222;
+  background: #111;
+  color: white;
+  border-radius: 6px;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background: #800000;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background: red;
+}
+
+/* FOOTER */
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #111;
+  padding: 12px;
+  border-top: 1px solid #222;
+}
+
+footer a {
+  color: white;
+  margin: 0 10px;
+  text-decoration: none;
+}
+
+footer a:hover {
+  color: red;
+}
 </style>
 </head>
 
@@ -20,74 +101,126 @@ footer{position:fixed;bottom:0;width:100%;background:#111;padding:10px}
 
 <div class="container">
 
-<h1>Book Services</h1>
+<h1>Book Our Services</h1>
 
-<div class="card">🎬 Video Editing</div>
-<div class="card">🎥 Production</div>
-<div class="card">📹 Filming</div>
-<div class="card">🎧 Audio</div>
-<div class="card">💃 Dance</div>
-<div class="card">💻 Website Creation</div>
-
-<div class="card">
-Mon–Fri | 2PM–7PM
+<!-- CLICKABLE SERVICES -->
+<div class="service" onclick="toggleService(this)">
+  🎬 Video Editing
+  <div class="service-content">Portfolio coming soon...</div>
 </div>
 
+<div class="service" onclick="toggleService(this)">
+  🎥 Video Production
+  <div class="service-content">Portfolio coming soon...</div>
+</div>
+
+<div class="service" onclick="toggleService(this)">
+  📹 Filming
+  <div class="service-content">Portfolio coming soon...</div>
+</div>
+
+<div class="service" onclick="toggleService(this)">
+  🎧 Audio Production
+  <div class="service-content">Portfolio coming soon...</div>
+</div>
+
+<div class="service" onclick="toggleService(this)">
+  💃 Dance Lessons
+  <div class="service-content">Portfolio coming soon...</div>
+</div>
+
+<div class="service" onclick="toggleService(this)">
+  💻 Website Creation
+  <div class="service-content">Portfolio coming soon...</div>
+</div>
+
+<!-- SCHEDULE -->
+<p><strong>Availability:</strong> Mon–Fri | 2PM–7PM</p>
+<p style="color:red;">Deposit required after approval</p>
+
+<!-- FORM -->
 <form id="bookingForm">
 <input name="name" placeholder="Name" required>
 <input name="email" placeholder="Email" required>
 
-<select name="service">
+<select name="service" required>
+<option value="">Select Service</option>
 <option>Video Editing</option>
-<option>Production</option>
+<option>Video Production</option>
 <option>Filming</option>
-<option>Audio</option>
-<option>Dance</option>
-<option>Website</option>
+<option>Audio Production</option>
+<option>Dance Lessons</option>
+<option>Website Creation</option>
 </select>
 
-<input id="calendar" placeholder="Pick date" required>
+<input id="calendar" placeholder="Pick a date" required>
+
 <input type="time" name="time" min="14:00" max="19:00" required>
 
-<textarea name="details" placeholder="Details"></textarea>
+<textarea name="details" placeholder="Project details"></textarea>
 
-<button type="submit">Submit</button>
+<button type="submit">Submit Request</button>
 </form>
+
+<p>We will respond within 24–48 hours.</p>
 
 </div>
 
+<!-- FOOTER -->
 <footer>
-CashApp | PayPal | Zelle
+<a href="#">CashApp</a>
+<a href="#">Zelle</a>
+<a href="#">PayPal</a>
 </footer>
 
+<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
 <script>
 firebase.initializeApp({
   apiKey: "AIzaSyC1pKUto9-16yt6jcYxzyPOfF4VBWeAit4",
+  authDomain: "booking-8bc2d.firebaseapp.com",
   projectId: "booking-8bc2d"
 });
 
 const db = firebase.firestore();
 
-flatpickr("#calendar",{dateFormat:"Y-m-d"});
+// CALENDAR
+flatpickr("#calendar", {
+  dateFormat: "Y-m-d",
+  disable: [
+    date => (date.getDay() === 0 || date.getDay() === 6)
+  ]
+});
 
-document.getElementById("bookingForm").addEventListener("submit", async e=>{
+// SERVICE TOGGLE
+function toggleService(el) {
+  document.querySelectorAll(".service").forEach(s => {
+    if (s !== el) s.classList.remove("active");
+  });
+  el.classList.toggle("active");
+}
+
+// FORM SUBMIT
+document.getElementById("bookingForm").addEventListener("submit", async e => {
   e.preventDefault();
-  let f=e.target;
+
+  let f = e.target;
 
   await db.collection("bookings").add({
-    name:f.name.value,
-    email:f.email.value,
-    service:f.service.value,
-    date:calendar.value,
-    time:f.time.value,
-    details:f.details.value,
-    status:"pending"
+    name: f.name.value,
+    email: f.email.value,
+    service: f.service.value,
+    date: calendar.value,
+    time: f.time.value,
+    details: f.details.value,
+    status: "pending",
+    created: new Date()
   });
 
-  alert("Submitted!");
+  alert("Request sent. We’ll contact you within 24–48 hours.");
+  window.location.href = "pay.html";
 });
 </script>
 
