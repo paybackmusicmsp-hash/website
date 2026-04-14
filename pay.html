@@ -2,24 +2,49 @@
 <html>
 <head>
 <title>Invoice</title>
+
 <style>
-body { background:black; color:white; font-family:Arial; padding:40px; }
-.box { background:#111; padding:20px; margin:10px 0; border-radius:10px; }
-a { display:block; padding:12px; background:#800000; color:white; text-decoration:none; margin:10px 0; }
+body {
+  background: black;
+  color: white;
+  font-family: Arial;
+  padding: 40px;
+  text-align: center;
+}
+.container {
+  max-width: 600px;
+  margin: auto;
+  background: #111;
+  padding: 30px;
+  border-radius: 12px;
+}
+.btn {
+  display: block;
+  margin: 10px 0;
+  padding: 12px;
+  background: #800000;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+}
 </style>
 </head>
 
 <body>
 
+<div class="container">
+
 <h1>Booking Invoice</h1>
 
-<div class="box">Deposit Required: $50–$100</div>
+<p>Deposit Required: $50–$100</p>
 
-<a href="https://cash.app/$YourTag" target="_blank">Pay CashApp</a>
-<a href="https://www.paypal.com/paypalme/yourname" target="_blank">Pay PayPal</a>
-<a href="https://www.zellepay.com/" target="_blank">Pay Zelle</a>
+<a class="btn" href="https://cash.app/$YourTag" target="_blank">Pay CashApp</a>
+<a class="btn" href="https://www.paypal.com/paypalme/yourname" target="_blank">Pay PayPal</a>
+<a class="btn" href="https://www.zellepay.com/" target="_blank">Pay Zelle</a>
 
-<p style="color:red;">Only pay after approval.</p>
+<p style="color:red;">Only send payment AFTER approval.</p>
+
+</div>
 
 </body>
 </html>
