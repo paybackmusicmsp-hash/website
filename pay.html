@@ -2,7 +2,6 @@
 <html>
 <head>
 <title>Invoice</title>
-
 <style>
 body{background:black;color:white;text-align:center;padding:40px}
 .box{background:#111;padding:30px;border-radius:10px}
@@ -14,19 +13,13 @@ body{background:black;color:white;text-align:center;padding:40px}
 
 <div class="box">
 <h1>Invoice</h1>
-
-<p id="invoice"></p>
 <p>Deposit Required</p>
 
-<a class="btn" href="https://cash.app/$YourTag" target="_blank">CashApp</a>
-<a class="btn" href="https://paypal.me/yourname" target="_blank">PayPal</a>
+<a class="btn" href="https://cash.app/$YourTag">Pay CashApp</a>
+<a class="btn" href="https://paypal.me/yourname">Pay PayPal</a>
 
+<p style="color:red">Wait for confirmation before paying</p>
 </div>
-
-<script>
-const id = new URLSearchParams(window.location.search).get("id");
-document.getElementById("invoice").innerText = "Invoice #" + id;
-</script>
 
 </body>
 </html>
