@@ -53,6 +53,7 @@ button {
   background: #800000;
   color: white;
   border: none;
+  cursor: pointer;
 }
 
 .footer-bar {
@@ -77,9 +78,7 @@ button {
 
   <h1>Book Our Services</h1>
 
-  <p>
-    Professional creative services built for serious artists and brands.
-  </p>
+  <p>Professional creative services built for serious artists and brands.</p>
 
   <!-- SERVICES -->
   <div class="service">🎬 Video Editing</div>
@@ -99,33 +98,43 @@ button {
   <div class="schedule">
     <h2>Booking Info</h2>
     <p>
-      A deposit may be required to secure your session.  
-      Serious inquiries only.
+      A deposit is required to lock in your session.<br>
+      Accepted via CashApp, Zelle, or PayPal after confirmation.
     </p>
   </div>
 
   <p class="notice">
-    We do not confirm bookings without communication.
+    Serious inquiries only. No booking is confirmed without communication.
   </p>
 
   <!-- FORM -->
   <h2 style="margin-top:40px;">Request a Booking</h2>
 
-  <input type="text" placeholder="Name">
-  <input type="email" placeholder="Email">
+  <form action="https://formspree.io/f/xdapqqll" method="POST" id="bookingForm">
 
-  <select>
-    <option>Select Service</option>
-    <option>Video Editing</option>
-    <option>Directing</option>
-    <option>Filming</option>
-    <option>Music Production</option>
-    <option>Dance Lessons</option>
-  </select>
+    <input type="text" name="name" placeholder="Name" required>
+    <input type="email" name="email" placeholder="Email" required>
 
-  <textarea placeholder="Project details"></textarea>
+    <select name="service" required>
+      <option value="">Select Service</option>
+      <option>Video Editing</option>
+      <option>Directing</option>
+      <option>Filming</option>
+      <option>Music Production</option>
+      <option>Dance Lessons</option>
+    </select>
 
-  <button>Submit Request</button>
+    <textarea name="details" placeholder="Project details" required></textarea>
+
+    <input type="hidden" name="_subject" value="New MSP 790 Booking Request">
+
+    <button type="submit">Submit Request</button>
+
+  </form>
+
+  <p style="margin-top:10px; font-size:0.9rem;">
+    We will respond within 24–48 hours to confirm your booking.
+  </p>
 
 </div>
 
@@ -134,6 +143,12 @@ button {
   <a href="join.html">Join</a>
   <a href="book.html">Book</a>
 </div>
+
+<script>
+document.getElementById("bookingForm").addEventListener("submit", function() {
+  alert("Request sent. We’ll contact you within 24–48 hours.");
+});
+</script>
 
 </body>
 </html>
