@@ -1,18 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Book MSP 790</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book MSP 790 Services</title>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 <style>
-body { background:black; color:white; font-family:Arial; text-align:center; padding:40px; }
-.container { max-width:600px; margin:auto; }
-.box { background:#111; padding:15px; margin:10px 0; border-radius:8px; }
-input, select, textarea { width:100%; padding:10px; margin:10px 0; }
-button { width:100%; padding:12px; background:#800000; color:white; border:none; }
+body {
+  margin: 0;
+  font-family: Arial;
+  background: black;
+  color: white;
+  text-align: center;
+  padding: 40px;
+}
+.container {
+  max-width: 600px;
+  margin: auto;
+}
+.box {
+  background: #111;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 8px;
+}
+input, textarea, select {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+}
+button {
+  width: 100%;
+  padding: 12px;
+  background: #800000;
+  color: white;
+  border: none;
+}
+.notice { color: red; }
 </style>
 </head>
 
@@ -20,34 +47,52 @@ button { width:100%; padding:12px; background:#800000; color:white; border:none;
 
 <div class="container">
 
-<h1>Book Services</h1>
+<h1>Book Our Services</h1>
 
 <div class="box">🎬 Video Editing</div>
 <div class="box">🎥 Directing</div>
+<div class="box">📹 Filming</div>
 <div class="box">🎧 Music Production</div>
+<div class="box">💃 Dance Lessons</div>
+<div class="box">💻 Website Creation</div>
 
-<div class="box">Mon–Fri | 2PM–7PM</div>
+<div class="box">
+<h3>Availability</h3>
+<p>Mon–Fri | 2PM–7PM</p>
+</div>
+
+<div class="box">
+<h3>Pricing</h3>
+<p>$75 – $300+ (varies per project)</p>
+</div>
+
+<p class="notice">Weekends closed. Red dates unavailable.</p>
 
 <form id="bookingForm">
-
 <input name="name" placeholder="Name" required>
 <input name="email" type="email" placeholder="Email" required>
 
 <select name="service" required>
-<option value="">Service</option>
+<option value="">Select Service</option>
 <option>Video Editing</option>
 <option>Directing</option>
+<option>Filming</option>
 <option>Music Production</option>
+<option>Dance Lessons</option>
+<option>Website Creation</option>
 </select>
 
-<input id="calendar" placeholder="Pick date" required>
+<input id="calendar" placeholder="Pick a date" required>
+<p id="dateWarning" style="display:none; color:red;">Date is taken</p>
+
 <input type="time" name="time" min="14:00" max="19:00" required>
 
-<textarea name="details" placeholder="Details" required></textarea>
+<textarea name="details" placeholder="Project details" required></textarea>
 
 <button type="submit">Submit Request</button>
-
 </form>
+
+<p>We will respond within 24–48 hours.</p>
 
 </div>
 
@@ -57,7 +102,7 @@ button { width:100%; padding:12px; background:#800000; color:white; border:none;
 
 <script>
 firebase.initializeApp({
-  apiKey: "AIzaSy...",
+  apiKey: "AIzaSyC1pKUto9-16yt6jcYxzyPOfF4VBWeAit4",
   authDomain: "booking-8bc2d.firebaseapp.com",
   projectId: "booking-8bc2d"
 });
@@ -65,26 +110,30 @@ firebase.initializeApp({
 const db = firebase.firestore();
 let bookedDates = [];
 
-// load booked dates
-db.collection("bookings").onSnapshot(snap => {
+// LIVE BOOKINGS
+db.collection("bookings").onSnapshot(snapshot => {
   bookedDates = [];
-  snap.forEach(doc => {
+  snapshot.forEach(doc => {
     if (doc.data().status === "accepted") {
       bookedDates.push(doc.data().date);
     }
   });
 });
 
-// calendar
+// CALENDAR
 flatpickr("#calendar", {
   dateFormat: "Y-m-d",
   disable: [
     d => d.getDay() === 0 || d.getDay() === 6,
     d => bookedDates.includes(d.toISOString().split("T")[0])
-  ]
+  ],
+  onChange: (sel, str) => {
+    document.getElementById("dateWarning").style.display =
+      bookedDates.includes(str) ? "block" : "none";
+  }
 });
 
-// submit
+// SUBMIT
 document.getElementById("bookingForm").addEventListener("submit", async e => {
   e.preventDefault();
   const f = e.target;
