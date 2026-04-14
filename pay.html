@@ -1,21 +1,97 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Payment</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Secure Your Booking</title>
+
 <style>
-body { background:black; color:white; text-align:center; padding:40px; }
-.box { background:#111; padding:20px; margin:15px; border-radius:10px; }
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: black;
+  color: white;
+  text-align: center;
+}
+
+.container {
+  max-width: 600px;
+  margin: auto;
+  padding: 60px 20px;
+}
+
+h1 {
+  font-size: 2.5rem;
+  letter-spacing: 2px;
+  text-shadow: 0 0 10px red;
+}
+
+.box {
+  background: linear-gradient(145deg, #111, #1a1a1a);
+  padding: 20px;
+  margin: 15px 0;
+  border-radius: 12px;
+  transition: 0.3s;
+  border: 1px solid rgba(255,0,0,0.2);
+}
+
+.box:hover {
+  transform: scale(1.03);
+  border-color: red;
+}
+
+.label {
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+.value {
+  font-size: 1.2rem;
+  margin-top: 5px;
+}
+
+.notice {
+  margin-top: 30px;
+  color: red;
+  font-weight: bold;
+}
+
+.secure {
+  margin-top: 15px;
+  opacity: 0.6;
+  font-size: 0.9rem;
+}
 </style>
 </head>
+
 <body>
+
+<div class="container">
 
 <h1>Secure Your Booking</h1>
 
-<div class="box">CashApp: $YourTag</div>
-<div class="box">Zelle: your@email.com</div>
-<div class="box">PayPal: your@email.com</div>
+<p>After approval, send your deposit to lock your session.</p>
 
-<p style="color:red;">Wait for confirmation before paying.</p>
+<div class="box">
+  <div class="label">CashApp</div>
+  <div class="value">$YourTag</div>
+</div>
+
+<div class="box">
+  <div class="label">Zelle</div>
+  <div class="value">your@email.com</div>
+</div>
+
+<div class="box">
+  <div class="label">PayPal</div>
+  <div class="value">your@email.com</div>
+</div>
+
+<p class="notice">Do NOT send payment until your request is approved.</p>
+
+<p class="secure">✔ Secure • ✔ Verified • MSP 790 Payback Music</p>
+
+</div>
 
 </body>
 </html>
