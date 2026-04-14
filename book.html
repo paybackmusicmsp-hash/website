@@ -1,101 +1,63 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Book MSP 790</title>
+<title>Book</title>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 <style>
-body {
-  margin:0;
-  font-family:Arial;
-  background:black;
-  color:white;
-  text-align:center;
-}
-
-.container {
-  max-width:650px;
-  margin:auto;
-  padding:40px 20px 120px;
-  animation:fade 0.6s;
-}
-
-@keyframes fade {
-  from{opacity:0} to{opacity:1}
-}
-
-.box {
-  background:#111;
-  padding:15px;
-  margin:10px 0;
-  border-radius:10px;
-  transition:.3s;
-}
-.box:hover { transform:scale(1.03); box-shadow:0 0 10px red; }
-
-input,select,textarea {
-  width:100%;
-  padding:12px;
-  margin:10px 0;
-}
-
-button {
-  width:100%;
-  padding:14px;
-  background:#800000;
-  color:white;
-  border:none;
-}
+body{background:black;color:white;font-family:Arial;text-align:center;padding:40px}
+.container{max-width:600px;margin:auto;padding-bottom:120px}
+.card{background:#111;padding:15px;margin:10px;border-radius:10px}
+input,select,textarea{width:100%;padding:10px;margin:10px 0}
+button{background:#800000;color:white;padding:12px;width:100%}
+footer{position:fixed;bottom:0;width:100%;background:#111;padding:10px}
 </style>
 </head>
 
 <body>
 
 <div class="container">
+
 <h1>Book Services</h1>
 
-<div class="box">🎬 Video Editing</div>
-<div class="box">🎥 Video Production</div>
-<div class="box">📹 Video Filming</div>
-<div class="box">🎧 Audio Production</div>
-<div class="box">💃 Dance Lessons</div>
-<div class="box">💻 Website Creation</div>
+<div class="card">🎬 Video Editing</div>
+<div class="card">🎥 Production</div>
+<div class="card">📹 Filming</div>
+<div class="card">🎧 Audio</div>
+<div class="card">💃 Dance</div>
+<div class="card">💻 Website Creation</div>
 
-<div class="box">
-<p>Mon–Fri | 2PM–7PM</p>
-<p>$75–$300+</p>
+<div class="card">
+Mon–Fri | 2PM–7PM
 </div>
 
 <form id="bookingForm">
 <input name="name" placeholder="Name" required>
-<input name="email" type="email" required>
+<input name="email" placeholder="Email" required>
 
-<select name="service" required>
-<option value="">Service</option>
+<select name="service">
 <option>Video Editing</option>
-<option>Video Production</option>
-<option>Video Filming</option>
-<option>Audio Production</option>
-<option>Dance Lessons</option>
-<option>Website Creation</option>
+<option>Production</option>
+<option>Filming</option>
+<option>Audio</option>
+<option>Dance</option>
+<option>Website</option>
 </select>
 
-<input id="calendar" required>
+<input id="calendar" placeholder="Pick date" required>
 <input type="time" name="time" min="14:00" max="19:00" required>
 
-<textarea name="details" required></textarea>
+<textarea name="details" placeholder="Details"></textarea>
 
-<button>Submit Request</button>
+<button type="submit">Submit</button>
 </form>
+
 </div>
 
-<footer style="background:#111;position:fixed;bottom:0;width:100%;padding:15px;">
-MSP 790 |
-<a href="#">CashApp</a> |
-<a href="#">PayPal</a> |
-<a href="#">Zelle</a>
+<footer>
+CashApp | PayPal | Zelle
 </footer>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -103,29 +65,15 @@ MSP 790 |
 
 <script>
 firebase.initializeApp({
-  apiKey:"AIzaSy...",
-  projectId:"booking-8bc2d"
-});
-const db=firebase.firestore();
-
-let booked=[];
-
-db.collection("bookings").onSnapshot(s=>{
-  booked=[];
-  s.forEach(d=>{
-    if(d.data().status==="accepted") booked.push(d.data().date);
-  });
+  apiKey: "AIzaSyC1pKUto9-16yt6jcYxzyPOfF4VBWeAit4",
+  projectId: "booking-8bc2d"
 });
 
-flatpickr("#calendar",{
-  dateFormat:"Y-m-d",
-  disable:[
-    d=>d.getDay()==0||d.getDay()==6,
-    d=>booked.includes(d.toISOString().split("T")[0])
-  ]
-});
+const db = firebase.firestore();
 
-document.getElementById("bookingForm").onsubmit=async e=>{
+flatpickr("#calendar",{dateFormat:"Y-m-d"});
+
+document.getElementById("bookingForm").addEventListener("submit", async e=>{
   e.preventDefault();
   let f=e.target;
 
@@ -136,13 +84,11 @@ document.getElementById("bookingForm").onsubmit=async e=>{
     date:calendar.value,
     time:f.time.value,
     details:f.details.value,
-    status:"pending",
-    created:new Date()
+    status:"pending"
   });
 
-  alert("Request sent");
-  location="pay.html";
-};
+  alert("Submitted!");
+});
 </script>
 
 </body>
