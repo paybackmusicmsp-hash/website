@@ -29,15 +29,14 @@ firebase.initializeApp({
 });
 
 firebase.auth().onAuthStateChanged(user=>{
- if(user){
-   location="admin.html";
- }
+  if(user){ location="admin.html"; }
 });
 
 function login(){
- firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
- .then(()=>firebase.auth().signInWithEmailAndPassword(email.value, pass.value))
- .catch(err=>alert(err.message));
+  firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+  .then(()=>firebase.auth().signInWithEmailAndPassword(email.value, pass.value))
+  .then(()=>location="admin.html")
+  .catch(err=>alert(err.message));
 }
 </script>
 
