@@ -147,7 +147,7 @@ canvas{
 
 <!-- SIDEBAR -->
 <div class="sidebar">
-  <h2>MSP 790</h2>
+  <h2>MSP Admin</h2>
   <p>Dashboard</p>
   <p>Bookings</p>
   <p>Revenue</p>
@@ -286,59 +286,90 @@ function render(){
 /* ACTIONS */
 function accept(id){
  let price = prompt("Enter price:");
+ if(price === null) return;
+
  db.collection("bookings").doc(id).update({
   status:"accepted",
   price:Number(price||0),
   paid:false
+ }).then(()=>{
+  alert("Booking accepted");
  });
 }
 
 function decline(id){
  let reason = prompt("Reason?");
+ if(reason === null) return;
+
  db.collection("bookings").doc(id).update({
   status:"declined",
   reason
+ }).then(()=>{
+  alert("Booking declined");
  });
 }
 
 function togglePaid(id,current){
  db.collection("bookings").doc(id).update({
   paid: !current
+ }).then(()=>{
+  alert(!current ? "Marked as PAID" : "Marked as UNPAID");
  });
 }
-
-/* CHART */
-let chart;
-function buildChart(){
- let data=[
-  bookings.filter(b=>b.status==="pending").length,
-  bookings.filter(b=>b.status==="accepted").length,
-  bookings.filter(b=>b.status==="declined").length
- ];
-
- if(chart) chart.destroy();
-
- chart = new Chart(document.getElementById("chart"),{
-  type:"doughnut",
-  data:{
-   labels:["Pending","Accepted","Declined"],
-   datasets:[{
-    data,
-    backgroundColor:["gold","lime","red"]
-   }]
-  }
- });
-}
-
 /* CALENDAR */
 function buildCalendar(){
- calendar.innerHTML="";
- bookings.forEach(b=>{
-  let div=document.createElement("div");
-  div.className="card";
-  div.innerHTML=`${b.name}<br>${b.date}`;
-  calendar.appendChild(div);
- });
+  const cal = document.getElementById("calendar");
+  cal.innerHTML = "";
+
+  const grid = document.createElement("div");
+  grid.style.display = "grid";
+  grid.style.gridTemplateColumns = "repeat(7, 1fr)";
+  grid.style.gap = "10px";
+
+  const days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+  days.forEach(d=>{
+    let el = document.createElement("div");
+    el.innerHTML = `<strong>${d}</strong>`;
+    el.style.textAlign = "center";
+    grid.appendChild(el);
+  });
+
+  let date = new Date();
+  date.setDate(1);
+
+  let startDay = date.getDay();
+
+  // empty slots before month starts
+  for(let i=0;i<startDay;i++){
+    grid.appendChild(document.createElement("div"));
+  }
+
+  let month = date.getMonth();
+
+  while(date.getMonth() === month){
+    let dayBox = document.createElement("div");
+    dayBox.style.background = "#111";
+    dayBox.style.padding = "10px";
+    dayBox.style.borderRadius = "8px";
+    dayBox.style.minHeight = "80px";
+
+    let dayNum = date.getDate();
+
+    dayBox.innerHTML = `<strong>${dayNum}</strong><br>`;
+
+    // add bookings to that day
+    bookings.forEach(b=>{
+      if(b.date === date.toISOString().split("T")[0]){
+        dayBox.innerHTML += `<div style="font-size:12px;color:lime;">${b.name}</div>`;
+      }
+    });
+
+    grid.appendChild(dayBox);
+
+    date.setDate(date.getDate()+1);
+  }
+
+  cal.appendChild(grid);
 }
 
 /* LOGOUT */
