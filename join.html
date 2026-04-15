@@ -1,33 +1,119 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Join The Label</title>
+<title>Join MSP 790</title>
+
 <style>
-body{background:black;color:white;text-align:center;padding:40px}
-.box{background:#111;padding:20px;margin:10px;border-radius:10px}
+body {
+  margin:0;
+  font-family:Arial;
+  background:black;
+  color:white;
+}
+
+.container {
+  max-width:600px;
+  margin:auto;
+  padding:40px;
+}
+
+h1 {
+  text-align:center;
+  color:red;
+}
+
+input, textarea, select {
+  width:100%;
+  padding:12px;
+  margin:10px 0;
+  background:#111;
+  color:white;
+  border:1px solid #222;
+}
+
+button {
+  width:100%;
+  padding:12px;
+  background:#800000;
+  color:white;
+  border:none;
+  cursor:pointer;
+}
+
+.section {
+  background:#111;
+  padding:15px;
+  margin-top:15px;
+  border-radius:10px;
+}
 </style>
 </head>
 
 <body>
 
-<h1>Join The Label</h1>
+<div class="container">
 
-<div class="box">
-<h3>Who We Want</h3>
-<p>Serious artists & creatives</p>
+<h1>Join MSP 790</h1>
+
+<div class="section">
+<p>We’re looking for serious artists, creators, and talent ready to grow.</p>
 </div>
 
-<div class="box">
-<h3>What You Get</h3>
-<p>Production, exposure, growth</p>
+<form id="joinForm">
+
+<input name="name" placeholder="Full Name" required>
+<input name="email" type="email" placeholder="Email" required>
+
+<select name="role" required>
+<option value="">What are you applying as?</option>
+<option>Artist</option>
+<option>Producer</option>
+<option>Videographer</option>
+<option>Dancer</option>
+<option>Web Designer</option>
+</select>
+
+<textarea name="experience" placeholder="Tell us about your experience"></textarea>
+
+<input name="link" placeholder="Portfolio / Instagram / YouTube">
+
+<button type="submit">Apply</button>
+
+</form>
+
+<p id="msg"></p>
+
 </div>
 
-<div class="box">
-<h3>Requirements</h3>
-<p>Loyalty & consistency</p>
-</div>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
-<a href="book.html"><button>Work With Us</button></a>
+<script>
+firebase.initializeApp({
+ apiKey:"AIzaSy...",
+ authDomain:"booking-8bc2d.firebaseapp.com",
+ projectId:"booking-8bc2d"
+});
+
+const db = firebase.firestore();
+
+joinForm.addEventListener("submit", async e=>{
+ e.preventDefault();
+
+ let f = e.target;
+
+ await db.collection("applications").add({
+  name:f.name.value,
+  email:f.email.value,
+  role:f.role.value,
+  experience:f.experience.value,
+  link:f.link.value,
+  created:new Date()
+ });
+
+ msg.innerText = "Application sent. We’ll review and get back to you.";
+});
+</script>
 
 </body>
 </html>
