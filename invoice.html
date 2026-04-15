@@ -1,10 +1,93 @@
 <!DOCTYPE html>
 <html>
-<body style="background:black;color:white;text-align:center;padding:40px">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invoice</title>
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin:0;
+  background:black;
+  color:white;
+  font-family:Arial;
+  text-align:center;
+  padding:20px;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+}
+
+h1 {
+  font-size:clamp(1.5rem, 5vw, 2rem);
+  margin:20px 0;
+}
+
+.box {
+  background:#111;
+  padding:20px;
+  border-radius:10px;
+  max-width:500px;
+  width:100%;
+  margin:20px auto;
+}
+
+.box p {
+  font-size:clamp(0.9rem, 3vw, 1rem);
+  margin:12px 0;
+}
+
+button {
+  padding:14px 20px;
+  background:#800000;
+  color:white;
+  border:none;
+  border-radius:8px;
+  font-size:1rem;
+  cursor:pointer;
+  min-height:48px;
+  min-width:120px;
+  transition:background 0.3s ease;
+}
+
+button:hover {
+  background:red;
+}
+
+button:active {
+  transform:scale(0.98);
+}
+
+@media (max-width:480px) {
+  body {
+    padding:15px;
+  }
+
+  .box {
+    padding:15px;
+  }
+
+  button {
+    width:100%;
+    font-size:0.95rem;
+    padding:16px;
+  }
+}
+</style>
+</head>
+<body>
+
 <h1>Invoice</h1>
 
+<div class="box">
 <p>CashApp: $YourTag</p>
 <p>Zelle: your@email.com</p>
+</div>
 
 <button onclick="pay()">Pay</button>
 
