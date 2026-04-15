@@ -42,6 +42,12 @@ body{margin:0;background:#0a0a0a;color:white;font-family:Arial}
   border-radius:10px;
 }
 
+/* ✅ FIXED CHART SIZE */
+.chart-box{
+  width:280px;
+  margin:auto;
+}
+
 button{
   background:#800000;
   color:white;
@@ -83,7 +89,11 @@ button{
 <div id="dashboardSection">
 <h3>Stats</h3>
 <p>Total: <span id="total"></span></p>
-<canvas id="chart" height="120"></canvas>
+
+<div class="chart-box">
+  <canvas id="chart"></canvas>
+</div>
+
 </div>
 
 <!-- BOOKINGS -->
@@ -178,7 +188,7 @@ function decline(id){
  }).then(()=>alert("Declined"));
 }
 
-/* CHART */
+/* ✅ FIXED CHART */
 function buildChart(){
  const ctx = document.getElementById("chart");
 
@@ -200,6 +210,8 @@ function buildChart(){
    }]
   },
   options:{
+   responsive:true,
+   maintainAspectRatio:true,
    plugins:{
     legend:{labels:{color:"white"}}
    }
@@ -207,7 +219,7 @@ function buildChart(){
  });
 }
 
-/* REAL CALENDAR */
+/* CALENDAR */
 function buildCalendar(){
  const cal = document.getElementById("calendar");
  cal.innerHTML="";
@@ -262,9 +274,9 @@ function buildCalendar(){
 
 /* SIDEBAR NAV */
 function showSection(section){
- document.getElementById("dashboardSection").style.display="none";
- document.getElementById("bookingsSection").style.display="none";
- document.getElementById("calendarSection").style.display="none";
+ dashboardSection.style.display="none";
+ bookingsSection.style.display="none";
+ calendarSection.style.display="none";
 
  if(section==="dashboard") dashboardSection.style.display="block";
  if(section==="bookings") bookingsSection.style.display="block";
