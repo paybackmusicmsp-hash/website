@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Client Access</title>
+<style>
+body{background:#0a0a0a;color:white;font-family:Arial;display:flex;justify-content:center;align-items:center;height:100vh}
+.box{background:#111;padding:30px;border-radius:12px;width:320px;text-align:center}
+input,button{width:100%;padding:12px;margin:10px 0}
+button{background:#800000;color:white;border:none;cursor:pointer}
+.toggle{cursor:pointer;color:#aaa;font-size:14px}
+</style>
+</head>
+<body>
+
+<div class="box">
+<h2 id="title">Client Login</h2>
+
+<input id="email" placeholder="Email">
+<input id="pass" type="password" placeholder="Password">
+
+<button onclick="submitAuth()">Continue</button>
+
+<p class="toggle" onclick="toggleMode()">Don't have an account? Sign up</p>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+
+<script>
+firebase.initializeApp({
+ apiKey:"AIzaSyC1pKUto9-16yt6jcYxzyPOfF4VBWeAit4",
+ authDomain:"booking-8bc2d.firebaseapp.com"
+});
+
+let isLogin = true;
+
+function toggleMode(){
+  isLogin = !isLogin;
+  title.innerText = isLogin ? "Client Login" : "Create Account";
+  document.querySelector(".toggle").innerText = isLogin 
+    ? "Don't have an account? Sign up" 
+    : "Already have an account? Login";
+}
+
+function submitAuth(){
+  let e = email.value;
+  let p = pass.value;
+
+  if(isLogin){
+    firebase.auth().signInWithEmailAndPassword(e,p)
+    .then(()=>location="client.html")
+    .catch(err=>alert(err.message));
+  } else {
+    firebase.auth().createUserWithEmailAndPassword(e,p)
+    .then(()=>location="client.html")
+    .catch(err=>alert(err.message));
+  }
+}
+</script>
+
+</body>
+</html>
