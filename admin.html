@@ -9,66 +9,26 @@
 <style>
 body{margin:0;background:#0a0a0a;color:white;font-family:Arial}
 .app{display:flex}
-
-/* SIDEBAR */
-.sidebar{
-  width:220px;
-  background:#0d0d0d;
-  height:100vh;
-  padding:20px;
-}
-.sidebar p{
-  cursor:pointer;
-  margin:12px 0;
-  color:#aaa;
-}
+.sidebar{width:220px;background:#0d0d0d;height:100vh;padding:20px}
+.sidebar p{cursor:pointer;margin:12px 0;color:#aaa}
 .sidebar p:hover{color:white}
-
-/* MAIN */
 .main{flex:1}
-.top{
-  background:#111;
-  padding:15px;
-  display:flex;
-  justify-content:space-between;
-}
-
-/* SECTIONS */
+.top{background:#111;padding:15px;display:flex;justify-content:space-between}
 .section{display:none;padding:20px}
 .active{display:block}
-
-/* CARDS */
-.card{
-  background:#111;
-  padding:15px;
-  margin:10px 0;
-  border-radius:10px;
-}
-
-button{
-  background:#800000;
-  color:white;
-  border:none;
-  padding:6px;
-  margin:4px;
-  cursor:pointer;
-}
-
-/* STATUS */
+.card{background:#111;padding:15px;margin:10px 0;border-radius:10px}
+button{background:#800000;color:white;border:none;padding:6px;margin:4px;cursor:pointer}
 .pending{color:gold}
 .accepted{color:lime}
 .declined{color:red}
-
-/* CHART FIX */
 #chart{max-width:300px;margin:auto}
 
-/* REAL CALENDAR */
+/* CALENDAR FIX (responsive) */
 .calendar{
   display:grid;
-  grid-template-columns:repeat(7,1fr);
+  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
   gap:8px;
 }
-
 .day{
   background:#111;
   padding:10px;
@@ -76,7 +36,6 @@ button{
   min-height:80px;
   font-size:12px;
 }
-
 .day strong{
   display:block;
   margin-bottom:5px;
@@ -89,7 +48,6 @@ button{
 
 <div class="app">
 
-<!-- SIDEBAR -->
 <div class="sidebar">
   <h2>⚡ MSP 790</h2>
   <p onclick="show('dashboard')">📊 Dashboard</p>
@@ -97,7 +55,6 @@ button{
   <p onclick="show('calendarSection')">📅 Calendar</p>
 </div>
 
-<!-- MAIN -->
 <div class="main">
 
 <div class="top">
@@ -105,7 +62,6 @@ button{
   <button onclick="logout()">🚪 Logout</button>
 </div>
 
-<!-- DASHBOARD -->
 <div id="dashboard" class="section active">
   <h3>📊 Stats</h3>
   <p>Total: <span id="total"></span></p>
@@ -113,13 +69,11 @@ button{
   <canvas id="chart"></canvas>
 </div>
 
-<!-- BOOKINGS -->
 <div id="bookings" class="section">
   <h3>📦 Bookings</h3>
   <div id="list"></div>
 </div>
 
-<!-- CALENDAR -->
 <div id="calendarSection" class="section">
   <h3>📅 Schedule</h3>
   <div class="calendar" id="calendar"></div>
@@ -128,7 +82,7 @@ button{
 </div>
 </div>
 
-<!-- FIREBASE -->
+<!-- FIREBASE (ONLY ONCE, CORRECT PLACE) -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
@@ -142,22 +96,35 @@ firebase.initializeApp({
 
 emailjs.init("2wR4xarDSJyemGTCQ");
 
-const db=firebase.firestore();
-let bookings=[];
+const db = firebase.firestore();
+let bookings = [];
 
-/* SIDEBAR NAV */
+/* 🔐 ADMIN LOCK (FIXED) */
+firebase.auth().onAuthStateChanged(async user=>{
+ if(!user){
+   location="login.html";
+   return;
+ }
+
+ const doc = await db.collection("users").doc(user.uid).get();
+
+ if(!doc.exists || doc.data().role !== "admin"){
+   alert("Access denied");
+   firebase.auth().signOut();
+   location="client-auth.html";
+   return;
+ }
+
+ load();
+});
+
+/* NAV */
 function show(id){
  document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
  document.getElementById(id).classList.add("active");
 }
 
-/* AUTH */
-firebase.auth().onAuthStateChanged(user=>{
- if(!user){location="login.html";return;}
- load();
-});
-
-/* LOAD DATA */
+/* LOAD */
 function load(){
  db.collection("bookings").onSnapshot(snap=>{
   bookings=[];
@@ -169,8 +136,8 @@ function load(){
    bookings.push({id:doc.id,...d});
   });
 
-  total.innerText=bookings.length;
-  revenueEl.innerText=revenue;
+  document.getElementById("total").innerText = bookings.length;
+  document.getElementById("revenue").innerText = revenue;
 
   render();
   buildChart();
@@ -178,11 +145,11 @@ function load(){
  });
 }
 
-const revenueEl = document.getElementById("revenue");
-
-/* BOOKINGS UI */
+/* BOOKINGS */
 function render(){
+ const list = document.getElementById("list");
  list.innerHTML="";
+
  bookings.forEach(b=>{
   list.innerHTML+=`
   <div class="card">
@@ -211,17 +178,17 @@ function decline(id){
  });
 }
 
-/* REAL CALENDAR GRID */
+/* CALENDAR (FIXED FOR ALL SCREENS) */
 function buildCalendar(){
+ const calendar = document.getElementById("calendar");
  calendar.innerHTML="";
 
- // create 30 day grid
  for(let i=1;i<=30;i++){
   let div=document.createElement("div");
   div.className="day";
 
   let dayBookings = bookings.filter(b=>{
-    return b.date && b.date.endsWith("-"+String(i).padStart(2,"0"));
+    return b.date && b.date.includes("-"+String(i).padStart(2,"0"));
   });
 
   div.innerHTML = `<strong>${i}</strong>`;
