@@ -15,7 +15,7 @@ body {
   color: #fff;
   background: url('assets/Untitled(5).png') center/cover fixed;
   isolation: isolate;
-  padding-bottom: 100px; /* ✅ prevents footer overlap */
+  padding-bottom: 100px;
 }
 
 /* ENTER SCREEN */
@@ -31,7 +31,6 @@ body {
   opacity: 1;
   transition: opacity 0.8s ease, transform 0.8s ease;
 }
-
 .enter-screen h1 {
   font-family: 'Bebas Neue';
   font-size: 3rem;
@@ -40,7 +39,6 @@ body {
   animation: pulse 2s infinite;
   position: relative;
 }
-
 .enter-screen h1::before,
 .enter-screen h1::after {
   content: "ENTER SITE";
@@ -48,17 +46,14 @@ body {
   left: 0;
   width: 100%;
 }
-
 .enter-screen h1::before {
   color: red;
   animation: glitch 1s infinite;
 }
-
 .enter-screen h1::after {
   color: white;
   animation: glitch2 1.2s infinite;
 }
-
 .enter-screen.fade-out {
   opacity: 0;
   transform: scale(1.05);
@@ -70,7 +65,6 @@ body {
   0%,100% { transform: scale(1); }
   50% { transform: scale(1.1); }
 }
-
 @keyframes glitch {
   0% { transform: translate(0); }
   25% { transform: translate(-2px,2px); }
@@ -78,7 +72,6 @@ body {
   75% { transform: translate(-2px,-2px); }
   100% { transform: translate(0); }
 }
-
 @keyframes glitch2 {
   0% { transform: translate(0); }
   25% { transform: translate(2px,-2px); }
@@ -98,7 +91,6 @@ body {
   position: relative;
   z-index: 2;
 }
-
 .hero h1 {
   font-family: 'Bebas Neue';
   font-size: 4rem;
@@ -106,7 +98,6 @@ body {
   background: rgba(0,0,0,0.5);
   padding: 8px 16px;
 }
-
 .hero .mid,
 .hero .sub,
 .hero .top-role,
@@ -115,12 +106,10 @@ body {
   padding: 6px 14px;
   margin-top: 8px;
 }
-
 .hero .sub {
   font-size: 1.6rem;
   font-weight: 700;
 }
-
 .hero .top-role,
 .hero .bottom-role {
   font-family: 'Bebas Neue';
@@ -139,7 +128,6 @@ body {
   object-fit: contain;
   z-index: 1;
 }
-
 .pillar-left { left: -380px; }
 .pillar-right { right: -380px; }
 
@@ -149,7 +137,6 @@ body.play-anim .pillar-left {
 body.play-anim .pillar-right {
   animation: slideInRight 1.2s ease forwards;
 }
-
 @keyframes slideInLeft { to { left: 0; } }
 @keyframes slideInRight { to { right: 0; } }
 
@@ -162,7 +149,6 @@ body.play-anim .pillar-right {
   text-align: center;
   background: rgba(0,0,0,0.85);
 }
-
 .loyalty-section h2 {
   font-family: 'Bebas Neue';
   font-size: 3rem;
@@ -177,7 +163,6 @@ body.play-anim .pillar-right {
   position: relative;
   z-index: 2;
 }
-
 .artist {
   background: #111;
   padding: 20px;
@@ -186,17 +171,14 @@ body.play-anim .pillar-right {
   text-align: center;
   transition: transform 0.3s ease;
 }
-
 .artist:hover {
   transform: scale(1.05);
 }
-
 .artist-link {
   display: block;
   text-decoration: none;
   color: inherit;
 }
-
 .artist img {
   width: 100%;
   height: 220px;
@@ -208,13 +190,11 @@ body.play-anim .pillar-right {
 .artist-icons {
   margin-top: 10px;
 }
-
 .artist-icons a {
   margin: 0 8px;
   font-size: 1.4rem;
   color: white;
 }
-
 .artist-icons a:hover {
   color: red;
 }
@@ -224,7 +204,6 @@ body.play-anim .pillar-right {
   text-align: center;
   padding: 60px 20px;
 }
-
 .join-btn {
   padding: 14px 30px;
   background: #800000;
@@ -234,7 +213,7 @@ body.play-anim .pillar-right {
   border-radius: 8px;
 }
 
-/* FOOTER BAR */
+/* FOOTER */
 .footer-bar {
   width: 100%;
   background: black;
@@ -248,14 +227,12 @@ body.play-anim .pillar-right {
   left: 0;
   z-index: 1000;
 }
-
 .footer-bar a {
   color: white;
   text-decoration: none;
   font-family: 'Bebas Neue';
   font-size: 1.2rem;
 }
-
 .footer-bar a:hover {
   color: red;
 }
@@ -318,8 +295,6 @@ body.play-anim .pillar-right {
   </div>
 </div>
 
-
-<!-- ✅ FOOTER -->
 <div class="footer-bar">
   <a href="index.html">Home</a>
   <a href="join.html">Join</a>
