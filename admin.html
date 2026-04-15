@@ -1,143 +1,59 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>MSP Admin</title>
+<title>MSP Dashboard</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 
 <style>
-body{
-  margin:0;
-  background:#0a0a0a;
-  color:white;
-  font-family:Inter, Arial;
-}
-
-/* LAYOUT */
-.app{
-  display:flex;
-}
+body{margin:0;background:#0a0a0a;color:white;font-family:Arial}
+.app{display:flex}
 
 /* SIDEBAR */
 .sidebar{
-  width:240px;
-  background:#0f0f0f;
+  width:220px;
+  background:#111;
   height:100vh;
   padding:20px;
-  border-right:1px solid #222;
 }
-
-.sidebar h2{
-  margin-bottom:20px;
-  color:#fff;
-}
-
 .sidebar p{
-  margin:12px 0;
-  color:#aaa;
   cursor:pointer;
-  transition:.2s;
+  padding:10px;
+  border-radius:6px;
 }
-
 .sidebar p:hover{
-  color:#fff;
+  background:#800000;
 }
 
 /* MAIN */
-.main{
-  flex:1;
-}
-
-/* TOP BAR */
+.main{flex:1}
 .top{
   background:#111;
-  padding:15px 20px;
+  padding:15px;
   display:flex;
   justify-content:space-between;
-  align-items:center;
-  border-bottom:1px solid #222;
 }
+.content{padding:20px}
 
-.top button{
-  background:#800000;
-  border:none;
-  color:white;
-  padding:8px 12px;
-  cursor:pointer;
-}
-
-/* CONTENT */
-.content{
-  padding:20px;
-}
-
-/* STATS */
-.stats{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  gap:15px;
-  margin-bottom:20px;
-}
-
-.stat{
-  background:#111;
-  padding:20px;
-  border-radius:12px;
-}
-
-.stat h3{
-  margin:0;
-  font-size:1rem;
-  color:#aaa;
-}
-
-.stat p{
-  font-size:1.6rem;
-  margin-top:8px;
-}
-
-/* CARDS */
 .card{
   background:#111;
   padding:15px;
   margin:10px 0;
-  border-radius:12px;
-  transition:.2s;
+  border-radius:10px;
 }
 
-.card:hover{
-  transform:scale(1.01);
-}
-
-/* STATUS COLORS */
-.pending{color:gold}
-.accepted{color:lime}
-.declined{color:red}
-.paid{color:cyan}
-
-/* BUTTONS */
-.actions button{
-  margin:5px;
-  padding:6px 10px;
+button{
+  background:#800000;
+  color:white;
   border:none;
+  padding:6px;
+  margin:3px;
   cursor:pointer;
 }
 
-.accept-btn{background:green;color:white}
-.decline-btn{background:red;color:white}
-.paid-btn{background:#00bcd4;color:white}
-
-/* GRID SECTIONS */
-.grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:20px;
-}
-
-canvas{
-  max-height:250px;
-}
+.pending{color:gold}
+.accepted{color:lime}
+.declined{color:red}
 </style>
 </head>
 
@@ -147,62 +63,40 @@ canvas{
 
 <!-- SIDEBAR -->
 <div class="sidebar">
-  <h2>MSP Admin</h2>
-  <p>Dashboard</p>
-  <p>Bookings</p>
-  <p>Revenue</p>
-  <p>Calendar</p>
+<h2>MSP 790</h2>
+<p onclick="showSection('dashboard')">Dashboard</p>
+<p onclick="showSection('bookings')">Bookings</p>
+<p onclick="showSection('calendar')">Calendar</p>
 </div>
 
 <!-- MAIN -->
 <div class="main">
 
 <div class="top">
-  <span>Admin Dashboard</span>
-  <button onclick="logout()">Logout</button>
+<span>Admin Panel</span>
+<button onclick="logout()">Logout</button>
 </div>
 
 <div class="content">
 
-<!-- STATS -->
-<div class="stats">
-  <div class="stat">
-    <h3>Total Bookings</h3>
-    <p id="total">0</p>
-  </div>
-
-  <div class="stat">
-    <h3>Revenue</h3>
-    <p>$<span id="revenue">0</span></p>
-  </div>
-
-  <div class="stat">
-    <h3>Pending</h3>
-    <p id="pendingCount">0</p>
-  </div>
-
-  <div class="stat">
-    <h3>Accepted</h3>
-    <p id="acceptedCount">0</p>
-  </div>
-</div>
-
-<!-- CHART + CALENDAR -->
-<div class="grid">
-  <div class="card">
-    <h3>Status Overview</h3>
-    <canvas id="chart"></canvas>
-  </div>
-
-  <div class="card">
-    <h3>Calendar</h3>
-    <div id="calendar"></div>
-  </div>
+<!-- DASHBOARD -->
+<div id="dashboardSection">
+<h3>Stats</h3>
+<p>Total: <span id="total"></span></p>
+<canvas id="chart" height="120"></canvas>
 </div>
 
 <!-- BOOKINGS -->
-<h3 style="margin-top:30px;">Bookings</h3>
+<div id="bookingsSection" style="display:none">
+<h3>Bookings</h3>
 <div id="list"></div>
+</div>
+
+<!-- CALENDAR -->
+<div id="calendarSection" style="display:none">
+<h3>Calendar</h3>
+<div id="calendar"></div>
+</div>
 
 </div>
 </div>
@@ -220,38 +114,25 @@ firebase.initializeApp({
  projectId:"booking-8bc2d"
 });
 
-emailjs.init("2wR4xarDSJyemGTCQ");
-
 const db = firebase.firestore();
 let bookings = [];
+let chart;
 
 /* AUTH */
 firebase.auth().onAuthStateChanged(user=>{
- if(!user){
-   location="login.html";
- } else {
-   load();
- }
+ if(!user){location="login.html";return;}
+ load();
 });
 
 /* LOAD DATA */
 function load(){
  db.collection("bookings").onSnapshot(snap=>{
-  bookings=[];
-  let revenue=0;
-
+  bookings = [];
   snap.forEach(doc=>{
-   let d=doc.data();
-   if(d.status==="accepted") revenue += d.price || 0;
-   bookings.push({id:doc.id,...d});
+   bookings.push({id:doc.id,...doc.data()});
   });
 
   total.innerText = bookings.length;
-  revenueEl = document.getElementById("revenue");
-  revenueEl.innerText = revenue;
-
-  pendingCount.innerText = bookings.filter(b=>b.status==="pending").length;
-  acceptedCount.innerText = bookings.filter(b=>b.status==="accepted").length;
 
   render();
   buildChart();
@@ -259,117 +140,135 @@ function load(){
  });
 }
 
-/* RENDER BOOKINGS */
+/* BOOKINGS UI */
 function render(){
  list.innerHTML="";
-
  bookings.forEach(b=>{
-  list.innerHTML+=`
+  list.innerHTML += `
   <div class="card">
     <h3>${b.name}</h3>
     <p>${b.service}</p>
-    <p>${b.date} @ ${b.time || ""}</p>
+    <p>${b.date}</p>
     <p class="${b.status}">${b.status}</p>
-    <p class="${b.paid ? "paid":""}">
-      ${b.paid ? "PAID" : "UNPAID"}
-    </p>
 
-    <div class="actions">
-      <button class="accept-btn" onclick="accept('${b.id}')">Accept</button>
-      <button class="decline-btn" onclick="decline('${b.id}')">Decline</button>
-      <button class="paid-btn" onclick="togglePaid('${b.id}',${b.paid})">Paid</button>
-    </div>
+    <button onclick="accept('${b.id}')">Accept</button>
+    <button onclick="decline('${b.id}')">Decline</button>
   </div>`;
  });
 }
 
-/* ACTIONS */
+/* BUTTON ACTIONS */
 function accept(id){
  let price = prompt("Enter price:");
- if(price === null) return;
+ if(price===null) return;
 
  db.collection("bookings").doc(id).update({
   status:"accepted",
-  price:Number(price||0),
-  paid:false
- }).then(()=>{
-  alert("Booking accepted");
- });
+  price:Number(price||0)
+ }).then(()=>alert("Accepted"));
 }
 
 function decline(id){
  let reason = prompt("Reason?");
- if(reason === null) return;
+ if(reason===null) return;
 
  db.collection("bookings").doc(id).update({
   status:"declined",
   reason
- }).then(()=>{
-  alert("Booking declined");
+ }).then(()=>alert("Declined"));
+}
+
+/* CHART */
+function buildChart(){
+ const ctx = document.getElementById("chart");
+
+ let data = [
+  bookings.filter(b=>b.status==="pending").length,
+  bookings.filter(b=>b.status==="accepted").length,
+  bookings.filter(b=>b.status==="declined").length
+ ];
+
+ if(chart) chart.destroy();
+
+ chart = new Chart(ctx,{
+  type:"doughnut",
+  data:{
+   labels:["Pending","Accepted","Declined"],
+   datasets:[{
+    data:data,
+    backgroundColor:["gold","lime","red"]
+   }]
+  },
+  options:{
+   plugins:{
+    legend:{labels:{color:"white"}}
+   }
+  }
  });
 }
 
-function togglePaid(id,current){
- db.collection("bookings").doc(id).update({
-  paid: !current
- }).then(()=>{
-  alert(!current ? "Marked as PAID" : "Marked as UNPAID");
- });
-}
-/* CALENDAR */
+/* REAL CALENDAR */
 function buildCalendar(){
-  const cal = document.getElementById("calendar");
-  cal.innerHTML = "";
+ const cal = document.getElementById("calendar");
+ cal.innerHTML="";
 
-  const grid = document.createElement("div");
-  grid.style.display = "grid";
-  grid.style.gridTemplateColumns = "repeat(7, 1fr)";
-  grid.style.gap = "10px";
+ const grid = document.createElement("div");
+ grid.style.display="grid";
+ grid.style.gridTemplateColumns="repeat(7,1fr)";
+ grid.style.gap="10px";
 
-  const days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-  days.forEach(d=>{
-    let el = document.createElement("div");
-    el.innerHTML = `<strong>${d}</strong>`;
-    el.style.textAlign = "center";
-    grid.appendChild(el);
+ const days=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+ days.forEach(d=>{
+  let el=document.createElement("div");
+  el.innerHTML=`<strong>${d}</strong>`;
+  el.style.textAlign="center";
+  grid.appendChild(el);
+ });
+
+ let date=new Date();
+ date.setDate(1);
+
+ let startDay=date.getDay();
+
+ for(let i=0;i<startDay;i++){
+  grid.appendChild(document.createElement("div"));
+ }
+
+ let month=date.getMonth();
+
+ while(date.getMonth()===month){
+  let box=document.createElement("div");
+  box.style.background="#111";
+  box.style.padding="10px";
+  box.style.borderRadius="8px";
+  box.style.minHeight="80px";
+
+  let formatted=date.toISOString().split("T")[0];
+
+  box.innerHTML=`<strong>${date.getDate()}</strong><br>`;
+
+  bookings.forEach(b=>{
+   if(b.date===formatted){
+    box.innerHTML+=`<div style="font-size:12px;color:lime">${b.name}</div>`;
+   }
   });
 
-  let date = new Date();
-  date.setDate(1);
+  grid.appendChild(box);
+  date.setDate(date.getDate()+1);
+ }
 
-  let startDay = date.getDay();
+ cal.appendChild(grid);
+}
 
-  // empty slots before month starts
-  for(let i=0;i<startDay;i++){
-    grid.appendChild(document.createElement("div"));
-  }
+/* SIDEBAR NAV */
+function showSection(section){
+ document.getElementById("dashboardSection").style.display="none";
+ document.getElementById("bookingsSection").style.display="none";
+ document.getElementById("calendarSection").style.display="none";
 
-  let month = date.getMonth();
-
-  while(date.getMonth() === month){
-    let dayBox = document.createElement("div");
-    dayBox.style.background = "#111";
-    dayBox.style.padding = "10px";
-    dayBox.style.borderRadius = "8px";
-    dayBox.style.minHeight = "80px";
-
-    let dayNum = date.getDate();
-
-    dayBox.innerHTML = `<strong>${dayNum}</strong><br>`;
-
-    // add bookings to that day
-    bookings.forEach(b=>{
-      if(b.date === date.toISOString().split("T")[0]){
-        dayBox.innerHTML += `<div style="font-size:12px;color:lime;">${b.name}</div>`;
-      }
-    });
-
-    grid.appendChild(dayBox);
-
-    date.setDate(date.getDate()+1);
-  }
-
-  cal.appendChild(grid);
+ if(section==="dashboard") dashboardSection.style.display="block";
+ if(section==="bookings") bookingsSection.style.display="block";
+ if(section==="calendar") calendarSection.style.display="block";
 }
 
 /* LOGOUT */
