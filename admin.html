@@ -7,14 +7,7 @@
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 
 <style>
-body{
-  margin:0;
-  background:#0a0a0a;
-  color:white;
-  font-family:Arial;
-}
-
-/* LAYOUT */
+body{margin:0;background:#0a0a0a;color:white;font-family:Arial}
 .app{display:flex}
 
 /* SIDEBAR */
@@ -23,106 +16,71 @@ body{
   background:#0d0d0d;
   height:100vh;
   padding:20px;
-  border-right:1px solid #222;
 }
-
-.sidebar h2{
-  margin-bottom:20px;
-}
-
 .sidebar p{
+  cursor:pointer;
   margin:12px 0;
   color:#aaa;
-  cursor:pointer;
-  transition:.2s;
 }
-
-.sidebar p:hover{
-  color:white;
-}
+.sidebar p:hover{color:white}
 
 /* MAIN */
 .main{flex:1}
-
 .top{
   background:#111;
   padding:15px;
   display:flex;
   justify-content:space-between;
-  align-items:center;
 }
 
-/* CONTENT */
-.content{
-  padding:20px;
-  max-width:1100px;
-  margin:auto;
-}
-
-/* STATS */
-.stats{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:15px;
-}
-
-.stat-card{
-  background:#111;
-  padding:15px;
-  border-radius:10px;
-  box-shadow:0 0 10px rgba(128,0,0,0.2);
-}
+/* SECTIONS */
+.section{display:none;padding:20px}
+.active{display:block}
 
 /* CARDS */
 .card{
   background:#111;
   padding:15px;
-  margin:12px 0;
+  margin:10px 0;
   border-radius:10px;
-  transition:.2s;
 }
 
-.card:hover{
-  transform:scale(1.02);
-}
-
-/* BUTTONS */
 button{
   background:#800000;
   color:white;
   border:none;
-  padding:6px 10px;
+  padding:6px;
   margin:4px;
   cursor:pointer;
-  border-radius:6px;
 }
-
-button:hover{background:red}
 
 /* STATUS */
 .pending{color:gold}
 .accepted{color:lime}
 .declined{color:red}
-.paid{color:cyan}
 
 /* CHART FIX */
-#chart{
-  max-width:300px;
-  margin:20px auto;
-}
+#chart{max-width:300px;margin:auto}
 
-/* CALENDAR */
-.calendar-grid{
+/* REAL CALENDAR */
+.calendar{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:10px;
+  grid-template-columns:repeat(7,1fr);
+  gap:8px;
 }
 
-.calendar-item{
+.day{
   background:#111;
   padding:10px;
-  border-radius:8px;
-  font-size:0.9rem;
+  border-radius:6px;
+  min-height:80px;
+  font-size:12px;
+}
+
+.day strong{
+  display:block;
+  margin-bottom:5px;
+  color:#aaa;
 }
 </style>
 </head>
@@ -134,9 +92,9 @@ button:hover{background:red}
 <!-- SIDEBAR -->
 <div class="sidebar">
   <h2>⚡ MSP 790</h2>
-  <p>📊 Dashboard</p>
-  <p>📦 Bookings</p>
-  <p>💰 Revenue</p>
+  <p onclick="show('dashboard')">📊 Dashboard</p>
+  <p onclick="show('bookings')">📦 Bookings</p>
+  <p onclick="show('calendarSection')">📅 Calendar</p>
 </div>
 
 <!-- MAIN -->
@@ -147,33 +105,26 @@ button:hover{background:red}
   <button onclick="logout()">🚪 Logout</button>
 </div>
 
-<div class="content">
-
-<!-- STATS -->
-<div class="stats">
-  <div class="stat-card">
-    <h3>📦 Total Bookings</h3>
-    <h2 id="total">0</h2>
-  </div>
-
-  <div class="stat-card">
-    <h3>💰 Revenue</h3>
-    <h2>$<span id="revenue">0</span></h2>
-  </div>
+<!-- DASHBOARD -->
+<div id="dashboard" class="section active">
+  <h3>📊 Stats</h3>
+  <p>Total: <span id="total"></span></p>
+  <p>Revenue: $<span id="revenue"></span></p>
+  <canvas id="chart"></canvas>
 </div>
-
-<!-- CHART -->
-<canvas id="chart"></canvas>
 
 <!-- BOOKINGS -->
-<h3>📦 Bookings</h3>
-<div id="list"></div>
+<div id="bookings" class="section">
+  <h3>📦 Bookings</h3>
+  <div id="list"></div>
+</div>
 
 <!-- CALENDAR -->
-<h3>📅 Schedule</h3>
-<div class="calendar-grid" id="calendar"></div>
-
+<div id="calendarSection" class="section">
+  <h3>📅 Schedule</h3>
+  <div class="calendar" id="calendar"></div>
 </div>
+
 </div>
 </div>
 
@@ -194,13 +145,19 @@ emailjs.init("2wR4xarDSJyemGTCQ");
 const db=firebase.firestore();
 let bookings=[];
 
+/* SIDEBAR NAV */
+function show(id){
+ document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
+}
+
 /* AUTH */
 firebase.auth().onAuthStateChanged(user=>{
  if(!user){location="login.html";return;}
  load();
 });
 
-/* LOAD */
+/* LOAD DATA */
 function load(){
  db.collection("bookings").onSnapshot(snap=>{
   bookings=[];
@@ -213,7 +170,7 @@ function load(){
   });
 
   total.innerText=bookings.length;
-  document.getElementById("revenue").innerText=revenue;
+  revenueEl.innerText=revenue;
 
   render();
   buildChart();
@@ -221,10 +178,11 @@ function load(){
  });
 }
 
+const revenueEl = document.getElementById("revenue");
+
 /* BOOKINGS UI */
 function render(){
  list.innerHTML="";
-
  bookings.forEach(b=>{
   list.innerHTML+=`
   <div class="card">
@@ -232,60 +190,48 @@ function render(){
     <p>🎯 ${b.service}</p>
     <p>📅 ${b.date}</p>
     <p class="${b.status}">📌 ${b.status}</p>
-    <p>${b.paid?"💰 Paid":"❌ Unpaid"}</p>
-
-    <button onclick="accept('${b.id}')">✅ Accept</button>
-    <button onclick="decline('${b.id}')">❌ Decline</button>
-    <button onclick="togglePaid('${b.id}',${b.paid})">💵 Paid</button>
+    <button onclick="accept('${b.id}')">✅</button>
+    <button onclick="decline('${b.id}')">❌</button>
   </div>`;
  });
 }
 
 /* ACTIONS */
 function accept(id){
- let b=bookings.find(x=>x.id===id);
- let price=prompt("Enter price:");
+ let price=prompt("Price?");
  db.collection("bookings").doc(id).update({
   status:"accepted",
-  price:Number(price||0),
-  paid:false
- });
-
- emailjs.send("service_0d8mpyv","template_ddmaqku",{
-  ...b,
-  status:"ACCEPTED",
-  message:`Approved. Price: $${price}`
+  price:Number(price||0)
  });
 }
 
 function decline(id){
- let b=bookings.find(x=>x.id===id);
- let reason=prompt("Reason?");
  db.collection("bookings").doc(id).update({
-  status:"declined",
-  reason
- });
-
- emailjs.send("service_0d8mpyv","template_ddmaqku",{
-  ...b,
-  status:"DECLINED",
-  message:reason
+  status:"declined"
  });
 }
 
-function togglePaid(id,current){
- db.collection("bookings").doc(id).update({paid:!current});
-}
-
-/* CALENDAR */
+/* REAL CALENDAR GRID */
 function buildCalendar(){
  calendar.innerHTML="";
- bookings.forEach(b=>{
+
+ // create 30 day grid
+ for(let i=1;i<=30;i++){
   let div=document.createElement("div");
-  div.className="calendar-item";
-  div.innerHTML=`📅 ${b.date}<br>${b.name}`;
+  div.className="day";
+
+  let dayBookings = bookings.filter(b=>{
+    return b.date && b.date.endsWith("-"+String(i).padStart(2,"0"));
+  });
+
+  div.innerHTML = `<strong>${i}</strong>`;
+
+  dayBookings.forEach(b=>{
+    div.innerHTML += `<div>📌 ${b.name}</div>`;
+  });
+
   calendar.appendChild(div);
- });
+ }
 }
 
 /* CHART */
@@ -309,9 +255,7 @@ function buildChart(){
    }]
   },
   options:{
-    plugins:{
-      legend:{labels:{color:"white"}}
-    }
+    plugins:{legend:{labels:{color:"white"}}}
   }
  });
 }
