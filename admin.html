@@ -1,109 +1,214 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>MSP Dashboard</title>
+<title>MSP Admin</title>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
 <style>
-body{margin:0;background:#0a0a0a;color:white;font-family:Arial}
-.app{display:flex}
+body{
+  margin:0;
+  background:#0a0a0a;
+  color:white;
+  font-family:Inter, Arial;
+}
+
+/* LAYOUT */
+.app{
+  display:flex;
+}
+
+/* SIDEBAR */
 .sidebar{
   width:240px;
-  background:#111;
+  background:#0f0f0f;
   height:100vh;
   padding:20px;
   border-right:1px solid #222;
 }
-.sidebar h2{color:red}
-.sidebar p{cursor:pointer;color:#aaa}
-.sidebar p:hover{color:white}
 
-.main{flex:1}
+.sidebar h2{
+  margin-bottom:20px;
+  color:#fff;
+}
+
+.sidebar p{
+  margin:12px 0;
+  color:#aaa;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.sidebar p:hover{
+  color:#fff;
+}
+
+/* MAIN */
+.main{
+  flex:1;
+}
+
+/* TOP BAR */
 .top{
   background:#111;
-  padding:15px;
+  padding:15px 20px;
   display:flex;
   justify-content:space-between;
+  align-items:center;
   border-bottom:1px solid #222;
 }
 
-.content{padding:20px}
+.top button{
+  background:#800000;
+  border:none;
+  color:white;
+  padding:8px 12px;
+  cursor:pointer;
+}
 
-.grid{
+/* CONTENT */
+.content{
+  padding:20px;
+}
+
+/* STATS */
+.stats{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
   gap:15px;
+  margin-bottom:20px;
 }
 
 .stat{
   background:#111;
   padding:20px;
-  border-radius:10px;
+  border-radius:12px;
 }
 
+.stat h3{
+  margin:0;
+  font-size:1rem;
+  color:#aaa;
+}
+
+.stat p{
+  font-size:1.6rem;
+  margin-top:8px;
+}
+
+/* CARDS */
 .card{
   background:#111;
   padding:15px;
   margin:10px 0;
-  border-radius:10px;
+  border-radius:12px;
+  transition:.2s;
 }
 
+.card:hover{
+  transform:scale(1.01);
+}
+
+/* STATUS COLORS */
 .pending{color:gold}
 .accepted{color:lime}
 .declined{color:red}
+.paid{color:cyan}
+
+/* BUTTONS */
+.actions button{
+  margin:5px;
+  padding:6px 10px;
+  border:none;
+  cursor:pointer;
+}
+
+.accept-btn{background:green;color:white}
+.decline-btn{background:red;color:white}
+.paid-btn{background:#00bcd4;color:white}
+
+/* GRID SECTIONS */
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+}
+
+canvas{
+  max-height:250px;
+}
 </style>
 </head>
+
 <body>
 
 <div class="app">
+
+<!-- SIDEBAR -->
 <div class="sidebar">
-<h2>MSP 790</h2>
-<button onclick="setTab('bookings')">Bookings</button>
-<button onclick="setTab('calendar')">Calendar</button>
-<button onclick="setTab('stats')">Stats</button>
+  <h2>MSP 790</h2>
+  <p>Dashboard</p>
+  <p>Bookings</p>
+  <p>Revenue</p>
+  <p>Calendar</p>
 </div>
 
+<!-- MAIN -->
 <div class="main">
+
 <div class="top">
-<span>Admin Dashboard</span>
-<button onclick="logout()">Logout</button>
+  <span>Admin Dashboard</span>
+  <button onclick="logout()">Logout</button>
 </div>
 
 <div class="content">
 
-<div>
-<input id="search" placeholder="Search">
-<select id="serviceFilter">
-<option value="">All Services</option>
-<option>Video Editing</option>
-<option>Video Production</option>
-<option>Filming</option>
-<option>Audio Production</option>
-<option>Dance Lessons</option>
-<option>Website Creation</option>
-</select>
+<!-- STATS -->
+<div class="stats">
+  <div class="stat">
+    <h3>Total Bookings</h3>
+    <p id="total">0</p>
+  </div>
 
-<select id="statusFilter">
-<option value="">All Status</option>
-<option>pending</option>
-<option>accepted</option>
-<option>declined</option>
-</select>
+  <div class="stat">
+    <h3>Revenue</h3>
+    <p>$<span id="revenue">0</span></p>
+  </div>
+
+  <div class="stat">
+    <h3>Pending</h3>
+    <p id="pendingCount">0</p>
+  </div>
+
+  <div class="stat">
+    <h3>Accepted</h3>
+    <p id="acceptedCount">0</p>
+  </div>
 </div>
 
-<div id="statsTab">
-<p>Total: <span id="total"></span></p>
-<p>Revenue: $<span id="revenue"></span></p>
-<canvas id="chart" height="120"></canvas>
+<!-- CHART + CALENDAR -->
+<div class="grid">
+  <div class="card">
+    <h3>Status Overview</h3>
+    <canvas id="chart"></canvas>
+  </div>
+
+  <div class="card">
+    <h3>Calendar</h3>
+    <div id="calendar"></div>
+  </div>
 </div>
 
-<div id="bookingsTab"></div>
-<div id="calendarTab"></div>
+<!-- BOOKINGS -->
+<h3 style="margin-top:30px;">Bookings</h3>
+<div id="list"></div>
 
 </div>
 </div>
 </div>
 
+<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
@@ -117,94 +222,126 @@ firebase.initializeApp({
 
 emailjs.init("2wR4xarDSJyemGTCQ");
 
-const db=firebase.firestore();
-let bookings=[];
+const db = firebase.firestore();
+let bookings = [];
 
+/* AUTH */
 firebase.auth().onAuthStateChanged(user=>{
- if(!user){location="login.html";return;}
- load();
+ if(!user){
+   location="login.html";
+ } else {
+   load();
+ }
 });
 
+/* LOAD DATA */
 function load(){
  db.collection("bookings").onSnapshot(snap=>{
   bookings=[];
   let revenue=0;
+
   snap.forEach(doc=>{
    let d=doc.data();
-   if(d.status==="accepted") revenue+=d.price||0;
+   if(d.status==="accepted") revenue += d.price || 0;
    bookings.push({id:doc.id,...d});
   });
-  total.innerText=bookings.length;
-  document.getElementById("revenue").innerText=revenue;
+
+  total.innerText = bookings.length;
+  revenueEl = document.getElementById("revenue");
+  revenueEl.innerText = revenue;
+
+  pendingCount.innerText = bookings.filter(b=>b.status==="pending").length;
+  acceptedCount.innerText = bookings.filter(b=>b.status==="accepted").length;
+
   render();
-  chartBuild();
+  buildChart();
   buildCalendar();
  });
 }
 
+/* RENDER BOOKINGS */
 function render(){
- bookingsTab.innerHTML="";
+ list.innerHTML="";
+
  bookings.forEach(b=>{
-  bookingsTab.innerHTML+=`
+  list.innerHTML+=`
   <div class="card">
     <h3>${b.name}</h3>
     <p>${b.service}</p>
-    <p>${b.date}</p>
+    <p>${b.date} @ ${b.time || ""}</p>
     <p class="${b.status}">${b.status}</p>
-    <button onclick="accept('${b.id}')">Accept</button>
-    <select onchange="decline('${b.id}',this.value)">
-      <option value="">Decline Reason</option>
-      <option>Schedule conflict</option>
-      <option>Project not fit</option>
-      <option>Incomplete info</option>
-    </select>
+    <p class="${b.paid ? "paid":""}">
+      ${b.paid ? "PAID" : "UNPAID"}
+    </p>
+
+    <div class="actions">
+      <button class="accept-btn" onclick="accept('${b.id}')">Accept</button>
+      <button class="decline-btn" onclick="decline('${b.id}')">Decline</button>
+      <button class="paid-btn" onclick="togglePaid('${b.id}',${b.paid})">Paid</button>
+    </div>
   </div>`;
  });
 }
 
+/* ACTIONS */
 function accept(id){
- let price=prompt("Price?");
+ let price = prompt("Enter price:");
  db.collection("bookings").doc(id).update({
   status:"accepted",
-  price:Number(price||0)
+  price:Number(price||0),
+  paid:false
  });
 }
 
-function decline(id,reason){
- if(!reason) return;
+function decline(id){
+ let reason = prompt("Reason?");
  db.collection("bookings").doc(id).update({
   status:"declined",
   reason
  });
 }
 
-function buildCalendar(){
- calendarTab.innerHTML="";
- bookings.forEach(b=>{
-  calendarTab.innerHTML+=`<div class="card">${b.name} - ${b.date}</div>`;
+function togglePaid(id,current){
+ db.collection("bookings").doc(id).update({
+  paid: !current
  });
 }
 
+/* CHART */
 let chart;
-function chartBuild(){
+function buildChart(){
  let data=[
   bookings.filter(b=>b.status==="pending").length,
   bookings.filter(b=>b.status==="accepted").length,
   bookings.filter(b=>b.status==="declined").length
  ];
+
  if(chart) chart.destroy();
- chart=new Chart(document.getElementById("chart"),{
+
+ chart = new Chart(document.getElementById("chart"),{
   type:"doughnut",
-  data:{labels:["Pending","Accepted","Declined"],datasets:[{data,backgroundColor:["gold","lime","red"]}]}
+  data:{
+   labels:["Pending","Accepted","Declined"],
+   datasets:[{
+    data,
+    backgroundColor:["gold","lime","red"]
+   }]
+  }
  });
 }
 
-function setTab(tab){
- bookingsTab.style.display = tab==="bookings"?"block":"none";
- calendarTab.style.display = tab==="calendar"?"block":"none";
- statsTab.style.display = tab==="stats"?"block":"none";
+/* CALENDAR */
+function buildCalendar(){
+ calendar.innerHTML="";
+ bookings.forEach(b=>{
+  let div=document.createElement("div");
+  div.className="card";
+  div.innerHTML=`${b.name}<br>${b.date}`;
+  calendar.appendChild(div);
+ });
 }
 
+/* LOGOUT */
 function logout(){
  firebase.auth().signOut();
 }
