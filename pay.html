@@ -3,23 +3,30 @@
 <head>
 <title>Invoice</title>
 <style>
-body{background:black;color:white;text-align:center;padding:40px}
-.box{background:#111;padding:30px;border-radius:10px}
-.btn{display:block;margin:10px;padding:12px;background:#800000;color:white}
+body{background:black;color:white;font-family:Arial;text-align:center;padding:40px}
+.box{background:#111;padding:20px;border-radius:10px;margin:20px}
+button{padding:12px;background:#800000;color:white;border:none}
 </style>
 </head>
-
 <body>
 
-<div class="box">
 <h1>Invoice</h1>
-<p>Deposit Required</p>
 
-<a class="btn" href="https://cash.app/$YourTag">Pay CashApp</a>
-<a class="btn" href="https://paypal.me/yourname">Pay PayPal</a>
-
-<p style="color:red">Wait for confirmation before paying</p>
+<div class="box">
+<p>Send payment to:</p>
+<p>CashApp: $YourTag</p>
+<p>Zelle: your@email.com</p>
+<p>PayPal: your@email.com</p>
 </div>
+
+<button onclick="pay()">Proceed to Payment</button>
+
+<script>
+function pay(){
+ alert("Redirecting to payment...");
+ window.open("https://cash.app","_blank");
+}
+</script>
 
 </body>
 </html>
