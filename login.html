@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Login</title>
+<title>Admin Login</title>
 <style>
-body{background:black;color:white;display:flex;justify-content:center;align-items:center;height:100vh;font-family:Arial}
-.box{background:#111;padding:30px;border-radius:10px;width:300px}
-input,button{width:100%;padding:10px;margin:10px 0}
-button{background:#800000;color:white;border:none}
+body{background:#0a0a0a;color:white;display:flex;justify-content:center;align-items:center;height:100vh;font-family:Arial}
+.box{background:#111;padding:30px;border-radius:12px;width:320px;box-shadow:0 0 20px rgba(255,0,0,0.3)}
+input,button{width:100%;padding:12px;margin:10px 0}
+button{background:#800000;color:white;border:none;cursor:pointer}
 </style>
 </head>
 <body>
 
 <div class="box">
-<h2>Admin Login</h2>
+<h2>MSP Admin</h2>
 <input id="email" placeholder="Email">
 <input id="pass" type="password" placeholder="Password">
 <button onclick="login()">Login</button>
@@ -23,25 +23,21 @@ button{background:#800000;color:white;border:none}
 
 <script>
 firebase.initializeApp({
-  apiKey: "AIzaSyC1pKUto9-16yt6jcYxzyPOfF4VBWeAit4",
-  authDomain: "booking-8bc2d.firebaseapp.com",
-  projectId: "booking-8bc2d"
+  apiKey:"AIzaSyC1pKUto9-16yt6jcYxzyPOfF4VBWeAit4",
+  authDomain:"booking-8bc2d.firebaseapp.com",
+  projectId:"booking-8bc2d"
+});
+
+firebase.auth().onAuthStateChanged(user=>{
+ if(user){
+   location="admin.html";
+ }
 });
 
 function login(){
-  firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-  .then(() => {
-    return firebase.auth().signInWithEmailAndPassword(
-      document.getElementById("email").value,
-      document.getElementById("pass").value
-    );
-  })
-  .then(() => {
-    window.location.href = "admin.html";
-  })
-  .catch(err => {
-    alert(err.message);
-  });
+ firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+ .then(()=>firebase.auth().signInWithEmailAndPassword(email.value, pass.value))
+ .catch(err=>alert(err.message));
 }
 </script>
 
