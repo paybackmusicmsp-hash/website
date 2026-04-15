@@ -1,27 +1,66 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Dashboard</title>
+<title>MSP Dashboard</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 
 <style>
-body{background:#0a0a0a;color:white;font-family:Arial}
-.header{background:#111;padding:15px}
-.card{background:#111;padding:15px;margin:15px;border-radius:10px}
-button{margin:5px;padding:8px;background:#800000;color:white;border:none}
+body{margin:0;background:#0a0a0a;color:white;font-family:Arial}
+.app{display:flex}
+.sidebar{width:220px;background:#111;height:100vh;padding:20px}
+.main{flex:1}
+.top{background:#111;padding:15px;display:flex;justify-content:space-between}
+.content{padding:20px}
+
+.card{background:#111;padding:15px;margin:10px 0;border-radius:10px;transition:.3s}
+.card:hover{transform:scale(1.02)}
+
+button{background:#800000;color:white;border:none;padding:6px;margin:3px;cursor:pointer}
+
 .pending{color:gold}
 .accepted{color:lime}
 .declined{color:red}
+.paid{color:cyan}
 </style>
 </head>
 
 <body>
 
-<div class="header">
-Admin Dashboard
+<div class="app">
+
+<div class="sidebar">
+<h2>MSP 790</h2>
+<p>Dashboard</p>
+<p>Bookings</p>
+<p>Revenue</p>
+</div>
+
+<div class="main">
+
+<div class="top">
+<span>Admin Panel</span>
 <button onclick="logout()">Logout</button>
 </div>
 
+<div class="content">
+
+<h3>Stats</h3>
+<p>Total: <span id="total"></span></p>
+<p>Revenue: $<span id="revenue"></span></p>
+
+<canvas id="chart"></canvas>
+
+<h3>Bookings</h3>
 <div id="list"></div>
+
+<h3>Calendar</h3>
+<div id="calendar"></div>
+
+</div>
+</div>
+</div>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
@@ -29,59 +68,129 @@ Admin Dashboard
 
 <script>
 firebase.initializeApp({
-  apiKey: "AIzaSyC1pKUto9-16yt6jcYxzyPOfF4VBWeAit4",
-  authDomain: "booking-8bc2d.firebaseapp.com",
-  projectId: "booking-8bc2d"
+ apiKey:"AIzaSyC1pKUto9-16yt6jcYxzyPOfF4VBWeAit4",
+ authDomain:"booking-8bc2d.firebaseapp.com",
+ projectId:"booking-8bc2d"
 });
 
-const db = firebase.firestore();
+emailjs.init("2wR4xarDSJyemGTCQ");
 
-// 🔐 THIS FIXES YOUR LOOP ISSUE
-firebase.auth().onAuthStateChanged(user => {
-  if (user) {
-    console.log("Logged in:", user.email);
-    loadBookings();
-  } else {
-    console.log("Not logged in");
-    setTimeout(() => {
-      if (!firebase.auth().currentUser) {
-        window.location.href = "login.html";
-      }
-    }, 500); // gives Firebase time to restore session
-  }
+const db=firebase.firestore();
+let bookings=[];
+
+firebase.auth().onAuthStateChanged(user=>{
+ if(!user){location="login.html";return;}
+ load();
 });
 
-function loadBookings(){
-  db.collection("bookings").onSnapshot(snap=>{
-    list.innerHTML="";
-    snap.forEach(doc=>{
-      let d=doc.data();
+function load(){
+ db.collection("bookings").onSnapshot(snap=>{
+  bookings=[];
+  let revenue=0;
 
-      list.innerHTML += `
-      <div class="card">
-        <h3>${d.name}</h3>
-        <p>${d.service}</p>
-        <p>${d.date}</p>
-        <p class="${d.status}">${d.status}</p>
-
-        <button onclick="accept('${doc.id}','${d.email}')">Accept</button>
-        <button onclick="decline('${doc.id}','${d.email}')">Decline</button>
-      </div>`;
-    });
+  snap.forEach(doc=>{
+   let d=doc.data();
+   if(d.status==="accepted") revenue+=d.price||0;
+   bookings.push({id:doc.id,...d});
   });
+
+  total.innerText=bookings.length;
+  document.getElementById("revenue").innerText=revenue;
+
+  render();
+  chartBuild();
+  buildCalendar();
+ });
 }
 
-function accept(id,email){
-  db.collection("bookings").doc(id).update({status:"accepted"});
-  alert("Accepted + email sent (hook EmailJS next)");
+function render(){
+ list.innerHTML="";
+ bookings.forEach(b=>{
+  list.innerHTML+=`
+  <div class="card">
+    <h3>${b.name}</h3>
+    <p>${b.service}</p>
+    <p>${b.date}</p>
+    <p class="${b.status}">${b.status}</p>
+    <p>${b.paid?"PAID":"UNPAID"}</p>
+
+    <button onclick="accept('${b.id}')">Accept</button>
+    <button onclick="decline('${b.id}')">Decline</button>
+    <button onclick="togglePaid('${b.id}',${b.paid})">Paid</button>
+  </div>`;
+ });
 }
 
-function decline(id,email){
-  db.collection("bookings").doc(id).update({status:"declined"});
+function sendEmail(data){
+ emailjs.send("service_0d8mpyv","template_ddmaqku",data);
+}
+
+function accept(id){
+ let b=bookings.find(x=>x.id===id);
+ let price=prompt("Price?");
+ db.collection("bookings").doc(id).update({
+  status:"accepted",
+  price:Number(price||0),
+  paid:false
+ });
+
+ sendEmail({
+  ...b,
+  status:"ACCEPTED",
+  message:`Approved. Price: $${price}`
+ });
+}
+
+function decline(id){
+ let b=bookings.find(x=>x.id===id);
+ let reason=prompt("Reason?");
+ db.collection("bookings").doc(id).update({
+  status:"declined",
+  reason
+ });
+
+ sendEmail({
+  ...b,
+  status:"DECLINED",
+  message:reason
+ });
+}
+
+function togglePaid(id,current){
+ db.collection("bookings").doc(id).update({paid:!current});
+}
+
+function buildCalendar(){
+ calendar.innerHTML="";
+ bookings.forEach(b=>{
+  let div=document.createElement("div");
+  div.className="card";
+  div.innerHTML=`${b.name}<br>${b.date}`;
+  calendar.appendChild(div);
+ });
+}
+
+let chart;
+function chartBuild(){
+ let data=[
+  bookings.filter(b=>b.status==="pending").length,
+  bookings.filter(b=>b.status==="accepted").length,
+  bookings.filter(b=>b.status==="declined").length
+ ];
+
+ if(chart)chart.destroy();
+
+ chart=new Chart(document.getElementById("chart"),{
+  type:"doughnut",
+  data:{
+   labels:["Pending","Accepted","Declined"],
+   datasets:[{data,backgroundColor:["gold","lime","red"]}]
+  }
+ });
 }
 
 function logout(){
-  firebase.auth().signOut();
+ firebase.auth().signOut();
 }
 </script>
 
