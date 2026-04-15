@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<body style="background:black;color:white">
+
+<h2>Your Bookings</h2>
+<div id="myBookings"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+<script>
+firebase.initializeApp({
+ apiKey:"AIzaSy...",
+ authDomain:"booking-8bc2d.firebaseapp.com",
+ projectId:"booking-8bc2d"
+});
+
+const db = firebase.firestore();
+
+firebase.auth().onAuthStateChanged(user=>{
+ if(!user) return location="client-login.html";
+
+ db.collection("bookings")
+ .where("email","==",user.email)
+ .onSnapshot(snap=>{
+   myBookings.innerHTML="";
+
+   snap.forEach(doc=>{
+     let b=doc.data();
+
+     myBookings.innerHTML+=`
+     <div>
+       <h3>${b.service}</h3>
+       <p>${b.date}</p>
+       <p>${b.status}</p>
+       <p>${b.paid?"PAID":"UNPAID"}</p>
+     </div>`;
+   });
+ });
+});
+</script>
+
+</body>
+</html>
