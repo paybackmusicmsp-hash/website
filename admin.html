@@ -7,12 +7,47 @@
 <style>
 body{margin:0;background:#0a0a0a;color:white;font-family:Arial}
 .app{display:flex}
-.sidebar{width:220px;background:#111;height:100vh;padding:20px}
-.sidebar button{width:100%;margin:5px 0;padding:10px;background:#1a1a1a;border:none;color:white}
+.sidebar{
+  width:240px;
+  background:#111;
+  height:100vh;
+  padding:20px;
+  border-right:1px solid #222;
+}
+.sidebar h2{color:red}
+.sidebar p{cursor:pointer;color:#aaa}
+.sidebar p:hover{color:white}
+
 .main{flex:1}
-.top{background:#111;padding:15px;display:flex;justify-content:space-between}
+.top{
+  background:#111;
+  padding:15px;
+  display:flex;
+  justify-content:space-between;
+  border-bottom:1px solid #222;
+}
+
 .content{padding:20px}
-.card{background:#111;padding:15px;margin:10px 0;border-radius:10px}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:15px;
+}
+
+.stat{
+  background:#111;
+  padding:20px;
+  border-radius:10px;
+}
+
+.card{
+  background:#111;
+  padding:15px;
+  margin:10px 0;
+  border-radius:10px;
+}
+
 .pending{color:gold}
 .accepted{color:lime}
 .declined{color:red}
