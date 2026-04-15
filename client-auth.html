@@ -56,6 +56,14 @@ function submitAuth(){
     .catch(err=>alert(err.message));
   }
 }
+ firebase.auth().createUserWithEmailAndPassword(email, pass)
+.then(userCred => {
+  return db.collection("users").doc(userCred.user.uid).set({
+    email: email,
+    role: "client",
+    created: new Date()
+  });
+})
 </script>
 
 </body>
