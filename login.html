@@ -4,15 +4,15 @@
 <title>Admin Login</title>
 <style>
 body{background:#0a0a0a;color:white;display:flex;justify-content:center;align-items:center;height:100vh;font-family:Arial}
-.box{background:#111;padding:30px;border-radius:12px;width:320px;box-shadow:0 0 20px rgba(255,0,0,0.3)}
+.box{background:#111;padding:30px;border-radius:12px;width:320px}
 input,button{width:100%;padding:12px;margin:10px 0}
-button{background:#800000;color:white;border:none;cursor:pointer}
+button{background:#800000;color:white;border:none}
 </style>
 </head>
 <body>
 
 <div class="box">
-<h2>MSP Admin</h2>
+<h2>Admin Login</h2>
 <input id="email" placeholder="Email">
 <input id="pass" type="password" placeholder="Password">
 <button onclick="login()">Login</button>
@@ -20,23 +20,30 @@ button{background:#800000;color:white;border:none;cursor:pointer}
 
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
 <script>
 firebase.initializeApp({
-  apiKey:"AIzaSyC1pKUto9-16yt6jcYxzyPOfF4VBWeAit4",
-  authDomain:"booking-8bc2d.firebaseapp.com",
-  projectId:"booking-8bc2d"
+ apiKey:"AIzaSyC1pKUto9-16yt6jcYxzyPOfF4VBWeAit4",
+ authDomain:"booking-8bc2d.firebaseapp.com",
+ projectId:"booking-8bc2d"
 });
 
-firebase.auth().onAuthStateChanged(user=>{
-  if(user){ location="admin.html"; }
-});
+const db = firebase.firestore();
 
 function login(){
-  firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-  .then(()=>firebase.auth().signInWithEmailAndPassword(email.value, pass.value))
-  .then(()=>location="admin.html")
-  .catch(err=>alert(err.message));
+ firebase.auth().signInWithEmailAndPassword(email.value, pass.value)
+ .then(async cred=>{
+   const doc = await db.collection("users").doc(cred.user.uid).get();
+
+   if(doc.exists && doc.data().role === "admin"){
+     location="admin.html";
+   } else {
+     alert("Not an admin");
+     firebase.auth().signOut();
+   }
+ })
+ .catch(err=>alert(err.message));
 }
 </script>
 
