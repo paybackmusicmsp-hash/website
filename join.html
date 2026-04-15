@@ -1,158 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Join The Label</title>
-
+<title>Join</title>
 <style>
-body {
-  margin:0;
-  font-family: 'Inter', sans-serif;
-  background: linear-gradient(180deg, #000, #0a0a0a);
-  color:white;
-}
-
-.container {
-  max-width:700px;
-  margin:auto;
-  padding:60px 20px;
-}
-
-h1 {
-  font-size:2.5rem;
-  text-align:center;
-  margin-bottom:10px;
-}
-
-.hero-text {
-  text-align:center;
-  color:#ccc;
-  margin-bottom:30px;
-  line-height:1.6;
-}
-
-/* CARD UI */
-.card {
-  background:#111;
-  padding:25px;
-  border-radius:12px;
-  box-shadow:0 0 20px rgba(255,0,0,0.1);
-}
-
-/* INPUTS */
-input, textarea, select {
-  width:100%;
-  padding:12px;
-  margin:10px 0;
-  background:#0a0a0a;
-  border:1px solid #222;
-  color:white;
-  border-radius:6px;
-}
-
-input:focus, textarea:focus, select:focus {
-  outline:none;
-  border-color:#800000;
-}
-
-/* BUTTON */
-button {
-  width:100%;
-  padding:14px;
-  background:#800000;
-  border:none;
-  color:white;
-  font-size:1rem;
-  border-radius:8px;
-  cursor:pointer;
-  transition:0.3s;
-}
-
-button:hover {
-  background:#a00000;
-}
-
-/* STATUS MSG */
-#msg {
-  margin-top:15px;
-  text-align:center;
-  color:lime;
-}
+body{background:black;color:white;font-family:Arial}
+.container{max-width:700px;margin:auto;padding:40px}
+.card{background:#111;padding:20px;border-radius:10px}
+input,textarea,select{width:100%;padding:10px;margin:10px 0;background:#0a0a0a;color:white;border:1px solid #222}
+button{width:100%;padding:12px;background:#800000;color:white;border:none}
 </style>
 </head>
-
 <body>
 
 <div class="container">
-
 <h1>Join The Label</h1>
 
-<p class="hero-text">
-starmoneymsp.com isn't just a collective — it’s a platform for serious creators ready to elevate their craft. 
-We work with artists, producers, filmmakers, and innovators who are committed to growth, discipline, and building something real. 
+<p>
+starmoneymsp.com isn't just a collective — it’s a platform for serious creators ready to elevate their craft.
+We work with artists, producers, filmmakers, and innovators who are committed to growth, discipline, and building something real.
 If you’re looking for more than exposure — if you’re ready for structure, collaboration, and opportunity — this is where you step in.
 </p>
 
 <div class="card">
-
 <form id="joinForm">
-
 <input name="name" placeholder="Full Name" required>
-<input name="email" type="email" placeholder="Email" required>
-
+<input name="email" placeholder="Email" required>
 <select name="role" required>
-<option value="">Select Your Role</option>
+<option value="">Role</option>
 <option>Artist</option>
 <option>Producer</option>
 <option>Videographer</option>
 <option>Dancer</option>
 <option>Web Designer</option>
 </select>
-
-<textarea name="bio" placeholder="Tell us about yourself..."></textarea>
-
-<input name="link" placeholder="Portfolio / Instagram / YouTube">
-
-<button type="submit">Submit Application</button>
-
+<textarea name="bio" placeholder="Bio"></textarea>
+<input name="link" placeholder="Portfolio">
+<button type="submit">Submit</button>
 </form>
-
 <p id="msg"></p>
-
 </div>
 </div>
 
-<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
 <script>
 firebase.initializeApp({
-  apiKey:"AIzaSyC1pKUto9-16yt6jcYxzyPOfF4VBWeAit4",
-  authDomain:"booking-8bc2d.firebaseapp.com",
-  projectId:"booking-8bc2d"
+ apiKey:"AIzaSyC1pKUto9-16yt6jcYxzyPOfF4VBWeAit4",
+ authDomain:"booking-8bc2d.firebaseapp.com",
+ projectId:"booking-8bc2d"
 });
+const db=firebase.firestore();
 
-const db = firebase.firestore();
-
-joinForm.addEventListener("submit", async e=>{
-  e.preventDefault();
-
-  let f = e.target;
-
-  await db.collection("applications").add({
-    name:f.name.value,
-    email:f.email.value,
-    role:f.role.value,
-    bio:f.bio.value,
-    link:f.link.value,
-    status:"pending",
-    created:new Date()
-  });
-
-  msg.innerText = "Application submitted. We’ll be in touch.";
-  joinForm.reset();
+joinForm.addEventListener("submit",async e=>{
+ e.preventDefault();
+ await db.collection("applications").add({
+  name:joinForm.name.value,
+  email:joinForm.email.value,
+  role:joinForm.role.value,
+  bio:joinForm.bio.value,
+  link:joinForm.link.value,
+  status:"pending",
+  created:new Date()
+ });
+ msg.innerText="Application submitted.";
+ joinForm.reset();
 });
 </script>
 
