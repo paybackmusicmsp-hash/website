@@ -48,7 +48,7 @@ body {
 }
 
 .service.active .service-content {
-  max-height: 150px;
+  max-height: 200px;
 }
 
 /* FORM */
@@ -84,56 +84,47 @@ footer {
   padding: 12px;
   border-top: 1px solid #222;
 }
-
-footer a {
-  color: white;
-  margin: 0 10px;
-  text-decoration: none;
-}
-
-footer a:hover {
-  color: red;
-}
 </style>
 </head>
 
 <body>
 
 <div class="container">
+
 <h1>Book Our Services</h1>
 
-<!-- SERVICES -->
+<!-- SERVICES WITH PRICING -->
+
 <div class="service" onclick="toggleService(this)">
-  🎬 Video Editing
-  <div class="service-content">Portfolio coming soon...</div>
+🎬 Video Editing — <strong>$100+</strong>
+<div class="service-content">Portfolio coming soon...</div>
 </div>
 
 <div class="service" onclick="toggleService(this)">
-  🎥 Video Production
-  <div class="service-content">Portfolio coming soon...</div>
+🎥 Video Production — <strong>$300+</strong>
+<div class="service-content">Portfolio coming soon...</div>
 </div>
 
 <div class="service" onclick="toggleService(this)">
-  📹 Filming
-  <div class="service-content">Portfolio coming soon...</div>
+📹 Filming — <strong>$200+</strong>
+<div class="service-content">Portfolio coming soon...</div>
 </div>
 
 <div class="service" onclick="toggleService(this)">
-  🎧 Audio Production
-  <div class="service-content">Portfolio coming soon...</div>
+🎧 Audio Production — <strong>$150+</strong>
+<div class="service-content">Portfolio coming soon...</div>
 </div>
 
 <div class="service" onclick="toggleService(this)">
-  💃 Dance Lessons
-  <div class="service-content">Portfolio coming soon...</div>
+💃 Dance Lessons — <strong>$80/session</strong>
+<div class="service-content">Portfolio coming soon...</div>
 </div>
 
 <div class="service" onclick="toggleService(this)">
-  💻 Website Creation
-  <div class="service-content">You're looking at it.</div>
+💻 Website Creation — <strong>$250+</strong>
+<div class="service-content">You're looking at it.</div>
 </div>
 
-<!-- SCHEDULE -->
 <p><strong>Availability:</strong> Mon–Fri | 2PM–7PM</p>
 <p style="color:red;">Deposit required after approval</p>
 
@@ -144,12 +135,12 @@ footer a:hover {
 
 <select name="service" required>
 <option value="">Select Service</option>
-<option>Video Editing</option>
-<option>Video Production</option>
-<option>Filming</option>
-<option>Audio Production</option>
-<option>Dance Lessons</option>
-<option>Website Creation</option>
+<option>Video Editing ($100+)</option>
+<option>Video Production ($300+)</option>
+<option>Filming ($200+)</option>
+<option>Audio Production ($150+)</option>
+<option>Dance Lessons ($80/session)</option>
+<option>Website Creation ($250+)</option>
 </select>
 
 <input id="calendar" placeholder="Pick a date" required>
@@ -161,12 +152,11 @@ footer a:hover {
 </form>
 
 <p>We will respond within 24–48 hours.</p>
+
 </div>
 
-<!-- FOOTER -->
 <footer>
-<a href="client-auth.html">Client Login</a>
-<a href="login.html">Admin</a>
+CashApp | Zelle | PayPal
 </footer>
 
 <!-- FIREBASE -->
@@ -198,32 +188,25 @@ function toggleService(el) {
   el.classList.toggle("active");
 }
 
-/* FORM */
+/* SUBMIT */
 document.getElementById("bookingForm").addEventListener("submit", async e => {
   e.preventDefault();
 
-  const btn = e.target.querySelector("button");
-  btn.disabled = true;
+  let f = e.target;
 
-  try {
-    await db.collection("bookings").add({
-      name: e.target.name.value,
-      email: e.target.email.value,
-      service: e.target.service.value,
-      date: calendar.value,
-      time: e.target.time.value,
-      details: e.target.details.value,
-      status: "pending",
-      created: new Date()
-    });
+  await db.collection("bookings").add({
+    name: f.name.value,
+    email: f.email.value,
+    service: f.service.value,
+    date: calendar.value,
+    time: f.time.value,
+    details: f.details.value,
+    status: "pending",
+    created: new Date()
+  });
 
-    alert("Request sent.");
-    window.location.href = "pay.html";
-
-  } catch(err){
-    alert(err.message);
-    btn.disabled = false;
-  }
+  alert("Request sent. We’ll contact you within 24–48 hours.");
+  window.location.href = "pay.html";
 });
 </script>
 
