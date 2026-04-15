@@ -23,7 +23,6 @@ body {
   padding: 40px 20px 120px;
 }
 
-/* SERVICES */
 .service {
   background: #111;
   padding: 15px;
@@ -48,10 +47,9 @@ body {
 }
 
 .service.active .service-content {
-  max-height: 200px;
+  max-height: 300px;
 }
 
-/* FORM */
 input, select, textarea {
   width: 100%;
   padding: 12px;
@@ -75,14 +73,12 @@ button:hover {
   background: red;
 }
 
-/* FOOTER */
 footer {
   position: fixed;
   bottom: 0;
   width: 100%;
   background: #111;
   padding: 12px;
-  border-top: 1px solid #222;
 }
 </style>
 </head>
@@ -93,54 +89,80 @@ footer {
 
 <h1>Book Our Services</h1>
 
-<!-- SERVICES WITH PRICING -->
+<!-- SERVICES -->
 
 <div class="service" onclick="toggleService(this)">
-🎬 Video Editing — <strong>$100+</strong>
-<div class="service-content">Portfolio coming soon...</div>
+🎬 Video Editing — $75+
+<div class="service-content">
+Professional editing including cuts, transitions, color grading, and audio cleanup.<br>
+Ideal for music videos, social media content, and promotional clips.<br>
+<strong>Turnaround:</strong> 2–5 days<br>
+<strong>Includes:</strong> 1–2 revisions
+</div>
 </div>
 
 <div class="service" onclick="toggleService(this)">
-🎥 Video Production — <strong>$300+</strong>
-<div class="service-content">Portfolio coming soon...</div>
+🎥 Video Production — $250+
+<div class="service-content">
+Full-service production from planning to final edit.<br>
+Includes filming, directing, and post-production.<br>
+Best for artists, brands, and businesses.<br>
+<strong>Turnaround:</strong> 3–7 days
+</div>
 </div>
 
 <div class="service" onclick="toggleService(this)">
-📹 Filming — <strong>$200+</strong>
-<div class="service-content">Portfolio coming soon...</div>
+📹 Filming — $150+
+<div class="service-content">
+High-quality on-site video capture with proper framing and composition.<br>
+Raw footage delivery or bundle with editing.<br>
+<strong>Pricing varies based on scope</strong>
+</div>
 </div>
 
 <div class="service" onclick="toggleService(this)">
-🎧 Audio Production — <strong>$150+</strong>
-<div class="service-content">Portfolio coming soon...</div>
+🎧 Audio Production — $100+
+<div class="service-content">
+Mixing, editing, and sound enhancement for clean, polished audio.<br>
+Perfect for music, podcasts, and recordings.<br>
+<strong>Turnaround:</strong> 2–4 days
+</div>
 </div>
 
 <div class="service" onclick="toggleService(this)">
-💃 Dance Lessons — <strong>$80/session</strong>
-<div class="service-content">Portfolio coming soon...</div>
+💃 Dance Lessons — $60/session
+<div class="service-content">
+Personalized sessions tailored to your skill level and goals.<br>
+Beginner to advanced training available.<br>
+<strong>1-on-1 or small groups</strong>
+</div>
 </div>
 
 <div class="service" onclick="toggleService(this)">
-💻 Website Creation — <strong>$250+</strong>
-<div class="service-content">You're looking at it.</div>
+💻 Website Creation — $200+
+<div class="service-content">
+Modern, mobile-friendly website built for your brand or business.<br>
+Includes clean design, contact setup, and basic optimization.<br>
+<strong>Portfolio:</strong> You're looking at it.<br>
+<strong>Turnaround:</strong> 3–7 days
+</div>
 </div>
 
 <p><strong>Availability:</strong> Mon–Fri | 2PM–7PM</p>
 <p style="color:red;">Deposit required after approval</p>
 
-<!-- FORM -->
 <form id="bookingForm">
 <input name="name" placeholder="Name" required>
 <input name="email" placeholder="Email" required>
 
 <select name="service" required>
 <option value="">Select Service</option>
-<option>Video Editing ($100+)</option>
-<option>Video Production ($300+)</option>
-<option>Filming ($200+)</option>
-<option>Audio Production ($150+)</option>
-<option>Dance Lessons ($80/session)</option>
-<option>Website Creation ($250+)</option>
+<option>Video Editing</option>
+<option>Video Production</option>
+<option>Filming</option>
+<option>Audio Production</option>
+<option>Dance Lessons</option>
+<option>Website Creation</option>
 </select>
 
 <input id="calendar" placeholder="Pick a date" required>
@@ -159,7 +181,6 @@ footer {
 CashApp | Zelle | PayPal
 </footer>
 
-<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
@@ -172,7 +193,6 @@ firebase.initializeApp({
 
 const db = firebase.firestore();
 
-/* CALENDAR */
 flatpickr("#calendar", {
   dateFormat: "Y-m-d",
   disable: [
@@ -180,7 +200,6 @@ flatpickr("#calendar", {
   ]
 });
 
-/* SERVICE TOGGLE */
 function toggleService(el) {
   document.querySelectorAll(".service").forEach(s => {
     if (s !== el) s.classList.remove("active");
@@ -188,7 +207,6 @@ function toggleService(el) {
   el.classList.toggle("active");
 }
 
-/* SUBMIT */
 document.getElementById("bookingForm").addEventListener("submit", async e => {
   e.preventDefault();
 
