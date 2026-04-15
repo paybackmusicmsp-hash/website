@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <body style="background:black;color:white">
-
 <h2>Your Bookings</h2>
 <div id="myBookings"></div>
 
@@ -11,12 +10,12 @@
 
 <script>
 firebase.initializeApp({
- apiKey:"AIzaSy...",
+ apiKey:"AIzaSyC1pKUto9-16yt6jcYxzyPOfF4VBWeAit4",
  authDomain:"booking-8bc2d.firebaseapp.com",
  projectId:"booking-8bc2d"
 });
 
-const db = firebase.firestore();
+const db=firebase.firestore();
 
 firebase.auth().onAuthStateChanged(user=>{
  if(!user) return location="client-login.html";
@@ -24,22 +23,18 @@ firebase.auth().onAuthStateChanged(user=>{
  db.collection("bookings")
  .where("email","==",user.email)
  .onSnapshot(snap=>{
-   myBookings.innerHTML="";
-
-   snap.forEach(doc=>{
-     let b=doc.data();
-
-     myBookings.innerHTML+=`
-     <div>
-       <h3>${b.service}</h3>
-       <p>${b.date}</p>
-       <p>${b.status}</p>
-       <p>${b.paid?"PAID":"UNPAID"}</p>
-     </div>`;
-   });
+  myBookings.innerHTML="";
+  snap.forEach(doc=>{
+   let b=doc.data();
+   myBookings.innerHTML+=`
+   <div>
+    <h3>${b.service}</h3>
+    <p>${b.date}</p>
+    <p>${b.status}</p>
+   </div>`;
+  });
  });
 });
 </script>
-
 </body>
 </html>
