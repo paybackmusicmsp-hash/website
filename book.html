@@ -20,7 +20,12 @@ body {
 .container {
   max-width: 600px;
   margin: auto;
-  padding: 40px 20px 120px;
+  padding: 40px 20px 140px;
+  box-sizing: border-box;
+}
+
+h1 {
+  font-size: clamp(2rem, 6vw, 3rem);
 }
 
 .service {
@@ -47,7 +52,7 @@ body {
 }
 
 .service.active .service-content {
-  max-height: 300px;
+  max-height: 400px;
 }
 
 input, select, textarea {
@@ -58,6 +63,7 @@ input, select, textarea {
   background: #111;
   color: white;
   border-radius: 6px;
+  font-size: 16px;
 }
 
 button {
@@ -79,6 +85,8 @@ footer {
   width: 100%;
   background: #111;
   padding: 12px;
+  border-top: 1px solid #222;
+  font-size: 14px;
 }
 </style>
 </head>
@@ -89,62 +97,83 @@ footer {
 
 <h1>Book Our Services</h1>
 
-<!-- SERVICES -->
-
+<!-- 🎬 Video Editing -->
 <div class="service" onclick="toggleService(this)">
 🎬 Video Editing — $75+
 <div class="service-content">
 Professional editing including cuts, transitions, color grading, and audio cleanup.<br>
 Ideal for music videos, social media content, and promotional clips.<br>
 <strong>Turnaround:</strong> 2–5 days<br>
-<strong>Includes:</strong> 1–2 revisions
+<strong>Includes:</strong> 1–2 revisions<br>
+<strong>Handled by K-Money</strong>
 </div>
 </div>
 
+<!-- 🎥 Video Production -->
 <div class="service" onclick="toggleService(this)">
 🎥 Video Production — $250+
 <div class="service-content">
 Full-service production from planning to final edit.<br>
 Includes filming, directing, and post-production.<br>
 Best for artists, brands, and businesses.<br>
-<strong>Turnaround:</strong> 3–7 days
+<strong>Turnaround:</strong> 3–7 days<br>
+<strong>Handled by K-Money</strong>
 </div>
 </div>
 
+<!-- 📹 Filming -->
 <div class="service" onclick="toggleService(this)">
 📹 Filming — $150+
 <div class="service-content">
 High-quality on-site video capture with proper framing and composition.<br>
 Raw footage delivery or bundle with editing.<br>
-<strong>Pricing varies based on scope</strong>
+<strong>Pricing varies based on scope</strong><br>
+<strong>Handled by K-Money</strong>
 </div>
 </div>
 
+<!-- 🎧 Audio -->
 <div class="service" onclick="toggleService(this)">
 🎧 Audio Production — $100+
 <div class="service-content">
 Mixing, editing, and sound enhancement for clean, polished audio.<br>
 Perfect for music, podcasts, and recordings.<br>
-<strong>Turnaround:</strong> 2–4 days
+<strong>Turnaround:</strong> 2–4 days<br>
+<strong>Handled by K-Money</strong>
 </div>
 </div>
 
+<!-- 💃 Dance Lessons -->
 <div class="service" onclick="toggleService(this)">
 💃 Dance Lessons — $60/session
 <div class="service-content">
-Personalized sessions tailored to your skill level and goals.<br>
-Beginner to advanced training available.<br>
-<strong>1-on-1 or small groups</strong>
+Personalized dance training led by <strong>StarMoney</strong>, a professional dancer and choreographer.<br>
+Focused on improving technique, timing, confidence, and performance ability.<br>
+Perfect for beginners and experienced dancers.<br>
+<strong>1-on-1 or small group sessions</strong>
 </div>
 </div>
 
+<!-- 🎬 Choreography -->
+<div class="service" onclick="toggleService(this)">
+🎬 Dance Choreography — $100+
+<div class="service-content">
+Custom choreography created and taught by <strong>StarMoney</strong>, a professional dance choreographer.<br>
+Includes full routine development, performance coaching, and stage presence training.<br>
+Ideal for music videos, performances, and events.<br>
+<strong>Pricing varies based on complexity</strong>
+</div>
+</div>
+
+<!-- 💻 Website -->
 <div class="service" onclick="toggleService(this)">
 💻 Website Creation — $200+
 <div class="service-content">
 Modern, mobile-friendly website built for your brand or business.<br>
-Includes clean design, contact setup, and basic optimization.<br>
+Includes clean design, contact setup, and optimization.<br>
 <strong>Portfolio:</strong> You're looking at it.<br>
-<strong>Turnaround:</strong> 3–7 days
+<strong>Turnaround:</strong> 3–7 days<br>
+<strong>Handled by K-Money</strong>
 </div>
 </div>
 
@@ -162,6 +191,7 @@ Includes clean design, contact setup, and basic optimization.<br>
 <option>Filming</option>
 <option>Audio Production</option>
 <option>Dance Lessons</option>
+<option>Dance Choreography</option>
 <option>Website Creation</option>
 </select>
 
@@ -178,7 +208,7 @@ Includes clean design, contact setup, and basic optimization.<br>
 </div>
 
 <footer>
-CashApp | Zelle | PayPal
+📧 paybackmusicmsp@gmail.com | 💰 CashApp | Zelle | PayPal
 </footer>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
