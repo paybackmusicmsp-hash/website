@@ -1,9 +1,129 @@
 <!DOCTYPE html>
 <html>
-<body style="background:black;color:white">
-<h2>Your Bookings</h2>
-<div id="myBookings"></div>
+<head>
+<title>Client Portal</title>
 
+<style>
+body{
+  margin:0;
+  background:#0a0a0a;
+  color:white;
+  font-family:Arial;
+}
+
+/* HEADER */
+.header{
+  background:#111;
+  padding:15px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+/* MAIN */
+.container{
+  padding:20px;
+  max-width:900px;
+  margin:auto;
+}
+
+/* CARDS */
+.card{
+  background:#111;
+  padding:15px;
+  margin:15px 0;
+  border-radius:10px;
+  box-shadow:0 0 10px rgba(128,0,0,0.2);
+}
+
+/* BUTTONS */
+button{
+  background:#800000;
+  color:white;
+  border:none;
+  padding:10px;
+  margin:5px;
+  cursor:pointer;
+  border-radius:6px;
+}
+button:hover{background:red}
+
+/* STATUS */
+.pending{color:gold}
+.accepted{color:lime}
+.declined{color:red}
+
+/* EMPTY */
+.empty{
+  text-align:center;
+  margin-top:40px;
+  color:#777;
+}
+
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <h2>📊 Client Dashboard</h2>
+  <button onclick="logout()">🚪 Logout</button>
+</div>
+
+<div class="container">
+
+<!-- ACTIONS -->
+<div class="grid">
+
+  <div class="card">
+    <h3>📅 Book a Service</h3>
+    <p>Schedule your next project with us.</p>
+    <button onclick="go('book.html')">➡️ Book Now</button>
+  </div>
+
+  <div class="card">
+    <h3>🎤 Join the Label</h3>
+    <p>Apply to become part of MSP 790.</p>
+    <button onclick="go('join.html')">🔥 Apply</button>
+  </div>
+
+</div>
+
+<!-- BOOKINGS -->
+<div class="card">
+  <h3>📦 Your Bookings</h3>
+  <div id="loading">Loading...</div>
+  <div id="myBookings"></div>
+</div>
+
+<!-- SERVICES -->
+<div class="card">
+  <h3>🛠️ Services</h3>
+  <p>🎬 Video Editing</p>
+  <p>🎥 Video Production</p>
+  <p>📹 Filming</p>
+  <p>🎧 Audio Production</p>
+  <p>💃 Dance Lessons</p>
+  <p>💻 Website Creation</p>
+</div>
+
+<!-- CONTACT -->
+<div class="card">
+  <h3>📞 Contact</h3>
+  <p>Phone: (718) 925-7750</p>
+  <p>Hours: Mon–Fri | 8AM – 8PM</p>
+  <p>Email: your@email.com</p>
+</div>
+
+</div>
+
+<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
@@ -15,26 +135,60 @@ firebase.initializeApp({
  projectId:"booking-8bc2d"
 });
 
-const db=firebase.firestore();
+const db = firebase.firestore();
 
+/* AUTH */
 firebase.auth().onAuthStateChanged(user=>{
- if(!user) return location="client-login.html";
-
- db.collection("bookings")
- .where("email","==",user.email)
- .onSnapshot(snap=>{
-  myBookings.innerHTML="";
-  snap.forEach(doc=>{
-   let b=doc.data();
-   myBookings.innerHTML+=`
-   <div>
-    <h3>${b.service}</h3>
-    <p>${b.date}</p>
-    <p>${b.status}</p>
-   </div>`;
-  });
- });
+ if(!user){
+   location="client-login.html";
+   return;
+ }
+ loadBookings(user.email);
 });
+
+/* LOAD BOOKINGS */
+function loadBookings(email){
+ db.collection("bookings")
+ .where("email","==",email)
+ .onSnapshot(snap=>{
+
+   loading.style.display="none";
+   myBookings.innerHTML="";
+
+   if(snap.empty){
+     myBookings.innerHTML = `
+       <div class="empty">
+         No bookings yet 👀
+       </div>`;
+     return;
+   }
+
+   snap.forEach(doc=>{
+     let b = doc.data();
+
+     myBookings.innerHTML += `
+     <div class="card">
+       <h3>${b.service}</h3>
+       <p>📅 ${b.date}</p>
+       <p>⏰ ${b.time || "-"}</p>
+       <p class="${b.status}">📌 ${b.status.toUpperCase()}</p>
+       <p>${b.paid ? "💰 Paid" : "❌ Not Paid"}</p>
+     </div>`;
+   });
+
+ });
+}
+
+/* NAV */
+function go(page){
+ window.location.href = page;
+}
+
+/* LOGOUT */
+function logout(){
+ firebase.auth().signOut();
+}
 </script>
+
 </body>
 </html>
