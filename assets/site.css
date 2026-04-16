@@ -565,11 +565,11 @@ body[data-page="home"] .brand-lockup {
   padding: 14px 16px;
   border-radius: 24px;
   background:
-    linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.008) 22%, rgba(0,0,0,0.16) 100%),
-    rgba(8, 7, 7, 0.38);
-  border: 1px solid rgba(255,255,255,0.06);
-  box-shadow: 0 20px 48px rgba(0,0,0,0.28);
-  backdrop-filter: blur(6px);
+    linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.016) 22%, rgba(0,0,0,0.2) 100%),
+    rgba(10, 8, 8, 0.64);
+  border: 1px solid rgba(255,255,255,0.09);
+  box-shadow: 0 24px 54px rgba(0,0,0,0.34);
+  backdrop-filter: blur(10px);
 }
 
 body[data-page="home"] .top-actions {
@@ -579,22 +579,23 @@ body[data-page="home"] .top-actions {
 
 body[data-page="home"] .top-actions .chip-link {
   width: 100%;
-  background: rgba(255,255,255,0.02);
+  background: rgba(16,10,10,0.58);
+  border-color: rgba(255,255,255,0.08);
 }
 
 body[data-page="home"] .nav-shell {
   padding: 10px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.018), rgba(255,255,255,0));
-  border-color: rgba(255,255,255,0.04);
-  box-shadow: 0 20px 50px rgba(0,0,0,0.24);
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+  border-color: rgba(255,255,255,0.07);
+  box-shadow: 0 24px 58px rgba(0,0,0,0.32);
 }
 
 body[data-page="home"] .nav-surface {
   padding: 10px;
   background:
-    linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.006) 22%, rgba(0,0,0,0.14) 100%),
-    rgba(10,10,10,0.34);
-  backdrop-filter: blur(6px);
+    linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.018) 22%, rgba(0,0,0,0.2) 100%),
+    rgba(10,10,10,0.62);
+  backdrop-filter: blur(10px);
 }
 
 body[data-page="home"] .site-nav {
