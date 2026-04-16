@@ -186,43 +186,27 @@
     0 0 22px rgba(110, 0, 0, 0.22);
 }
 .hero-chip-mixtape {
-  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Anton', var(--font-display);
-  padding: 12px 22px 14px;
-  border-radius: 12px;
-  border: 2px solid rgba(214, 56, 56, 0.92);
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0) 14%, rgba(0,0,0,0.12) 18%, rgba(0,0,0,0.94) 100%);
-  box-shadow:
-    inset 0 0 0 2px rgba(20, 2, 2, 0.92),
-    0 14px 28px rgba(0,0,0,0.34),
-    0 0 24px rgba(170, 20, 20, 0.18);
-  color: #ff5e5e;
-  font-size: clamp(1.4rem, 3vw, 2.25rem);
-  line-height: 0.9;
-  letter-spacing: 0.04em;
+  font-family: 'Inter', var(--font-body);
+  font-weight: 500;
+  padding: 10px 0 6px;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  color: #ff6a6a;
+  font-size: clamp(1.6rem, 3vw, 2.85rem);
+  line-height: 0.92;
+  letter-spacing: 0.12em;
   text-shadow:
-    -1px -1px 0 #140202,
-    1px -1px 0 #140202,
-    -1px 1px 0 #140202,
-    1px 1px 0 #140202,
-    0 0 10px rgba(214, 56, 56, 0.22);
-  transform: skewX(-10deg);
+    0 0 8px rgba(255, 106, 106, 0.65),
+    0 0 22px rgba(214, 56, 56, 0.3),
+    0 0 40px rgba(90, 0, 0, 0.2);
+  text-transform: uppercase;
 }
 .hero-chip-mixtape span {
   display: inline-block;
-  transform: skewX(10deg);
-}
-.hero-chip-mixtape::before {
-  content: "";
-  position: absolute;
-  inset: 4px;
-  border: 1px solid rgba(255, 134, 134, 0.22);
-  border-radius: 8px;
-  pointer-events: none;
 }
 .hero-mid {
   font-weight: 800;
