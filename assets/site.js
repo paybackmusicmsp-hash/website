@@ -98,8 +98,23 @@ window.MSPSite = (() => {
   document.addEventListener("DOMContentLoaded", () => {
     renderChrome();
     if (document.body.dataset.page === "home") {
+      const root = document.documentElement;
       const brandLockup = document.querySelector(".brand-lockup");
       let railMotionTimer;
+      const updateHomeScrollScene = () => {
+        const scrollY = window.scrollY;
+        const revealStart = Math.max(220, window.innerHeight * 0.38);
+        const revealDistance = Math.max(280, window.innerHeight * 0.48);
+        const uiProgress = Math.min(1, Math.max(0, (scrollY - revealStart) / revealDistance));
+        const backdropOpacity = Math.max(0, 1 - scrollY / Math.max(window.innerHeight * 0.9, 520));
+        root.style.setProperty("--home-ui-opacity", uiProgress.toFixed(3));
+        root.style.setProperty("--home-ui-shift", `${Math.round((1 - uiProgress) * 42)}px`);
+        root.style.setProperty("--home-backdrop-opacity", backdropOpacity.toFixed(3));
+        document.body.classList.toggle("home-scrolled", uiProgress > 0.02);
+        if (scrollY > 80) {
+          document.body.classList.remove("home-show-scroll-hint");
+        }
+      };
       const updateRailState = () => {
         brandLockup?.setAttribute("aria-expanded", String(!document.body.classList.contains("home-rail-collapsed")));
       };
@@ -115,6 +130,9 @@ window.MSPSite = (() => {
         }, 760);
         updateRailState();
       });
+      updateHomeScrollScene();
+      window.addEventListener("scroll", updateHomeScrollScene, { passive: true });
+      window.addEventListener("resize", updateHomeScrollScene);
       updateRailState();
     }
     document.querySelectorAll(".carousel").forEach(mountCarousel);

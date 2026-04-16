@@ -288,6 +288,9 @@
   <source src="assets/jong.mp3" type="audio/mpeg">
 </audio>
 
+<div class="home-backdrop" aria-hidden="true"></div>
+<div class="scroll-hint" id="scrollHint" aria-hidden="true">Scroll Down</div>
+
 <div class="hero-pillars" aria-hidden="true">
   <img src="assets/pillar-left(1).png" class="pillar-left" alt="" loading="eager" decoding="async" sizes="(max-width: 860px) 0px, 320px">
   <img src="assets/pillar-right.png" class="pillar-right" alt="" loading="eager" decoding="async" sizes="(max-width: 860px) 0px, 320px">
@@ -529,6 +532,7 @@
 const enterScreen = document.getElementById("enterScreen");
 const music = document.getElementById("bg-music");
 const homeBody = document.body;
+const scrollHint = document.getElementById("scrollHint");
 let homeRevealScheduled = false;
 
 async function enterSite() {
@@ -547,15 +551,14 @@ async function enterSite() {
   enterScreen.classList.add("fade-out");
   setTimeout(() => {
     enterScreen.style.display = "none";
+    homeBody.classList.remove("home-locked");
   }, 800);
   setTimeout(() => {
-    homeBody.classList.remove("home-locked");
-    homeBody.classList.add("home-reveal");
-  }, 3000);
-  setTimeout(() => {
-    homeBody.classList.remove("home-reveal");
-    homeBody.classList.add("home-settled");
-  }, 5600);
+    if (window.scrollY < 120) {
+      homeBody.classList.add("home-show-scroll-hint");
+      scrollHint?.setAttribute("aria-hidden", "false");
+    }
+  }, 3800);
 }
 
 enterScreen.addEventListener("click", enterSite);
