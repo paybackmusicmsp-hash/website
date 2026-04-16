@@ -559,8 +559,14 @@ async function enterSite() {
     homeBody.classList.remove("home-locked");
   }, 800);
   setTimeout(() => {
-    homeBody.classList.add("home-reveal");
+    homeBody.classList.add("home-reveal-rail");
   }, 3000);
+  setTimeout(() => {
+    homeBody.classList.add("home-reveal-hero");
+  }, 3300);
+  setTimeout(() => {
+    homeBody.classList.add("home-reveal-sections");
+  }, 3600);
   scrollHintTimer = setTimeout(() => {
     if (window.scrollY < 120) {
       homeBody.classList.add("home-show-scroll-hint");

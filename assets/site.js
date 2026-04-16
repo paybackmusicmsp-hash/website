@@ -98,34 +98,29 @@ window.MSPSite = (() => {
   document.addEventListener("DOMContentLoaded", () => {
     renderChrome();
     if (document.body.dataset.page === "home") {
-      const root = document.documentElement;
+      const homeBody = document.body;
       const brandLockup = document.querySelector(".brand-lockup");
       const scrollHint = document.getElementById("scrollHint");
       let railMotionTimer;
       const updateHomeScrollScene = () => {
         const scrollY = window.scrollY;
-        const fadeDistance = Math.max(window.innerHeight * 0.68, 420);
-        const backdropOpacity = Math.max(0, 1 - scrollY / fadeDistance);
-        const backdropDim = Math.min(1, scrollY / Math.max(window.innerHeight * 0.5, 300));
-        root.style.setProperty("--home-backdrop-opacity", backdropOpacity.toFixed(3));
-        root.style.setProperty("--home-backdrop-dim", backdropDim.toFixed(3));
         if (scrollY > 80) {
-          document.body.classList.remove("home-show-scroll-hint");
+          homeBody.classList.remove("home-show-scroll-hint");
           scrollHint?.setAttribute("aria-hidden", "true");
         }
       };
       const updateRailState = () => {
-        brandLockup?.setAttribute("aria-expanded", String(!document.body.classList.contains("home-rail-collapsed")));
+        brandLockup?.setAttribute("aria-expanded", String(!homeBody.classList.contains("home-rail-collapsed")));
       };
       brandLockup?.addEventListener("click", event => {
         event.preventDefault();
-        const willCollapse = !document.body.classList.contains("home-rail-collapsed");
-        document.body.classList.remove("home-rail-collapsing", "home-rail-expanding");
-        document.body.classList.add(willCollapse ? "home-rail-collapsing" : "home-rail-expanding");
+        const willCollapse = !homeBody.classList.contains("home-rail-collapsed");
+        homeBody.classList.remove("home-rail-collapsing", "home-rail-expanding");
+        homeBody.classList.add(willCollapse ? "home-rail-collapsing" : "home-rail-expanding");
         clearTimeout(railMotionTimer);
-        document.body.classList.toggle("home-rail-collapsed");
+        homeBody.classList.toggle("home-rail-collapsed");
         railMotionTimer = window.setTimeout(() => {
-          document.body.classList.remove("home-rail-collapsing", "home-rail-expanding");
+          homeBody.classList.remove("home-rail-collapsing", "home-rail-expanding");
         }, 760);
         updateRailState();
       });

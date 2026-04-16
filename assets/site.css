@@ -54,8 +54,18 @@ body {
 
 body[data-page="home"] {
   background: #020202;
-  --home-backdrop-opacity: 1;
-  --home-backdrop-dim: 0;
+  --home-glass-shell:
+    linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.008)),
+    rgba(4, 3, 3, 0.68);
+  --home-glass-surface:
+    linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.012) 20%, rgba(15,0,0,0.22) 50%, rgba(0,0,0,0.42) 100%),
+    rgba(4,4,4,0.92);
+  --home-glass-shell-shadow:
+    0 28px 62px rgba(0,0,0,0.5),
+    0 0 46px rgba(72, 0, 0, 0.22);
+  --home-glass-surface-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.05),
+    inset 0 0 34px rgba(115, 0, 0, 0.12);
 }
 
 body::before {
@@ -600,23 +610,17 @@ body[data-page="home"] .top-actions .chip-link {
 
 body[data-page="home"] .nav-shell {
   padding: 8px;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.008)),
-    rgba(4, 3, 3, 0.68);
+  background: var(--home-glass-shell);
   border-color: rgba(255,255,255,0.08);
-  box-shadow:
-    0 28px 62px rgba(0,0,0,0.5),
-    0 0 46px rgba(72, 0, 0, 0.22);
+  box-shadow: var(--home-glass-shell-shadow);
   transition: padding 0.72s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease, background 0.3s ease;
 }
 
 body[data-page="home"] .nav-surface {
   padding: 8px;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.012) 20%, rgba(15,0,0,0.22) 50%, rgba(0,0,0,0.42) 100%),
-    rgba(4,4,4,0.92);
+  background: var(--home-glass-surface);
   backdrop-filter: blur(14px);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), inset 0 0 34px rgba(115, 0, 0, 0.12);
+  box-shadow: var(--home-glass-surface-shadow);
   transition: padding 0.72s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease;
 }
 
@@ -637,28 +641,61 @@ body[data-page="home"] .home-runway {
 
 body[data-page="home"] .home-backdrop {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: min(100vh, 940px);
   z-index: 0;
   pointer-events: none;
-  opacity: var(--home-backdrop-opacity);
+  background:
+    url('Untitled(5).png') center top / cover no-repeat;
+}
+
+body[data-page="home"] .home-backdrop::before {
+  content: "";
+  position: absolute;
+  inset: 0;
   background:
     radial-gradient(circle at top, rgba(255,255,255,0.04), transparent 18%),
     radial-gradient(circle at 18% 10%, rgba(168,22,22,0.14), transparent 18%),
     linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0) 16%),
-    linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.52)),
-    url('Untitled(5).png') center/cover no-repeat;
-  transition: opacity 0.28s linear;
+    linear-gradient(180deg, rgba(0,0,0,0.16), rgba(0,0,0,0.48));
 }
 
 body[data-page="home"] .home-backdrop::after {
   content: "";
   position: absolute;
-  inset: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: clamp(240px, 34vh, 420px);
   background:
-    linear-gradient(180deg, rgba(0,0,0,calc(var(--home-backdrop-dim) * 0.16)), rgba(0,0,0,calc(0.96 * var(--home-backdrop-dim)))),
-    radial-gradient(circle at 50% 24%, rgba(110, 0, 0, calc(var(--home-backdrop-dim) * 0.2)), transparent 34%),
-    linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,calc(var(--home-backdrop-dim) * 0.74)) 58%, rgba(0,0,0,calc(var(--home-backdrop-dim) * 0.98)));
-  transition: background 0.28s linear;
+    linear-gradient(180deg, rgba(2,2,2,0) 0%, rgba(2,2,2,0.24) 18%, rgba(2,2,2,0.62) 48%, rgba(2,2,2,0.9) 76%, #020202 100%);
+  opacity: 1;
+}
+
+body[data-page="home"] .chip-link,
+body[data-page="home"] .button-link,
+body[data-page="home"] .button-secondary,
+body[data-page="home"] button,
+body[data-page="home"] .cta-button {
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.14),
+    inset 0 0 20px rgba(255,255,255,0.04),
+    0 14px 28px rgba(0,0,0,0.28),
+    0 0 18px rgba(255,255,255,0.08);
+}
+
+body[data-page="home"] .chip-link:hover,
+body[data-page="home"] .button-link:hover,
+body[data-page="home"] .button-secondary:hover,
+body[data-page="home"] button:hover,
+body[data-page="home"] .cta-button:hover {
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.18),
+    inset 0 0 24px rgba(255,255,255,0.06),
+    0 18px 34px rgba(0,0,0,0.32),
+    0 0 26px rgba(255,255,255,0.12);
 }
 
 body[data-page="home"] .scroll-hint {
@@ -728,10 +765,10 @@ body[data-page="home"] .page-wrap > .section-shell {
   pointer-events: none;
 }
 
-body[data-page="home"].home-reveal #site-header,
-body[data-page="home"].home-reveal .hero-pillars,
-body[data-page="home"].home-reveal .hero-shell,
-body[data-page="home"].home-reveal .page-wrap > .section-shell {
+body[data-page="home"].home-reveal-rail #site-header,
+body[data-page="home"].home-reveal-hero .hero-pillars,
+body[data-page="home"].home-reveal-hero .hero-shell,
+body[data-page="home"].home-reveal-sections .page-wrap > .section-shell {
   pointer-events: auto;
 }
 
@@ -754,47 +791,46 @@ body[data-page="home"] .page-wrap > .section-shell {
   filter: blur(16px);
 }
 
-body[data-page="home"].home-reveal #site-header {
+body[data-page="home"].home-reveal-rail #site-header {
   animation: homeRailSlideIn 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
 
-body[data-page="home"].home-reveal .hero-pillars {
+body[data-page="home"].home-reveal-hero .hero-pillars {
   animation: homePillarsReveal 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.18s forwards;
 }
 
-body[data-page="home"].home-reveal .hero-shell {
+body[data-page="home"].home-reveal-hero .hero-shell {
   animation: homeHeroPopIn 1.18s cubic-bezier(0.2, 0.9, 0.24, 1) 0.34s forwards;
 }
 
-body[data-page="home"].home-reveal .page-wrap > .section-shell {
+body[data-page="home"].home-reveal-sections .page-wrap > .section-shell {
   animation: homeSectionFadeIn 0.95s cubic-bezier(0.2, 0.9, 0.24, 1) 0.6s forwards;
 }
 
-body[data-page="home"] .section-shell,
-body[data-page="home"] .section-body,
-body[data-page="home"] .panel,
-body[data-page="home"] .card,
-body[data-page="home"] .glass-card {
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.012) 18%, rgba(18,0,0,0.22) 48%, rgba(0,0,0,0.44) 100%),
-    rgba(4, 3, 3, 0.9);
+body[data-page="home"] .section-shell {
+  background: var(--home-glass-shell);
   border-color: rgba(255,255,255,0.09);
-  box-shadow:
-    0 28px 64px rgba(0,0,0,0.5),
-    0 0 38px rgba(86, 0, 0, 0.22),
-    inset 0 1px 0 rgba(255,255,255,0.08);
+  box-shadow: var(--home-glass-shell-shadow);
   backdrop-filter: blur(14px);
 }
 
 body[data-page="home"] .section-body,
+body[data-page="home"] .hero-card,
+body[data-page="home"] .hero-chip,
 body[data-page="home"] .panel,
 body[data-page="home"] .card,
-body[data-page="home"] .glass-card {
+body[data-page="home"] .glass-card,
+body[data-page="home"] .video-frame,
+body[data-page="home"] .gallery-card,
+body[data-page="home"] .release-card .card {
+  background: var(--home-glass-surface);
+  border-color: rgba(255,255,255,0.09);
   box-shadow:
     0 22px 52px rgba(0,0,0,0.44),
     0 0 32px rgba(72, 0, 0, 0.18),
     inset 0 1px 0 rgba(255,255,255,0.06),
     inset 0 0 34px rgba(115, 0, 0, 0.1);
+  backdrop-filter: blur(14px);
 }
 
 body[data-page="home"].home-rail-collapsed #site-header {
@@ -808,6 +844,12 @@ body[data-page="home"].home-rail-collapsed .page-wrap {
 body[data-page="home"].home-rail-collapsed .brand-lockup {
   justify-content: center;
   padding-inline: 12px;
+}
+
+body[data-page="home"].home-rail-collapsing .brand-mark,
+body[data-page="home"].home-rail-expanding .brand-mark {
+  animation: railMarkSpin 0.84s cubic-bezier(0.28, 0.86, 0.24, 1) forwards;
+  transform-origin: 50% 50%;
 }
 
 body[data-page="home"].home-rail-collapsing .brand-mark img,
@@ -852,10 +894,16 @@ body[data-page="home"].home-rail-collapsed .brand-mark {
   animation: collapsedLogoBounce 2.4s ease-in-out 1.1s infinite;
 }
 
+@keyframes railMarkSpin {
+  0% { transform: rotate(0deg) scale(1); box-shadow: 0 8px 24px rgba(0,0,0,0.28); }
+  55% { transform: rotate(280deg) scale(0.88); box-shadow: 0 12px 30px rgba(0,0,0,0.36), 0 0 18px rgba(120, 0, 0, 0.28); }
+  100% { transform: rotate(360deg) scale(1); box-shadow: 0 8px 24px rgba(0,0,0,0.28); }
+}
+
 @keyframes railIconSpin {
   0% { transform: rotate(0deg) scale(1); }
-  55% { transform: rotate(320deg) scale(0.84); }
-  100% { transform: rotate(540deg) scale(1); }
+  55% { transform: rotate(360deg) scale(0.82); }
+  100% { transform: rotate(720deg) scale(1); }
 }
 
 @keyframes collapsedLogoBounce {
