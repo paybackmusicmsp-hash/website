@@ -101,7 +101,9 @@ window.MSPSite = (() => {
       const homeBody = document.body;
       const brandLockup = document.querySelector(".brand-lockup");
       const scrollHint = document.getElementById("scrollHint");
+      const heroShell = document.querySelector(".hero-shell");
       let railMotionTimer;
+      let railHideTimer;
       let railShownByScroll = false;
       const setRailCollapsed = (collapsed, animate = false) => {
         homeBody.classList.remove("home-rail-collapsing", "home-rail-expanding");
@@ -116,11 +118,16 @@ window.MSPSite = (() => {
         brandLockup?.setAttribute("aria-expanded", String(!collapsed));
       };
       const setRailVisibility = visible => {
+        clearTimeout(railHideTimer);
         if (!visible) {
           railShownByScroll = false;
-          setRailCollapsed(true, false);
-          homeBody.classList.remove("home-rail-visible");
-          homeBody.classList.add("home-rail-hidden");
+          if (!homeBody.classList.contains("home-rail-hidden")) {
+            setRailCollapsed(true, true);
+            homeBody.classList.remove("home-rail-visible");
+            railHideTimer = window.setTimeout(() => {
+              homeBody.classList.add("home-rail-hidden");
+            }, 420);
+          }
           return;
         }
         homeBody.classList.remove("home-rail-hidden");
@@ -135,7 +142,8 @@ window.MSPSite = (() => {
       };
       const updateHomeScrollScene = () => {
         const scrollY = window.scrollY;
-        const railRevealThreshold = Math.max(180, window.innerHeight * 0.24);
+        const heroTop = heroShell ? heroShell.offsetTop : Math.max(180, window.innerHeight * 0.3);
+        const railRevealThreshold = Math.max(0, heroTop - 8);
         setRailVisibility(scrollY > railRevealThreshold);
         if (scrollY > 80) {
           homeBody.classList.remove("home-show-scroll-hint");
