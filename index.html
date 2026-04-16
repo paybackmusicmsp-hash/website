@@ -185,6 +185,67 @@
     0 0 12px rgba(182, 26, 26, 0.28),
     0 0 22px rgba(110, 0, 0, 0.22);
 }
+.hero-chip-wordmark {
+  gap: 10px;
+  padding: 18px 18px 20px;
+}
+.hero-kicker {
+  display: block;
+  font-size: clamp(0.86rem, 1.15vw, 1rem);
+  letter-spacing: 0.2em;
+  color: rgba(255, 238, 238, 0.9);
+  text-shadow:
+    0 0 10px rgba(182, 26, 26, 0.24),
+    0 0 18px rgba(110, 0, 0, 0.18);
+}
+.hero-wordmark {
+  display: grid;
+  justify-items: center;
+  gap: 0;
+  line-height: 0.82;
+}
+.hero-wordmark-line {
+  position: relative;
+  display: block;
+  font-family: 'Oxanium', 'Black Ops One', var(--font-display);
+  font-weight: 800;
+  color: #050505;
+  text-transform: uppercase;
+  paint-order: stroke fill;
+  -webkit-text-stroke: var(--wordmark-stroke) #ff5252;
+  text-shadow:
+    0 0 10px rgba(255, 78, 78, 0.34),
+    0 0 24px rgba(154, 7, 7, 0.26),
+    0 0 42px rgba(70, 0, 0, 0.22);
+  filter: drop-shadow(0 0 12px rgba(210, 28, 28, 0.16));
+}
+.hero-wordmark-line::before,
+.hero-wordmark-line::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.hero-wordmark-line::before {
+  color: transparent;
+  -webkit-text-stroke: calc(var(--wordmark-stroke) * 1.9) rgba(110, 0, 0, 0.82);
+  z-index: -1;
+}
+.hero-wordmark-line::after {
+  color: transparent;
+  -webkit-text-stroke: calc(var(--wordmark-stroke) * 0.42) rgba(255, 214, 214, 0.56);
+  transform: translate(0.04em, -0.02em);
+}
+.hero-wordmark-line--top {
+  --wordmark-stroke: 4px;
+  font-size: clamp(2.15rem, 4.2vw, 3.3rem);
+  letter-spacing: 0.16em;
+}
+.hero-wordmark-line--bottom {
+  --wordmark-stroke: 5px;
+  font-size: clamp(2.5rem, 5.9vw, 4.85rem);
+  letter-spacing: 0.08em;
+}
 .hero-mid {
   font-weight: 800;
   letter-spacing: 0.18em;
@@ -318,7 +379,13 @@
     <div class="hero-panel section-shell">
       <div class="section-body hero-card">
         <p class="eyebrow">Bronx New York | Label, Visuals, Performance, Booking</p>
-        <div class="hero-chip hero-chip-title">The Founder &amp; CEO OG StarMoney</div>
+        <div class="hero-chip hero-chip-title hero-chip-wordmark">
+          <span class="hero-kicker">The Founder &amp; CEO</span>
+          <span class="hero-wordmark" aria-label="OG StarMoney">
+            <span class="hero-wordmark-line hero-wordmark-line--top" data-text="OG">OG</span>
+            <span class="hero-wordmark-line hero-wordmark-line--bottom" data-text="StarMoney">StarMoney</span>
+          </span>
+        </div>
         <h1 class="hero-title">MSP 790 PAYBACK MUSIC</h1>
         <div class="hero-chip hero-mid">183rd Davidson</div>
         <div class="hero-chip hero-sub">Uptown Boogie Down Bronx New York Finest</div>
