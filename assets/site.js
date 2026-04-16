@@ -99,12 +99,20 @@ window.MSPSite = (() => {
     renderChrome();
     if (document.body.dataset.page === "home") {
       const brandLockup = document.querySelector(".brand-lockup");
+      let railMotionTimer;
       const updateRailState = () => {
         brandLockup?.setAttribute("aria-expanded", String(!document.body.classList.contains("home-rail-collapsed")));
       };
       brandLockup?.addEventListener("click", event => {
         event.preventDefault();
+        const willCollapse = !document.body.classList.contains("home-rail-collapsed");
+        document.body.classList.remove("home-rail-collapsing", "home-rail-expanding");
+        document.body.classList.add(willCollapse ? "home-rail-collapsing" : "home-rail-expanding");
+        clearTimeout(railMotionTimer);
         document.body.classList.toggle("home-rail-collapsed");
+        railMotionTimer = window.setTimeout(() => {
+          document.body.classList.remove("home-rail-collapsing", "home-rail-expanding");
+        }, 760);
         updateRailState();
       });
       updateRailState();
