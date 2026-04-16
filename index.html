@@ -175,6 +175,16 @@
   background: linear-gradient(180deg, rgba(20,0,0,0.38), rgba(0,0,0,0.2));
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 8px 26px rgba(0,0,0,0.22);
 }
+.hero-chip-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 2.2vw, 1.7rem);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #fff4f4;
+  text-shadow:
+    0 0 12px rgba(182, 26, 26, 0.28),
+    0 0 22px rgba(110, 0, 0, 0.22);
+}
 .hero-mid {
   font-weight: 800;
   letter-spacing: 0.18em;
@@ -308,11 +318,11 @@
     <div class="hero-panel section-shell">
       <div class="section-body hero-card">
         <p class="eyebrow">Bronx New York | Label, Visuals, Performance, Booking</p>
-        <div class="hero-chip">The Founder &amp; CEO OG StarMoney</div>
+        <div class="hero-chip hero-chip-title">The Founder &amp; CEO OG StarMoney</div>
         <h1 class="hero-title">MSP 790 PAYBACK MUSIC</h1>
         <div class="hero-chip hero-mid">183rd Davidson</div>
         <div class="hero-chip hero-sub">Uptown Boogie Down Bronx New York Finest</div>
-        <div class="hero-chip">CFO K-Money Music</div>
+        <div class="hero-chip hero-chip-title">CFO K-Money Music</div>
         <div class="hero-actions">
           <a class="button-link" href="#artists">Meet the Artists</a>
           <a class="button-secondary chip-link" href="work-with-us.html">Work With Us</a>
@@ -323,7 +333,7 @@
 
   <section class="section-shell">
     <div class="section-body">
-      <h2>Loyalty is everything, Death Before Dishonor</h2>
+      <h2 class="home-glow-title">Loyalty is everything, Death Before Dishonor</h2>
       <p class="lede">MSP 790 Payback Music is a Bronx-rooted platform built to turn raw talent into disciplined movement. The label sits at the intersection of music, visuals, choreography, performance, and digital presentation, with a focus on artists who are ready to build something real.</p>
     </div>
   </section>
@@ -335,15 +345,15 @@
       <p class="lede">The goal is not just to post content or collect attention. The goal is to create structure, momentum, and high-standard creative output for serious artists and collaborators.</p>
       <div class="grid-3">
         <div class="card">
-          <h3>Artist Development</h3>
+          <h3 class="home-glow-accent">Artist Development</h3>
           <p>Creative direction, positioning, and growth plans built around consistency rather than random drops.</p>
         </div>
         <div class="card">
-          <h3>Visual Execution</h3>
+          <h3 class="home-glow-accent">Visual Execution</h3>
           <p>Filming, editing, choreography, and promotional assets that make the brand feel complete.</p>
         </div>
         <div class="card">
-          <h3>Platform Building</h3>
+          <h3 class="home-glow-accent">Platform Building</h3>
           <p>Client work, websites, service revenue, and release support that help the whole movement stay active.</p>
         </div>
       </div>
@@ -353,7 +363,7 @@
   <section class="section-shell">
     <div class="section-body">
       <p class="eyebrow">Why Work With Us</p>
-      <h2>Built For Serious Creators</h2>
+      <h2 class="home-glow-title">Built For Serious Creators</h2>
       <div class="grid-3">
         <div class="card"><h3>Structure</h3><p>Clear service flows, client access, and an admin system that makes the site feel operational instead of decorative.</p></div>
         <div class="card"><h3>Discipline</h3><p>The messaging, services, and artist pages all push the same standard: show up ready to work and grow.</p></div>
@@ -367,12 +377,12 @@
       <div class="grid-2">
         <div class="card">
           <p class="eyebrow">Founder Statement</p>
-          <h3>OG StarMoney</h3>
+          <h3 class="home-glow-accent">OG StarMoney</h3>
           <p>MSP 790 is about commitment, loyalty, and building a lane with real identity. The goal is to create a home for artists and collaborators who want discipline, consistency, and presence behind what they do.</p>
         </div>
         <div class="card">
           <p class="eyebrow">Production Statement</p>
-          <h3>K-Money Music</h3>
+          <h3 class="home-glow-accent">K-Money Music</h3>
           <p>The work is not only about ideas. It is about execution. Every video, edit, site, and service should make the brand feel sharper, more polished, and more ready for the next level.</p>
         </div>
       </div>
@@ -382,7 +392,7 @@
   <section class="section-shell" id="artists">
     <div class="section-body">
       <p class="eyebrow">Artists</p>
-      <h2>Meet the Artists</h2>
+      <h2 class="home-glow-title">Meet the Artists</h2>
       <div class="artist-grid">
         <div class="artist-card">
           <div class="card">
@@ -431,14 +441,14 @@
     <div class="section-body split-embed">
       <div>
         <p class="eyebrow">Featured Reel</p>
-        <h2>Latest Visual Direction</h2>
+      <h2 class="home-glow-title">Latest Visual Direction</h2>
         <div class="video-frame">
           <iframe src="https://www.youtube.com/embed?listType=search&list=MSP790PAYBACKMUSIC" title="MSP 790 featured reel" loading="lazy" allowfullscreen></iframe>
         </div>
       </div>
       <div class="card">
         <p class="eyebrow">What You’ll See</p>
-        <h3>Performance, Presence, Presentation</h3>
+        <h3 class="home-glow-accent">Performance, Presence, Presentation</h3>
         <p>The reel block is meant to show how the music, movement, visual identity, and digital presentation work together. It gives artists, clients, and collaborators a faster read on the overall standard.</p>
         <div class="status-pill">Direct channel access</div>
         <div class="status-pill">Promo-ready visuals</div>
@@ -562,8 +572,15 @@ async function enterSite() {
     homeBody.classList.add("home-reveal-rail");
   }, 3000);
   setTimeout(() => {
+    homeBody.classList.add("home-rail-collapsed", "home-rail-collapsing");
+  }, 3200);
+  setTimeout(() => {
+    homeBody.classList.add("home-rail-hidden");
     homeBody.classList.add("home-reveal-hero");
   }, 3300);
+  setTimeout(() => {
+    homeBody.classList.remove("home-rail-collapsing");
+  }, 4100);
   setTimeout(() => {
     homeBody.classList.add("home-reveal-sections");
   }, 3600);

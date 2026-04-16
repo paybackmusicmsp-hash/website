@@ -102,8 +102,26 @@ window.MSPSite = (() => {
       const brandLockup = document.querySelector(".brand-lockup");
       const scrollHint = document.getElementById("scrollHint");
       let railMotionTimer;
+      const setRailCollapsed = (collapsed, animate = false) => {
+        homeBody.classList.remove("home-rail-collapsing", "home-rail-expanding");
+        if (animate) {
+          homeBody.classList.add(collapsed ? "home-rail-collapsing" : "home-rail-expanding");
+          clearTimeout(railMotionTimer);
+          railMotionTimer = window.setTimeout(() => {
+            homeBody.classList.remove("home-rail-collapsing", "home-rail-expanding");
+          }, 860);
+        }
+        homeBody.classList.toggle("home-rail-collapsed", collapsed);
+        brandLockup?.setAttribute("aria-expanded", String(!collapsed));
+      };
       const updateHomeScrollScene = () => {
         const scrollY = window.scrollY;
+        if (scrollY <= 48) {
+          setRailCollapsed(true, false);
+          homeBody.classList.add("home-rail-hidden");
+        } else if (scrollY > 140) {
+          homeBody.classList.remove("home-rail-hidden");
+        }
         if (scrollY > 80) {
           homeBody.classList.remove("home-show-scroll-hint");
           scrollHint?.setAttribute("aria-hidden", "true");
@@ -114,14 +132,9 @@ window.MSPSite = (() => {
       };
       brandLockup?.addEventListener("click", event => {
         event.preventDefault();
+        homeBody.classList.remove("home-rail-hidden");
         const willCollapse = !homeBody.classList.contains("home-rail-collapsed");
-        homeBody.classList.remove("home-rail-collapsing", "home-rail-expanding");
-        homeBody.classList.add(willCollapse ? "home-rail-collapsing" : "home-rail-expanding");
-        clearTimeout(railMotionTimer);
-        homeBody.classList.toggle("home-rail-collapsed");
-        railMotionTimer = window.setTimeout(() => {
-          homeBody.classList.remove("home-rail-collapsing", "home-rail-expanding");
-        }, 760);
+        setRailCollapsed(willCollapse, true);
         updateRailState();
       });
       updateHomeScrollScene();

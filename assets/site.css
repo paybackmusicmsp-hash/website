@@ -640,7 +640,7 @@ body[data-page="home"] .home-runway {
 }
 
 body[data-page="home"] .home-backdrop {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   right: 0;
@@ -776,6 +776,14 @@ body[data-page="home"] #site-header {
   transform: translateX(-42px) scale(0.96);
 }
 
+body[data-page="home"].home-rail-hidden #site-header {
+  opacity: 0;
+  transform: translateX(-88px) scale(0.76);
+  filter: blur(12px);
+  pointer-events: none;
+  transition: opacity 0.5s ease, transform 0.5s ease, filter 0.5s ease;
+}
+
 body[data-page="home"] .hero-pillars {
   transform: translateY(54px);
   filter: blur(14px);
@@ -833,6 +841,19 @@ body[data-page="home"] .release-card .card {
   backdrop-filter: blur(14px);
 }
 
+body[data-page="home"] .home-glow-title {
+  text-shadow:
+    0 0 12px rgba(214, 56, 56, 0.22),
+    0 0 28px rgba(110, 0, 0, 0.18);
+}
+
+body[data-page="home"] .home-glow-accent {
+  color: #fff2f2;
+  text-shadow:
+    0 0 10px rgba(214, 56, 56, 0.18),
+    0 0 20px rgba(110, 0, 0, 0.14);
+}
+
 body[data-page="home"].home-rail-collapsed #site-header {
   width: 92px;
 }
@@ -846,15 +867,13 @@ body[data-page="home"].home-rail-collapsed .brand-lockup {
   padding-inline: 12px;
 }
 
-body[data-page="home"].home-rail-collapsing .brand-mark,
-body[data-page="home"].home-rail-expanding .brand-mark {
-  animation: railMarkSpin 0.84s cubic-bezier(0.28, 0.86, 0.24, 1) forwards;
+body[data-page="home"].home-rail-collapsing .brand-mark {
+  animation: railMarkRetract 0.84s cubic-bezier(0.24, 0.9, 0.24, 1) forwards;
   transform-origin: 50% 50%;
 }
 
-body[data-page="home"].home-rail-collapsing .brand-mark img,
-body[data-page="home"].home-rail-expanding .brand-mark img {
-  animation: railIconSpin 0.72s cubic-bezier(0.4, 0, 0.2, 1);
+body[data-page="home"].home-rail-collapsing .brand-mark img {
+  animation: railIconSpin 0.84s cubic-bezier(0.24, 0.9, 0.24, 1) forwards;
   transform-origin: 50% 50%;
 }
 
@@ -894,16 +913,16 @@ body[data-page="home"].home-rail-collapsed .brand-mark {
   animation: collapsedLogoBounce 2.4s ease-in-out 1.1s infinite;
 }
 
-@keyframes railMarkSpin {
-  0% { transform: rotate(0deg) scale(1); box-shadow: 0 8px 24px rgba(0,0,0,0.28); }
-  55% { transform: rotate(280deg) scale(0.88); box-shadow: 0 12px 30px rgba(0,0,0,0.36), 0 0 18px rgba(120, 0, 0, 0.28); }
-  100% { transform: rotate(360deg) scale(1); box-shadow: 0 8px 24px rgba(0,0,0,0.28); }
+@keyframes railMarkRetract {
+  0% { transform: translateX(0) scale(1); box-shadow: 0 8px 24px rgba(0,0,0,0.28); }
+  54% { transform: translateX(-5px) scale(0.8); box-shadow: 0 12px 28px rgba(0,0,0,0.36), 0 0 18px rgba(120, 0, 0, 0.22); }
+  100% { transform: translateX(0) scale(1); box-shadow: 0 8px 24px rgba(0,0,0,0.28); }
 }
 
 @keyframes railIconSpin {
-  0% { transform: rotate(0deg) scale(1); }
-  55% { transform: rotate(360deg) scale(0.82); }
-  100% { transform: rotate(720deg) scale(1); }
+  0% { transform: rotate(0deg) scale(1); filter: brightness(1); }
+  55% { transform: rotate(300deg) scale(0.74); filter: brightness(1.1); }
+  100% { transform: rotate(360deg) scale(1); filter: brightness(1); }
 }
 
 @keyframes collapsedLogoBounce {
