@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1620 260" role="img" aria-labelledby="title desc">
+  <title id="title">OG StarMoney review wordmark</title>
+  <desc id="desc">Review-only geometric outlined red wordmark for OG StarMoney.</desc>
+  <defs>
+    <filter id="glow" x="-20%" y="-35%" width="140%" height="180%">
+      <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#ff6b6b" flood-opacity="0.92"/>
+      <feDropShadow dx="0" dy="0" stdDeviation="10" flood-color="#9a0404" flood-opacity="0.45"/>
+    </filter>
+    <style>
+      .glyph {
+        fill: #080101;
+        stroke: #ff5d5d;
+        stroke-width: 10;
+        stroke-linejoin: bevel;
+        paint-order: stroke fill;
+      }
+      .inner {
+        fill: none;
+        stroke: rgba(255, 196, 196, 0.4);
+        stroke-width: 2.5;
+        stroke-linejoin: bevel;
+      }
+    </style>
+
+    <symbol id="g-o" viewBox="0 0 100 140">
+      <path class="glyph" fill-rule="evenodd" d="M16 0H84L100 16V124L84 140H16L0 124V16ZM32 20H68L80 32V108L68 120H32L20 108V32Z"/>
+      <path class="inner" d="M36 28H64L72 36V104L64 112H36L28 104V36Z"/>
+    </symbol>
+
+    <symbol id="g-g" viewBox="0 0 106 140">
+      <path class="glyph" d="M16 0H84L100 16V44H68V32H32L20 44V96L32 108H68L80 96V82H52V58H106V124L90 140H16L0 124V16Z"/>
+      <path class="inner" d="M36 28H64L72 36V44H58V40H40L32 48V92L40 100H64L72 92V86H48V82H88V104L76 116H28L16 104V36Z"/>
+    </symbol>
+
+    <symbol id="g-s" viewBox="0 0 104 140">
+      <path class="glyph" d="M16 0H88L104 16V40H72V32H32L24 40V52L36 64H88L104 80V124L88 140H16L0 124V100H32V108H72L80 100V88L68 76H16L0 60V16Z"/>
+      <path class="inner" d="M36 28H68L76 36V40H64V40H40L32 48V52L40 60H68L88 80V104L76 116H28L16 104V100H28V100H64L72 92V88L64 80H28L16 68V36Z"/>
+    </symbol>
+
+    <symbol id="g-t" viewBox="0 0 108 140">
+      <path class="glyph" d="M0 0H108V28H70V140H38V28H0Z"/>
+      <path class="inner" d="M16 12H92V16H58V124H50V16H16Z"/>
+    </symbol>
+
+    <symbol id="g-a" viewBox="0 0 116 140">
+      <path class="glyph" fill-rule="evenodd" d="M28 0H88L116 140H82L74 104H42L34 140H0ZM50 76H66L58 30Z"/>
+      <path class="inner" d="M58 20L76 92H40Z"/>
+      <path class="inner" d="M38 94H78"/>
+    </symbol>
+
+    <symbol id="g-r" viewBox="0 0 114 140">
+      <path class="glyph" fill-rule="evenodd" d="M0 0H76L100 24V62L80 82L112 140H76L50 92H32V140H0ZM32 28V64H62L68 58V34L62 28Z"/>
+      <path class="inner" d="M20 16H68L84 32V56L70 70H20ZM20 84H44L76 124"/>
+    </symbol>
+
+    <symbol id="g-m" viewBox="0 0 136 140">
+      <path class="glyph" d="M0 140V0H34L68 54L102 0H136V140H104V50L74 96H62L32 50V140Z"/>
+      <path class="inner" d="M16 124V16H28L68 74L108 16H120V124H112V38L72 96H64L24 38V124Z"/>
+    </symbol>
+
+    <symbol id="g-n" viewBox="0 0 116 140">
+      <path class="glyph" d="M0 140V0H30L84 84V0H116V140H88L32 54V140Z"/>
+      <path class="inner" d="M16 124V16H24L92 100V16H100V124H92L24 40V124Z"/>
+    </symbol>
+
+    <symbol id="g-e" viewBox="0 0 104 140">
+      <path class="glyph" d="M0 0H104V28H32V56H88V84H32V112H104V140H0Z"/>
+      <path class="inner" d="M16 16H88V20H24V68H72V72H24V120H88V124H16Z"/>
+    </symbol>
+
+    <symbol id="g-y" viewBox="0 0 112 140">
+      <path class="glyph" d="M0 0H36L56 40L76 0H112L72 76V140H40V76Z"/>
+      <path class="inner" d="M20 16H28L56 62L84 16H92L64 68V124H48V68Z"/>
+    </symbol>
+  </defs>
+
+  <rect width="1620" height="260" fill="transparent"/>
+  <g filter="url(#glow)" transform="translate(26 56)">
+    <g transform="translate(0 0)">
+      <use href="#g-o" width="100" height="140"/>
+      <use href="#g-g" x="116" width="106" height="140"/>
+    </g>
+    <g transform="translate(298 0)">
+      <use href="#g-s" width="104" height="140"/>
+      <use href="#g-t" x="116" width="108" height="140"/>
+      <use href="#g-a" x="238" width="116" height="140"/>
+      <use href="#g-r" x="370" width="114" height="140"/>
+      <use href="#g-m" x="500" width="136" height="140"/>
+      <use href="#g-o" x="654" width="100" height="140"/>
+      <use href="#g-n" x="770" width="116" height="140"/>
+      <use href="#g-e" x="902" width="104" height="140"/>
+      <use href="#g-y" x="1020" width="112" height="140"/>
+    </g>
+  </g>
+</svg>
