@@ -102,6 +102,7 @@ window.MSPSite = (() => {
       const brandLockup = document.querySelector(".brand-lockup");
       const scrollHint = document.getElementById("scrollHint");
       let railMotionTimer;
+      let railShownByScroll = false;
       const setRailCollapsed = (collapsed, animate = false) => {
         homeBody.classList.remove("home-rail-collapsing", "home-rail-expanding");
         if (animate) {
@@ -114,14 +115,28 @@ window.MSPSite = (() => {
         homeBody.classList.toggle("home-rail-collapsed", collapsed);
         brandLockup?.setAttribute("aria-expanded", String(!collapsed));
       };
+      const setRailVisibility = visible => {
+        if (!visible) {
+          railShownByScroll = false;
+          setRailCollapsed(true, false);
+          homeBody.classList.remove("home-rail-visible");
+          homeBody.classList.add("home-rail-hidden");
+          return;
+        }
+        homeBody.classList.remove("home-rail-hidden");
+        if (!railShownByScroll) {
+          setRailCollapsed(false, false);
+          homeBody.classList.add("home-rail-visible");
+          railShownByScroll = true;
+          window.setTimeout(() => {
+            homeBody.classList.remove("home-rail-visible");
+          }, 940);
+        }
+      };
       const updateHomeScrollScene = () => {
         const scrollY = window.scrollY;
-        if (scrollY <= 48) {
-          setRailCollapsed(true, false);
-          homeBody.classList.add("home-rail-hidden");
-        } else if (scrollY > 140) {
-          homeBody.classList.remove("home-rail-hidden");
-        }
+        const railRevealThreshold = Math.max(180, window.innerHeight * 0.24);
+        setRailVisibility(scrollY > railRevealThreshold);
         if (scrollY > 80) {
           homeBody.classList.remove("home-show-scroll-hint");
           scrollHint?.setAttribute("aria-hidden", "true");
@@ -133,6 +148,7 @@ window.MSPSite = (() => {
       brandLockup?.addEventListener("click", event => {
         event.preventDefault();
         homeBody.classList.remove("home-rail-hidden");
+        railShownByScroll = true;
         const willCollapse = !homeBody.classList.contains("home-rail-collapsed");
         setRailCollapsed(willCollapse, true);
         updateRailState();

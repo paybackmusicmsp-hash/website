@@ -636,7 +636,7 @@ body[data-page="home"] .nav-link {
 }
 
 body[data-page="home"] .home-runway {
-  height: calc(100vh + 320px);
+  height: clamp(500px, 76vh, 760px);
 }
 
 body[data-page="home"] .home-backdrop {
@@ -644,7 +644,7 @@ body[data-page="home"] .home-backdrop {
   top: 0;
   left: 0;
   right: 0;
-  height: min(100vh, 940px);
+  height: clamp(560px, 82vh, 860px);
   z-index: 0;
   pointer-events: none;
   background:
@@ -668,9 +668,9 @@ body[data-page="home"] .home-backdrop::after {
   left: 0;
   right: 0;
   bottom: 0;
-  height: clamp(240px, 34vh, 420px);
+  height: clamp(260px, 34vh, 380px);
   background:
-    linear-gradient(180deg, rgba(2,2,2,0) 0%, rgba(2,2,2,0.24) 18%, rgba(2,2,2,0.62) 48%, rgba(2,2,2,0.9) 76%, #020202 100%);
+    linear-gradient(180deg, rgba(2,2,2,0) 0%, rgba(2,2,2,0.12) 14%, rgba(2,2,2,0.42) 34%, rgba(2,2,2,0.76) 58%, rgba(2,2,2,0.94) 78%, #020202 100%);
   opacity: 1;
 }
 
@@ -765,7 +765,7 @@ body[data-page="home"] .page-wrap > .section-shell {
   pointer-events: none;
 }
 
-body[data-page="home"].home-reveal-rail #site-header,
+body[data-page="home"].home-rail-visible #site-header,
 body[data-page="home"].home-reveal-hero .hero-pillars,
 body[data-page="home"].home-reveal-hero .hero-shell,
 body[data-page="home"].home-reveal-sections .page-wrap > .section-shell {
@@ -777,11 +777,21 @@ body[data-page="home"] #site-header {
 }
 
 body[data-page="home"].home-rail-hidden #site-header {
-  opacity: 0;
-  transform: translateX(-88px) scale(0.76);
-  filter: blur(12px);
+  opacity: 0 !important;
+  visibility: hidden;
+  transform: translateX(-120px) scale(0.72) !important;
+  filter: blur(14px) !important;
   pointer-events: none;
+  animation: none !important;
   transition: opacity 0.5s ease, transform 0.5s ease, filter 0.5s ease;
+}
+
+body[data-page="home"]:not(.home-rail-hidden) #site-header {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0) scale(1);
+  filter: none;
+  pointer-events: auto;
 }
 
 body[data-page="home"] .hero-pillars {
@@ -799,8 +809,9 @@ body[data-page="home"] .page-wrap > .section-shell {
   filter: blur(16px);
 }
 
-body[data-page="home"].home-reveal-rail #site-header {
-  animation: homeRailSlideIn 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+body[data-page="home"].home-rail-visible #site-header {
+  visibility: visible;
+  animation: homeRailSlideIn 0.92s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
 
 body[data-page="home"].home-reveal-hero .hero-pillars {
@@ -854,6 +865,22 @@ body[data-page="home"] .home-glow-accent {
     0 0 20px rgba(110, 0, 0, 0.14);
 }
 
+body[data-page="home"] .section-shell h2,
+body[data-page="home"] .site-footer h3 {
+  text-shadow:
+    0 0 12px rgba(214, 56, 56, 0.2),
+    0 0 24px rgba(110, 0, 0, 0.14);
+}
+
+body[data-page="home"] .section-shell h3,
+body[data-page="home"] .status-pill,
+body[data-page="home"] .nav-link.active,
+body[data-page="home"] .eyebrow {
+  text-shadow:
+    0 0 8px rgba(214, 56, 56, 0.14),
+    0 0 18px rgba(110, 0, 0, 0.1);
+}
+
 body[data-page="home"].home-rail-collapsed #site-header {
   width: 92px;
 }
@@ -867,13 +894,8 @@ body[data-page="home"].home-rail-collapsed .brand-lockup {
   padding-inline: 12px;
 }
 
-body[data-page="home"].home-rail-collapsing .brand-mark {
-  animation: railMarkRetract 0.84s cubic-bezier(0.24, 0.9, 0.24, 1) forwards;
-  transform-origin: 50% 50%;
-}
-
 body[data-page="home"].home-rail-collapsing .brand-mark img {
-  animation: railIconSpin 0.84s cubic-bezier(0.24, 0.9, 0.24, 1) forwards;
+  animation: railIconSpin 0.9s cubic-bezier(0.22, 0.82, 0.24, 1) forwards;
   transform-origin: 50% 50%;
 }
 
@@ -913,15 +935,9 @@ body[data-page="home"].home-rail-collapsed .brand-mark {
   animation: collapsedLogoBounce 2.4s ease-in-out 1.1s infinite;
 }
 
-@keyframes railMarkRetract {
-  0% { transform: translateX(0) scale(1); box-shadow: 0 8px 24px rgba(0,0,0,0.28); }
-  54% { transform: translateX(-5px) scale(0.8); box-shadow: 0 12px 28px rgba(0,0,0,0.36), 0 0 18px rgba(120, 0, 0, 0.22); }
-  100% { transform: translateX(0) scale(1); box-shadow: 0 8px 24px rgba(0,0,0,0.28); }
-}
-
 @keyframes railIconSpin {
   0% { transform: rotate(0deg) scale(1); filter: brightness(1); }
-  55% { transform: rotate(300deg) scale(0.74); filter: brightness(1.1); }
+  62% { transform: rotate(300deg) scale(0.8); filter: brightness(1.08); }
   100% { transform: rotate(360deg) scale(1); filter: brightness(1); }
 }
 
