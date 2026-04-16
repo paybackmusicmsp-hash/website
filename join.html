@@ -81,21 +81,25 @@ joinForm.addEventListener("submit", async event => {
 
   joinSubmit.disabled = true;
   joinSubmit.textContent = "Submitting...";
+  try {
+    await db.collection("applications").add({
+      name: joinForm.name.value.trim(),
+      email: joinForm.email.value.trim(),
+      role: joinForm.role.value,
+      bio: joinForm.bio.value.trim(),
+      link: joinForm.link.value.trim(),
+      status: "pending",
+      created: new Date()
+    });
 
-  await db.collection("applications").add({
-    name: joinForm.name.value.trim(),
-    email: joinForm.email.value.trim(),
-    role: joinForm.role.value,
-    bio: joinForm.bio.value.trim(),
-    link: joinForm.link.value.trim(),
-    status: "pending",
-    created: new Date()
-  });
-
-  joinForm.reset();
-  joinSubmit.disabled = false;
-  joinSubmit.textContent = "Submit Application";
-  showJoinBanner("success", "Application submitted.");
+    joinForm.reset();
+    showJoinBanner("success", "Application submitted.");
+  } catch (error) {
+    showJoinBanner("error", error.message || "We could not submit your application. Please try again.");
+  } finally {
+    joinSubmit.disabled = false;
+    joinSubmit.textContent = "Submit Application";
+  }
 });
 </script>
 </body>

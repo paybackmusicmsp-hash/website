@@ -60,6 +60,20 @@ const db = firebase.firestore();
 const loadingEl = document.getElementById("loading");
 const myBookingsEl = document.getElementById("myBookings");
 const banner = document.getElementById("portalBanner");
+const allowedBookingStatuses = new Set(["pending", "accepted", "declined"]);
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
+function safeStatusClass(value) {
+  return allowedBookingStatuses.has(value) ? value : "pending";
+}
 
 document.getElementById("logoutButton").addEventListener("click", () => firebase.auth().signOut());
 
@@ -78,20 +92,21 @@ function bookingDate(value) {
 function createBookingCard(booking){
   const card = document.createElement("div");
   card.className = "card";
+  const statusClass = safeStatusClass(booking.status);
   card.innerHTML = `
-    <p class="eyebrow">${booking.service || "Booking"}</p>
-    <h3>${booking.service || "Booking"}</h3>
-    <p><strong>Status:</strong> <span class="${booking.status || "pending"}">${(booking.status || "pending").toUpperCase()}</span></p>
-    <p><strong>Payment:</strong> ${(booking.paymentStatus || "deposit_pending").replaceAll("_", " ")}</p>
+    <p class="eyebrow">${escapeHtml(booking.service || "Booking")}</p>
+    <h3>${escapeHtml(booking.service || "Booking")}</h3>
+    <p><strong>Status:</strong> <span class="${statusClass}">${escapeHtml((booking.status || "pending").toUpperCase())}</span></p>
+    <p><strong>Payment:</strong> ${escapeHtml((booking.paymentStatus || "deposit_pending").replaceAll("_", " "))}</p>
     <p><strong>Approved price:</strong> $${booking.price || 0}</p>
-    <p><strong>Preferred date:</strong> ${bookingDate(booking.date)}</p>
-    <p><strong>Preferred time:</strong> ${booking.time || "-"}</p>
-    <p><strong>Budget:</strong> ${booking.budget || "-"}</p>
-    <p><strong>Deadline:</strong> ${booking.deadline || "-"}</p>
-    <p><strong>Submitted:</strong> ${booking.submittedAt || "-"}</p>
-    <p><strong>Accepted:</strong> ${booking.acceptedAt || "-"}</p>
-    <p><strong>Declined:</strong> ${booking.declinedAt || "-"}</p>
-    <p><strong>Client note:</strong> ${booking.clientNote || "No note yet."}</p>
+    <p><strong>Preferred date:</strong> ${escapeHtml(bookingDate(booking.date))}</p>
+    <p><strong>Preferred time:</strong> ${escapeHtml(booking.time || "-")}</p>
+    <p><strong>Budget:</strong> ${escapeHtml(booking.budget || "-")}</p>
+    <p><strong>Deadline:</strong> ${escapeHtml(booking.deadline || "-")}</p>
+    <p><strong>Submitted:</strong> ${escapeHtml(booking.submittedAt || "-")}</p>
+    <p><strong>Accepted:</strong> ${escapeHtml(booking.acceptedAt || "-")}</p>
+    <p><strong>Declined:</strong> ${escapeHtml(booking.declinedAt || "-")}</p>
+    <p><strong>Client note:</strong> ${escapeHtml(booking.clientNote || "No note yet.")}</p>
   `;
   return card;
 }

@@ -129,6 +129,20 @@ MSPSite.initFirebase();
 const db = firebase.firestore();
 const banner = document.getElementById("adminBanner");
 const state = { bookings: [], applications: [], statusChart: null, serviceChart: null };
+const allowedBookingStatuses = new Set(["pending", "accepted", "declined"]);
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
+function safeStatusClass(value) {
+  return allowedBookingStatuses.has(value) ? value : "pending";
+}
 
 function showBanner(type, text) {
   banner.className = `banner visible ${type}`;
@@ -218,7 +232,7 @@ function renderDashboard() {
   });
 
   const revenueByService = document.getElementById("revenueByService");
-  revenueByService.innerHTML = Object.keys(revenueMap).map(key => `<div class="metric-row"><span>${key}</span><strong>$${revenueMap[key]}</strong></div>`).join("") || "<p>No accepted revenue yet.</p>";
+  revenueByService.innerHTML = Object.keys(revenueMap).map(key => `<div class="metric-row"><span>${escapeHtml(key)}</span><strong>$${revenueMap[key]}</strong></div>`).join("") || "<p>No accepted revenue yet.</p>";
 }
 
 function bookingMatchesFilters(booking) {
@@ -247,28 +261,30 @@ function renderBookings() {
   container.innerHTML = "";
 
   filtered.forEach(booking => {
+    const statusClass = safeStatusClass(booking.status);
+    const statusLabel = escapeHtml((booking.status || "pending").toUpperCase());
     const wrap = document.createElement("div");
     wrap.className = "card admin-card";
     wrap.innerHTML = `
-      <h3>${booking.name || "Unnamed booking"}</h3>
-      <p><strong>Service:</strong> ${booking.service || "-"}</p>
-      <p><strong>Email:</strong> ${booking.email || "-"}</p>
-      <p><strong>Date:</strong> ${booking.date || "-"} | <strong>Time:</strong> ${booking.time || "-"}</p>
-      <p><strong>Status:</strong> <span class="${booking.status || "pending"}">${(booking.status || "pending").toUpperCase()}</span></p>
-      <p><strong>Payment:</strong> ${(booking.paymentStatus || "deposit_pending").replaceAll("_", " ")}</p>
+      <h3>${escapeHtml(booking.name || "Unnamed booking")}</h3>
+      <p><strong>Service:</strong> ${escapeHtml(booking.service || "-")}</p>
+      <p><strong>Email:</strong> ${escapeHtml(booking.email || "-")}</p>
+      <p><strong>Date:</strong> ${escapeHtml(booking.date || "-")} | <strong>Time:</strong> ${escapeHtml(booking.time || "-")}</p>
+      <p><strong>Status:</strong> <span class="${statusClass}">${statusLabel}</span></p>
+      <p><strong>Payment:</strong> ${escapeHtml((booking.paymentStatus || "deposit_pending").replaceAll("_", " "))}</p>
       <p><strong>Price:</strong> $${booking.price || 0}</p>
-      <p><strong>Submitted:</strong> ${booking.submittedAt || "-"}</p>
-      <p><strong>Accepted:</strong> ${booking.acceptedAt || "-"}</p>
-      <p><strong>Declined:</strong> ${booking.declinedAt || "-"}</p>
-      <p><strong>Client note:</strong> ${booking.clientNote || "-"}</p>
-      <div class="field-group"><label>Internal note</label><textarea data-note="${booking.id}">${booking.internalNote || ""}</textarea></div>
-      <div class="field-group"><label>Client-visible note</label><textarea data-client-note="${booking.id}">${booking.clientNote || ""}</textarea></div>
+      <p><strong>Submitted:</strong> ${escapeHtml(booking.submittedAt || "-")}</p>
+      <p><strong>Accepted:</strong> ${escapeHtml(booking.acceptedAt || "-")}</p>
+      <p><strong>Declined:</strong> ${escapeHtml(booking.declinedAt || "-")}</p>
+      <p><strong>Client note:</strong> ${escapeHtml(booking.clientNote || "-")}</p>
+      <div class="field-group"><label>Internal note</label><textarea data-note="${escapeHtml(booking.id)}">${escapeHtml(booking.internalNote || "")}</textarea></div>
+      <div class="field-group"><label>Client-visible note</label><textarea data-client-note="${escapeHtml(booking.id)}">${escapeHtml(booking.clientNote || "")}</textarea></div>
       <div class="admin-actions">
-        <button type="button" data-accept="${booking.id}">Accept</button>
-        <button type="button" data-decline="${booking.id}">Decline</button>
-        <button type="button" data-paid="${booking.id}">Mark Paid</button>
-        <button type="button" data-unpaid="${booking.id}">Mark Deposit Pending</button>
-        <button type="button" data-save-notes="${booking.id}">Save Notes</button>
+        <button type="button" data-accept="${escapeHtml(booking.id)}">Accept</button>
+        <button type="button" data-decline="${escapeHtml(booking.id)}">Decline</button>
+        <button type="button" data-paid="${escapeHtml(booking.id)}">Mark Paid</button>
+        <button type="button" data-unpaid="${escapeHtml(booking.id)}">Mark Deposit Pending</button>
+        <button type="button" data-save-notes="${escapeHtml(booking.id)}">Save Notes</button>
       </div>
     `;
     container.appendChild(wrap);
@@ -283,9 +299,15 @@ function renderBookings() {
 
 async function acceptBooking(id) {
   const price = prompt("Accepted price?");
+  if (price === null) return;
+  const normalizedPrice = Number(price);
+  if (!Number.isFinite(normalizedPrice) || normalizedPrice < 0) {
+    showBanner("error", "Enter a valid accepted price.");
+    return;
+  }
   await db.collection("bookings").doc(id).update({
     status: "accepted",
-    price: Number(price || 0),
+    price: normalizedPrice,
     acceptedAt: new Date().toISOString(),
     updatedAt: new Date().toISOString()
   });
@@ -325,13 +347,13 @@ function renderPayments() {
   const accepted = state.bookings.filter(booking => booking.status === "accepted");
   container.innerHTML = accepted.map(booking => `
     <div class="card">
-      <h3>${booking.name || "Booking"}</h3>
-      <p><strong>Service:</strong> ${booking.service || "-"}</p>
+      <h3>${escapeHtml(booking.name || "Booking")}</h3>
+      <p><strong>Service:</strong> ${escapeHtml(booking.service || "-")}</p>
       <p><strong>Approved price:</strong> $${booking.price || 0}</p>
-      <p><strong>Payment status:</strong> ${(booking.paymentStatus || "deposit_pending").replaceAll("_", " ")}</p>
+      <p><strong>Payment status:</strong> ${escapeHtml((booking.paymentStatus || "deposit_pending").replaceAll("_", " "))}</p>
       <div class="admin-actions">
-        <button type="button" data-paid="${booking.id}">Mark Paid</button>
-        <button type="button" data-unpaid="${booking.id}">Mark Deposit Pending</button>
+        <button type="button" data-paid="${escapeHtml(booking.id)}">Mark Paid</button>
+        <button type="button" data-unpaid="${escapeHtml(booking.id)}">Mark Deposit Pending</button>
       </div>
     </div>
   `).join("") || "<p>No accepted bookings yet.</p>";
@@ -344,15 +366,15 @@ function renderApplications() {
   const container = document.getElementById("applicationsList");
   container.innerHTML = state.applications.map(application => `
     <div class="card">
-      <h3>${application.name || "Applicant"}</h3>
-      <p><strong>Email:</strong> ${application.email || "-"}</p>
-      <p><strong>Role:</strong> ${application.role || "-"}</p>
-      <p><strong>Bio:</strong> ${application.bio || "-"}</p>
-      <p><strong>Portfolio:</strong> ${application.link || "-"}</p>
-      <p><strong>Status:</strong> ${(application.status || "pending").toUpperCase()}</p>
+      <h3>${escapeHtml(application.name || "Applicant")}</h3>
+      <p><strong>Email:</strong> ${escapeHtml(application.email || "-")}</p>
+      <p><strong>Role:</strong> ${escapeHtml(application.role || "-")}</p>
+      <p><strong>Bio:</strong> ${escapeHtml(application.bio || "-")}</p>
+      <p><strong>Portfolio:</strong> ${escapeHtml(application.link || "-")}</p>
+      <p><strong>Status:</strong> ${escapeHtml((application.status || "pending").toUpperCase())}</p>
       <div class="admin-actions">
-        <button type="button" data-approve-app="${application.id}">Approve</button>
-        <button type="button" data-decline-app="${application.id}">Decline</button>
+        <button type="button" data-approve-app="${escapeHtml(application.id)}">Approve</button>
+        <button type="button" data-decline-app="${escapeHtml(application.id)}">Decline</button>
       </div>
     </div>
   `).join("") || "<p>No applications yet.</p>";
@@ -379,7 +401,7 @@ function renderCalendar() {
     const dayBookings = state.bookings.filter(booking => booking.date === isoDate);
     const card = document.createElement("div");
     card.className = "day-card";
-    card.innerHTML = `<strong>${day}</strong>${dayBookings.map(booking => `<div>${booking.name || "Booking"} - ${booking.status || "pending"}</div>`).join("") || "<span>No bookings</span>"}`;
+    card.innerHTML = `<strong>${day}</strong>${dayBookings.map(booking => `<div>${escapeHtml(booking.name || "Booking")} - ${escapeHtml(booking.status || "pending")}</div>`).join("") || "<span>No bookings</span>"}`;
     container.appendChild(card);
   }
 }
