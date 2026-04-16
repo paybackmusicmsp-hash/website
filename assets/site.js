@@ -9,8 +9,6 @@ window.MSPSite = (() => {
     { href: "index.html", label: "Home", page: "home" },
     { href: "about.html", label: "About", page: "about" },
     { href: "services.html", label: "Services", page: "services" },
-    { href: "releases.html", label: "Releases", page: "releases" },
-    { href: "events.html", label: "Events", page: "events" },
     { href: "work-with-us.html", label: "Work With Us", page: "work" },
     { href: "contact.html", label: "Contact", page: "contact" }
   ];
@@ -64,8 +62,7 @@ window.MSPSite = (() => {
             <div class="footer-links">
               <a href="services.html">Services</a>
               <a href="work-with-us.html">Work With Us</a>
-              <a href="releases.html">Releases</a>
-              <a href="events.html">Events</a>
+              <a href="about.html">About</a>
             </div>
             <div class="footer-links">
               <a href="contact.html">Contact</a>

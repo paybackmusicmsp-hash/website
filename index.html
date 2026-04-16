@@ -32,30 +32,29 @@
   font-family: var(--font-display);
   font-size: clamp(2.2rem, 8vw, 4.6rem);
   letter-spacing: 0.2em;
-  text-shadow: 0 0 12px rgba(255, 0, 0, 0.8), 0 0 32px rgba(160, 0, 0, 0.8);
-  animation: pulse 2s infinite;
+  color: #fff7f7;
+  text-shadow:
+    0 0 10px rgba(255, 72, 72, 0.95),
+    0 0 24px rgba(201, 26, 26, 0.9),
+    0 0 52px rgba(120, 0, 0, 0.8);
+  animation: pulse 2s infinite, neon-flicker 5s linear infinite;
   position: relative;
   padding: 24px;
   text-transform: uppercase;
 }
-.enter-screen h1::before,
-.enter-screen h1::after {
-  content: "ENTER SITE";
-  position: absolute;
-  inset: 0;
-}
-.enter-screen h1::before {
-  color: var(--red-4);
-  animation: glitch 1s infinite;
-}
-.enter-screen h1::after {
-  color: white;
-  animation: glitch2 1.2s infinite;
-}
 .enter-screen.fade-out { opacity: 0; transform: scale(1.05); pointer-events: none; }
 @keyframes pulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.08);} }
-@keyframes glitch { 0%{transform:translate(0);} 25%{transform:translate(-2px,2px);} 50%{transform:translate(2px,-2px);} 75%{transform:translate(-2px,-2px);} 100%{transform:translate(0);} }
-@keyframes glitch2 { 0%{transform:translate(0);} 25%{transform:translate(2px,-2px);} 50%{transform:translate(-2px,2px);} 75%{transform:translate(2px,2px);} 100%{transform:translate(0);} }
+@keyframes neon-flicker {
+  0%, 18%, 22%, 53%, 57%, 100% { opacity: 1; }
+  20%, 55% { opacity: 0.82; }
+}
+.hero-pillars {
+  position: absolute;
+  inset: 108px 0 auto;
+  height: 88vh;
+  pointer-events: none;
+  z-index: 0;
+}
 .hero-shell {
   position: relative;
   min-height: 86vh;
@@ -64,11 +63,22 @@
   justify-content: center;
   padding: 36px 0 46px;
   overflow: hidden;
+  z-index: 1;
+}
+.hero-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 18%, rgba(170, 22, 22, 0.28), transparent 34%),
+    radial-gradient(circle at 50% 62%, rgba(255, 255, 255, 0.05), transparent 30%);
+  pointer-events: none;
+  z-index: 0;
 }
 .pillar-left,.pillar-right {
   position: absolute;
-  top: 44px;
-  height: 88vh;
+  top: 0;
+  height: 100%;
   max-width: 420px;
   object-fit: contain;
   z-index: 0;
@@ -85,6 +95,17 @@
   display: grid;
   gap: 12px;
   text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero-card::before {
+  content: "";
+  position: absolute;
+  inset: 12px;
+  border-radius: 28px;
+  border: 1px solid rgba(216, 55, 55, 0.18);
+  box-shadow: inset 0 0 40px rgba(168, 22, 22, 0.08);
+  pointer-events: none;
 }
 .hero-title {
   font-family: var(--font-display);
@@ -93,13 +114,18 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   margin: 0;
-  text-shadow: 0 0 20px rgba(216,55,55,0.28);
+  color: #fff5f5;
+  text-shadow:
+    0 0 14px rgba(216, 55, 55, 0.45),
+    0 0 34px rgba(168, 22, 22, 0.32),
+    0 10px 40px rgba(0, 0, 0, 0.45);
 }
 .hero-chip {
   padding: 14px 16px;
   border-radius: 20px;
   border: 1px solid var(--line);
-  background: rgba(0,0,0,0.26);
+  background: linear-gradient(180deg, rgba(20,0,0,0.38), rgba(0,0,0,0.2));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 8px 26px rgba(0,0,0,0.22);
 }
 .hero-mid {
   font-weight: 800;
@@ -212,12 +238,13 @@
 </audio>
 
 <div class="page-wrap">
+  <div class="hero-pillars" aria-hidden="true">
+    <img src="assets/pillar-left(1).png" class="pillar-left" alt="" loading="eager" decoding="async" sizes="(max-width: 860px) 0px, 320px">
+    <img src="assets/pillar-right.png" class="pillar-right" alt="" loading="eager" decoding="async" sizes="(max-width: 860px) 0px, 320px">
+  </div>
   <div id="site-header"></div>
 
   <section class="hero-shell">
-    <img src="assets/pillar-left(1).png" class="pillar-left" alt="" loading="eager" decoding="async" sizes="(max-width: 860px) 0px, 320px">
-    <img src="assets/pillar-right.png" class="pillar-right" alt="" loading="eager" decoding="async" sizes="(max-width: 860px) 0px, 320px">
-
     <div class="hero-panel section-shell">
       <div class="section-body hero-card">
         <p class="eyebrow">Bronx New York | Label, Visuals, Performance, Booking</p>
@@ -445,8 +472,8 @@
       <p class="eyebrow">Explore More</p>
       <h2>Keep Moving</h2>
       <div class="grid-3">
-        <div class="card"><h3>Releases</h3><p>Browse cover art, rollout framing, and release positioning.</p><a class="chip-link" href="releases.html">Open Releases</a></div>
-        <div class="card"><h3>Events</h3><p>Track appearances, appearances planning, and upcoming movement.</p><a class="chip-link" href="events.html">Open Events</a></div>
+        <div class="card"><h3>Work With Us</h3><p>Learn how the team approaches artist growth, services, and serious collaboration.</p><a class="chip-link" href="work-with-us.html">Open Work With Us</a></div>
+        <div class="card"><h3>Contact</h3><p>Reach out directly for questions, booking direction, or general inquiries.</p><a class="chip-link" href="contact.html">Open Contact</a></div>
         <div class="card"><h3>Services</h3><p>See the full service list before starting the booking flow.</p><a class="chip-link" href="services.html">Open Services</a></div>
       </div>
     </div>
