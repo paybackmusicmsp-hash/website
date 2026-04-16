@@ -100,19 +100,18 @@ window.MSPSite = (() => {
     if (document.body.dataset.page === "home") {
       const root = document.documentElement;
       const brandLockup = document.querySelector(".brand-lockup");
+      const scrollHint = document.getElementById("scrollHint");
       let railMotionTimer;
       const updateHomeScrollScene = () => {
         const scrollY = window.scrollY;
-        const revealStart = Math.max(220, window.innerHeight * 0.38);
-        const revealDistance = Math.max(280, window.innerHeight * 0.48);
-        const uiProgress = Math.min(1, Math.max(0, (scrollY - revealStart) / revealDistance));
-        const backdropOpacity = Math.max(0, 1 - scrollY / Math.max(window.innerHeight * 0.9, 520));
-        root.style.setProperty("--home-ui-opacity", uiProgress.toFixed(3));
-        root.style.setProperty("--home-ui-shift", `${Math.round((1 - uiProgress) * 42)}px`);
+        const fadeDistance = Math.max(window.innerHeight * 0.9, 620);
+        const backdropOpacity = Math.max(0, 1 - scrollY / fadeDistance);
+        const backdropDim = Math.min(1, scrollY / Math.max(window.innerHeight * 0.8, 540));
         root.style.setProperty("--home-backdrop-opacity", backdropOpacity.toFixed(3));
-        document.body.classList.toggle("home-scrolled", uiProgress > 0.02);
+        root.style.setProperty("--home-backdrop-dim", backdropDim.toFixed(3));
         if (scrollY > 80) {
           document.body.classList.remove("home-show-scroll-hint");
+          scrollHint?.setAttribute("aria-hidden", "true");
         }
       };
       const updateRailState = () => {

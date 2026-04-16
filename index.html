@@ -289,7 +289,11 @@
 </audio>
 
 <div class="home-backdrop" aria-hidden="true"></div>
-<div class="scroll-hint" id="scrollHint" aria-hidden="true">Scroll Down</div>
+<div class="scroll-hint" id="scrollHint" aria-hidden="true">
+  <span class="scroll-hint__eyebrow">Keep Going</span>
+  <span class="scroll-hint__label">Scroll Down</span>
+  <span class="scroll-hint__arrow" aria-hidden="true"></span>
+</div>
 
 <div class="hero-pillars" aria-hidden="true">
   <img src="assets/pillar-left(1).png" class="pillar-left" alt="" loading="eager" decoding="async" sizes="(max-width: 860px) 0px, 320px">
@@ -534,6 +538,7 @@ const music = document.getElementById("bg-music");
 const homeBody = document.body;
 const scrollHint = document.getElementById("scrollHint");
 let homeRevealScheduled = false;
+let scrollHintTimer;
 
 async function enterSite() {
   if (homeRevealScheduled) return;
@@ -554,11 +559,14 @@ async function enterSite() {
     homeBody.classList.remove("home-locked");
   }, 800);
   setTimeout(() => {
+    homeBody.classList.add("home-reveal");
+  }, 3000);
+  scrollHintTimer = setTimeout(() => {
     if (window.scrollY < 120) {
       homeBody.classList.add("home-show-scroll-hint");
       scrollHint?.setAttribute("aria-hidden", "false");
     }
-  }, 3800);
+  }, 4600);
 }
 
 enterScreen.addEventListener("click", enterSite);
