@@ -54,6 +54,8 @@ body {
 
 body[data-page="home"] {
   background: #020202;
+  --home-scene-height: clamp(560px, 82vh, 860px);
+  --home-fade-height: clamp(220px, 28vh, 320px);
   --home-glass-shell:
     linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.008)),
     rgba(4, 3, 3, 0.68);
@@ -636,7 +638,7 @@ body[data-page="home"] .nav-link {
 }
 
 body[data-page="home"] .home-runway {
-  height: clamp(500px, 76vh, 760px);
+  height: calc(var(--home-scene-height) + var(--home-fade-height) - 40px);
 }
 
 body[data-page="home"] .home-backdrop {
@@ -644,10 +646,11 @@ body[data-page="home"] .home-backdrop {
   top: 0;
   left: 0;
   right: 0;
-  height: clamp(560px, 82vh, 860px);
+  height: calc(var(--home-scene-height) + var(--home-fade-height));
   z-index: 0;
   pointer-events: none;
   background:
+    linear-gradient(180deg, rgba(2,2,2,0) 0%, rgba(2,2,2,0) calc(100% - var(--home-fade-height)), #020202 100%),
     url('Untitled(5).png') center top / cover no-repeat;
 }
 
@@ -668,11 +671,9 @@ body[data-page="home"] .home-backdrop::after {
   left: 0;
   right: 0;
   bottom: 0;
-  height: clamp(300px, 38vh, 430px);
+  height: var(--home-fade-height);
   background:
-    linear-gradient(180deg, rgba(2,2,2,0) 0%, rgba(2,2,2,0) 20%, rgba(2,2,2,0.14) 40%, rgba(2,2,2,0.46) 60%, rgba(2,2,2,0.8) 80%, #020202 100%);
-  -webkit-mask-image: radial-gradient(115% 100% at 50% 100%, #000 0 54%, rgba(0,0,0,0.92) 64%, rgba(0,0,0,0.34) 80%, transparent 100%);
-  mask-image: radial-gradient(115% 100% at 50% 100%, #000 0 54%, rgba(0,0,0,0.92) 64%, rgba(0,0,0,0.34) 80%, transparent 100%);
+    linear-gradient(180deg, rgba(2,2,2,0) 0%, rgba(2,2,2,0.08) 18%, rgba(2,2,2,0.3) 42%, rgba(2,2,2,0.62) 68%, rgba(2,2,2,0.88) 86%, #020202 100%);
   opacity: 1;
 }
 
@@ -1044,6 +1045,11 @@ body[data-page="home"].home-rail-collapsed .brand-mark {
     background-attachment: scroll;
   }
 
+  body[data-page="home"] {
+    --home-scene-height: clamp(280px, 42svh, 360px);
+    --home-fade-height: clamp(120px, 16svh, 180px);
+  }
+
   .page-wrap,
   .page-wrap.narrow {
     width: min(100%, calc(100% - 20px));
@@ -1072,11 +1078,7 @@ body[data-page="home"].home-rail-collapsed .brand-mark {
   }
 
   body[data-page="home"] .home-backdrop {
-    height: clamp(300px, 48svh, 420px);
-  }
-
-  body[data-page="home"] .home-backdrop::after {
-    height: clamp(160px, 22svh, 240px);
+    height: calc(var(--home-scene-height) + var(--home-fade-height));
   }
 
   body[data-page="home"] #site-header {
@@ -1094,7 +1096,7 @@ body[data-page="home"].home-rail-collapsed .brand-mark {
   }
 
   body[data-page="home"] .home-runway {
-    height: clamp(180px, 30svh, 260px);
+    height: calc(var(--home-scene-height) + var(--home-fade-height) - 24px);
   }
 
   body[data-page="home"] .hero-shell {
