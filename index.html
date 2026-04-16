@@ -552,6 +552,10 @@ async function enterSite() {
     homeBody.classList.remove("home-locked");
     homeBody.classList.add("home-reveal");
   }, 3000);
+  setTimeout(() => {
+    homeBody.classList.remove("home-reveal");
+    homeBody.classList.add("home-settled");
+  }, 5600);
 }
 
 enterScreen.addEventListener("click", enterSite);

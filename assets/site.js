@@ -28,7 +28,7 @@ window.MSPSite = (() => {
     if (header) {
       header.innerHTML = `
         <div class="site-topbar">
-          <a class="brand-lockup" href="index.html" aria-label="MSP 790 Payback Music home">
+          <a class="brand-lockup" href="index.html" aria-label="MSP 790 Payback Music home" aria-expanded="true">
             <span class="brand-mark" aria-hidden="true">
               <img src="assets/msp-logo-mark.svg" alt="">
             </span>
@@ -45,7 +45,7 @@ window.MSPSite = (() => {
         <div class="nav-shell">
           <div class="nav-surface">
             <nav class="site-nav" aria-label="Primary">
-              ${navLinks.map(link => `<a class="nav-link${page === link.page ? " active" : ""}" href="${link.href}">${link.label}</a>`).join("")}
+              ${navLinks.map(link => `<a class="nav-link${page === link.page ? " active" : ""}" href="${link.href}" data-short="${link.label.charAt(0)}"><span class="nav-label">${link.label}</span></a>`).join("")}
             </nav>
           </div>
         </div>
@@ -97,6 +97,18 @@ window.MSPSite = (() => {
 
   document.addEventListener("DOMContentLoaded", () => {
     renderChrome();
+    if (document.body.dataset.page === "home") {
+      const brandLockup = document.querySelector(".brand-lockup");
+      const updateRailState = () => {
+        brandLockup?.setAttribute("aria-expanded", String(!document.body.classList.contains("home-rail-collapsed")));
+      };
+      brandLockup?.addEventListener("click", event => {
+        event.preventDefault();
+        document.body.classList.toggle("home-rail-collapsed");
+        updateRailState();
+      });
+      updateRailState();
+    }
     document.querySelectorAll(".carousel").forEach(mountCarousel);
   });
 

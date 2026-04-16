@@ -608,7 +608,7 @@ body[data-page="home"] .nav-link {
 }
 
 body[data-page="home"] .home-runway {
-  height: clamp(180px, 28vh, 340px);
+  height: calc(100vh - 150px);
 }
 
 body[data-page="home"].home-locked #site-header,
@@ -621,6 +621,16 @@ body[data-page="home"].home-locked .page-wrap > .section-shell {
 body[data-page="home"].home-reveal #site-header,
 body[data-page="home"].home-reveal .hero-pillars,
 body[data-page="home"].home-reveal .hero-shell,
+body[data-page="home"].home-reveal .page-wrap > .section-shell,
+body[data-page="home"].home-settled #site-header,
+body[data-page="home"].home-settled .hero-pillars,
+body[data-page="home"].home-settled .hero-shell,
+body[data-page="home"].home-settled .page-wrap > .section-shell {
+  opacity: 1;
+  transform: none;
+  filter: blur(0);
+}
+
 body[data-page="home"].home-reveal .page-wrap > .section-shell {
   animation: homeFadeUp 0.9s ease forwards;
 }
@@ -682,6 +692,51 @@ body[data-page="home"].home-reveal .page-wrap > .section-shell:nth-of-type(9) { 
   to { width: 188px; }
 }
 
+body[data-page="home"].home-rail-collapsed #site-header {
+  width: 92px;
+}
+
+body[data-page="home"].home-rail-collapsed .page-wrap {
+  width: min(1180px, calc(100% - 172px));
+}
+
+body[data-page="home"].home-rail-collapsed .brand-lockup {
+  justify-content: center;
+  padding-inline: 12px;
+}
+
+body[data-page="home"].home-rail-collapsed .brand-text,
+body[data-page="home"].home-rail-collapsed .top-actions {
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+body[data-page="home"].home-rail-collapsed .nav-shell {
+  padding: 8px;
+}
+
+body[data-page="home"].home-rail-collapsed .nav-surface {
+  padding: 8px;
+}
+
+body[data-page="home"] .nav-label {
+  display: inline-block;
+}
+
+body[data-page="home"].home-rail-collapsed .nav-link {
+  min-height: 42px;
+  padding: 10px 0;
+  font-size: 0;
+}
+
+body[data-page="home"].home-rail-collapsed .nav-link::after {
+  content: attr(data-short);
+  font-size: 0.92rem;
+  letter-spacing: 0.12em;
+}
+
 .pending { color: var(--warning); }
 .accepted { color: var(--success); }
 .declined { color: var(--danger); }
@@ -740,6 +795,10 @@ body[data-page="home"].home-reveal .page-wrap > .section-shell:nth-of-type(9) { 
     width: auto;
     margin-bottom: 12px;
     animation: none !important;
+  }
+
+  body[data-page="home"] .home-runway {
+    height: clamp(220px, 42vh, 360px);
   }
 
   .section-body,
