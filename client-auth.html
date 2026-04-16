@@ -1,59 +1,104 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Client Portal</title>
-<style>
-body{background:#0a0a0a;color:white;font-family:Arial;text-align:center}
-.box{max-width:400px;margin:100px auto;background:#111;padding:30px;border-radius:12px}
-input,button{width:100%;padding:12px;margin:10px 0}
-button{background:#800000;color:white;border:none}
-</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Client Portal | MSP 790 Payback Music</title>
+<meta name="description" content="Login or create an account to manage bookings, payment status, and client updates.">
+<meta property="og:title" content="Client Portal | MSP 790 Payback Music">
+<meta property="og:description" content="Login or sign up to manage bookings in the MSP 790 client portal.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="assets/hero.jpg">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="stylesheet" href="assets/site.css">
 </head>
-<body>
-
-<div class="box">
-<h2>Client Portal</h2>
-
-<input id="email" placeholder="Email">
-<input id="pass" type="password" placeholder="Password">
-
-<button onclick="login()">Login</button>
-<button onclick="signup()">Sign Up</button>
-
+<body data-page="">
+<div class="page-wrap narrow">
+  <div id="site-header"></div>
+  <div class="page-header">
+    <h1 class="page-title">Client Portal</h1>
+    <p class="page-subtitle">Login or create an account to manage bookings, track payment status, and keep requests tied to the right client.</p>
+  </div>
+  <div id="authBanner" class="banner" aria-live="polite"></div>
+  <section class="section-shell"><div class="section-body">
+    <form class="form-grid" novalidate>
+      <div class="field-group">
+        <label for="email">Email</label>
+        <input id="email" type="email" autocomplete="email" required>
+      </div>
+      <div class="field-group">
+        <label for="pass">Password</label>
+        <input id="pass" type="password" autocomplete="current-password" required>
+      </div>
+      <div class="button-row">
+        <button type="button" id="loginButton">Login</button>
+        <button type="button" id="signupButton">Sign Up</button>
+      </div>
+    </form>
+  </div></section>
+  <div id="site-footer"></div>
 </div>
-
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-
+<script src="assets/site.js"></script>
 <script>
-firebase.initializeApp({
- apiKey:"AIzaSyC1pKUto9-16yt6jcYxzyPOfF4VBWeAit4",
- authDomain:"booking-8bc2d.firebaseapp.com",
- projectId:"booking-8bc2d"
-});
-
+MSPSite.initFirebase();
 const db = firebase.firestore();
+const email = document.getElementById("email");
+const pass = document.getElementById("pass");
+const authBanner = document.getElementById("authBanner");
+const loginButton = document.getElementById("loginButton");
+const signupButton = document.getElementById("signupButton");
 
-function signup(){
- firebase.auth().createUserWithEmailAndPassword(email.value, pass.value)
- .then(async cred=>{
-   await db.collection("users").doc(cred.user.uid).set({
-     email: email.value,
-     role: "client",
-     created: new Date()
-   });
-   location="client.html";
- })
- .catch(err=>alert(err.message));
+function showAuthBanner(type, text) {
+  authBanner.className = `banner visible ${type}`;
+  authBanner.textContent = text;
 }
 
-function login(){
- firebase.auth().signInWithEmailAndPassword(email.value, pass.value)
- .then(()=>location="client.html")
- .catch(err=>alert(err.message));
+async function signup(){
+  if (!email.value.trim() || !pass.value.trim()) {
+    showAuthBanner("error", "Enter email and password first.");
+    return;
+  }
+  signupButton.disabled = true;
+  signupButton.textContent = "Signing Up...";
+  try {
+    const cred = await firebase.auth().createUserWithEmailAndPassword(email.value, pass.value);
+    await db.collection("users").doc(cred.user.uid).set({
+      email: email.value,
+      role: "client",
+      created: new Date()
+    });
+    location = "client.html";
+  } catch (err) {
+    showAuthBanner("error", err.message);
+  } finally {
+    signupButton.disabled = false;
+    signupButton.textContent = "Sign Up";
+  }
 }
+
+async function login(){
+  if (!email.value.trim() || !pass.value.trim()) {
+    showAuthBanner("error", "Enter email and password first.");
+    return;
+  }
+  loginButton.disabled = true;
+  loginButton.textContent = "Logging In...";
+  try {
+    await firebase.auth().signInWithEmailAndPassword(email.value, pass.value);
+    location = "client.html";
+  } catch (err) {
+    showAuthBanner("error", err.message);
+  } finally {
+    loginButton.disabled = false;
+    loginButton.textContent = "Login";
+  }
+}
+
+loginButton.addEventListener("click", login);
+signupButton.addEventListener("click", signup);
 </script>
-
 </body>
 </html>

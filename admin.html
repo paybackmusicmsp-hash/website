@@ -1,237 +1,420 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MSP Admin</title>
-
+<meta name="description" content="Admin dashboard for bookings, payments, applications, calendar view, and revenue tracking.">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="stylesheet" href="assets/site.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-
 <style>
-body{margin:0;background:#0a0a0a;color:white;font-family:Arial}
-.app{display:flex}
-.sidebar{width:220px;background:#0d0d0d;height:100vh;padding:20px}
-.sidebar p{cursor:pointer;margin:12px 0;color:#aaa}
-.sidebar p:hover{color:white}
-.main{flex:1}
-.top{background:#111;padding:15px;display:flex;justify-content:space-between}
-.section{display:none;padding:20px}
-.active{display:block}
-.card{background:#111;padding:15px;margin:10px 0;border-radius:10px}
-button{background:#800000;color:white;border:none;padding:6px;margin:4px;cursor:pointer}
-.pending{color:gold}
-.accepted{color:lime}
-.declined{color:red}
-#chart{max-width:300px;margin:auto}
-
-/* CALENDAR FIX (responsive) */
-.calendar{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
-  gap:8px;
-}
-.day{
-  background:#111;
-  padding:10px;
-  border-radius:6px;
-  min-height:80px;
-  font-size:12px;
-}
-.day strong{
-  display:block;
-  margin-bottom:5px;
-  color:#aaa;
+.app-grid { display:grid; grid-template-columns:260px 1fr; gap:18px; }
+.sidebar-links { display:grid; gap:10px; }
+.sidebar-links button { width:100%; justify-content:flex-start; }
+.top-tools { display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; align-items:center; margin-bottom:18px; }
+.section-view { display:none; }
+.section-view.active { display:block; }
+.toolbar-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; margin-bottom:16px; }
+.toolbar-grid .field-group { margin:0; }
+.admin-list { display:grid; gap:14px; }
+.admin-actions { display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
+.admin-card textarea { min-height:90px; }
+.dual-chart { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+.calendar-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px; }
+.day-card { border:1px solid var(--line); border-radius:18px; padding:12px; background:rgba(0,0,0,0.22); min-height:110px; }
+.day-card strong { display:block; margin-bottom:8px; color:var(--text); }
+.metric-list { display:grid; gap:10px; }
+.metric-row { display:flex; justify-content:space-between; gap:12px; border-bottom:1px solid var(--line-soft); padding-bottom:8px; }
+@media (max-width: 980px) {
+  .app-grid, .dual-chart, .toolbar-grid { grid-template-columns:1fr; }
 }
 </style>
 </head>
+<body data-page="">
+<div class="page-wrap">
+  <div id="site-header"></div>
+  <div class="page-header">
+    <h1 class="page-title">Admin Dashboard</h1>
+    <p class="page-subtitle">Manage bookings, payments, applications, schedule pressure, notes, and exports from one place.</p>
+  </div>
 
-<body>
+  <div class="banner" id="adminBanner" aria-live="polite"></div>
 
-<div class="app">
+  <div class="app-grid">
+    <div class="section-shell">
+      <div class="section-body">
+        <h3>Navigation</h3>
+        <div class="sidebar-links">
+          <button type="button" data-view="dashboard">Dashboard</button>
+          <button type="button" data-view="bookings">Bookings</button>
+          <button type="button" data-view="payments">Payments</button>
+          <button type="button" data-view="applications">Applications</button>
+          <button type="button" data-view="calendar">Calendar</button>
+          <button type="button" id="logoutButton">Logout</button>
+        </div>
+      </div>
+    </div>
 
-<div class="sidebar">
-  <h2>⚡ MSP 790</h2>
-  <p onclick="show('dashboard')">📊 Dashboard</p>
-  <p onclick="show('bookings')">📦 Bookings</p>
-  <p onclick="show('calendarSection')">📅 Calendar</p>
+    <div class="section-shell">
+      <div class="section-body">
+        <div id="dashboard" class="section-view active">
+          <div class="top-tools">
+            <h2>Overview</h2>
+            <div class="admin-actions">
+              <button type="button" id="exportBookings">Export Bookings CSV</button>
+              <button type="button" id="exportApplications">Export Applications CSV</button>
+            </div>
+          </div>
+          <div class="stat-grid">
+            <div class="stat-card"><span>Bookings</span><strong id="statBookings">0</strong></div>
+            <div class="stat-card"><span>Applications</span><strong id="statApplications">0</strong></div>
+            <div class="stat-card"><span>Accepted Revenue</span><strong id="statRevenue">$0</strong></div>
+            <div class="stat-card"><span>Paid Bookings</span><strong id="statPaid">0</strong></div>
+          </div>
+          <div class="dual-chart" style="margin-top:18px;">
+            <div class="card"><h3>Booking Status</h3><canvas id="statusChart"></canvas></div>
+            <div class="card"><h3>Services Breakdown</h3><canvas id="serviceChart"></canvas></div>
+          </div>
+          <div class="card" style="margin-top:18px;">
+            <h3>Revenue By Service</h3>
+            <div class="metric-list" id="revenueByService"></div>
+          </div>
+        </div>
+
+        <div id="bookings" class="section-view">
+          <h2>Bookings</h2>
+          <div class="toolbar-grid">
+            <div class="field-group"><label for="bookingSearch">Search</label><input id="bookingSearch" placeholder="Name, email, service"></div>
+            <div class="field-group"><label for="bookingFilter">Status</label><select id="bookingFilter"><option value="all">All</option><option value="pending">Pending</option><option value="accepted">Accepted</option><option value="declined">Declined</option></select></div>
+            <div class="field-group"><label for="paymentFilter">Payment</label><select id="paymentFilter"><option value="all">All</option><option value="deposit_pending">Deposit Pending</option><option value="paid">Paid</option><option value="unpaid">Unpaid</option></select></div>
+            <div class="field-group"><label for="bookingSort">Sort</label><select id="bookingSort"><option value="newest">Newest first</option><option value="oldest">Oldest first</option><option value="date">Preferred date</option></select></div>
+          </div>
+          <div class="admin-list" id="bookingList"></div>
+        </div>
+
+        <div id="payments" class="section-view">
+          <h2>Payments</h2>
+          <div class="admin-list" id="paymentsList"></div>
+        </div>
+
+        <div id="applications" class="section-view">
+          <h2>Applications</h2>
+          <div class="admin-list" id="applicationsList"></div>
+        </div>
+
+        <div id="calendar" class="section-view">
+          <div class="top-tools">
+            <h2>Calendar</h2>
+            <div class="field-group">
+              <label for="monthSelect">Month</label>
+              <input id="monthSelect" type="month">
+            </div>
+          </div>
+          <div class="calendar-grid" id="calendarGrid"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="site-footer"></div>
 </div>
 
-<div class="main">
-
-<div class="top">
-  <span>🛠️ Admin Panel</span>
-  <button onclick="logout()">🚪 Logout</button>
-</div>
-
-<div id="dashboard" class="section active">
-  <h3>📊 Stats</h3>
-  <p>Total: <span id="total"></span></p>
-  <p>Revenue: $<span id="revenue"></span></p>
-  <canvas id="chart"></canvas>
-</div>
-
-<div id="bookings" class="section">
-  <h3>📦 Bookings</h3>
-  <div id="list"></div>
-</div>
-
-<div id="calendarSection" class="section">
-  <h3>📅 Schedule</h3>
-  <div class="calendar" id="calendar"></div>
-</div>
-
-</div>
-</div>
-
-<!-- FIREBASE (ONLY ONCE, CORRECT PLACE) -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-
+<script src="assets/site.js"></script>
 <script>
-firebase.initializeApp({
- apiKey:"AIzaSyC1pKUto9-16yt6jcYxzyPOfF4VBWeAit4",
- authDomain:"booking-8bc2d.firebaseapp.com",
- projectId:"booking-8bc2d"
-});
-
-emailjs.init("2wR4xarDSJyemGTCQ");
-
+MSPSite.initFirebase();
 const db = firebase.firestore();
-let bookings = [];
+const banner = document.getElementById("adminBanner");
+const state = { bookings: [], applications: [], statusChart: null, serviceChart: null };
 
-/* 🔐 ADMIN LOCK (FIXED) */
-firebase.auth().onAuthStateChanged(async user=>{
- if(!user){
-   location="login.html";
-   return;
- }
+function showBanner(type, text) {
+  banner.className = `banner visible ${type}`;
+  banner.textContent = text;
+}
 
- const doc = await db.collection("users").doc(user.uid).get();
+function setView(view) {
+  document.querySelectorAll(".section-view").forEach(section => section.classList.toggle("active", section.id === view));
+}
 
- if(!doc.exists || doc.data().role !== "admin"){
-   alert("Access denied");
-   firebase.auth().signOut();
-   location="client-auth.html";
-   return;
- }
-
- load();
+document.querySelectorAll("[data-view]").forEach(button => {
+  button.addEventListener("click", () => setView(button.dataset.view));
 });
 
-/* NAV */
-function show(id){
- document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
- document.getElementById(id).classList.add("active");
-}
+document.getElementById("logoutButton").addEventListener("click", () => firebase.auth().signOut());
 
-/* LOAD */
-function load(){
- db.collection("bookings").onSnapshot(snap=>{
-  bookings=[];
-  let revenue=0;
-
-  snap.forEach(doc=>{
-   let d=doc.data();
-   if(d.status==="accepted") revenue+=d.price||0;
-   bookings.push({id:doc.id,...d});
-  });
-
-  document.getElementById("total").innerText = bookings.length;
-  document.getElementById("revenue").innerText = revenue;
-
-  render();
-  buildChart();
-  buildCalendar();
- });
-}
-
-/* BOOKINGS */
-function render(){
- const list = document.getElementById("list");
- list.innerHTML="";
-
- bookings.forEach(b=>{
-  list.innerHTML+=`
-  <div class="card">
-    <h3>${b.name}</h3>
-    <p>🎯 ${b.service}</p>
-    <p>📅 ${b.date}</p>
-    <p class="${b.status}">📌 ${b.status}</p>
-    <button onclick="accept('${b.id}')">✅</button>
-    <button onclick="decline('${b.id}')">❌</button>
-  </div>`;
- });
-}
-
-/* ACTIONS */
-function accept(id){
- let price=prompt("Price?");
- db.collection("bookings").doc(id).update({
-  status:"accepted",
-  price:Number(price||0)
- });
-}
-
-function decline(id){
- db.collection("bookings").doc(id).update({
-  status:"declined"
- });
-}
-
-/* CALENDAR (FIXED FOR ALL SCREENS) */
-function buildCalendar(){
- const calendar = document.getElementById("calendar");
- calendar.innerHTML="";
-
- for(let i=1;i<=30;i++){
-  let div=document.createElement("div");
-  div.className="day";
-
-  let dayBookings = bookings.filter(b=>{
-    return b.date && b.date.includes("-"+String(i).padStart(2,"0"));
-  });
-
-  div.innerHTML = `<strong>${i}</strong>`;
-
-  dayBookings.forEach(b=>{
-    div.innerHTML += `<div>📌 ${b.name}</div>`;
-  });
-
-  calendar.appendChild(div);
- }
-}
-
-/* CHART */
-let chart;
-function buildChart(){
- let data=[
-  bookings.filter(b=>b.status==="pending").length,
-  bookings.filter(b=>b.status==="accepted").length,
-  bookings.filter(b=>b.status==="declined").length
- ];
-
- if(chart) chart.destroy();
-
- chart=new Chart(document.getElementById("chart"),{
-  type:"doughnut",
-  data:{
-   labels:["Pending","Accepted","Declined"],
-   datasets:[{
-     data,
-     backgroundColor:["gold","lime","red"]
-   }]
-  },
-  options:{
-    plugins:{legend:{labels:{color:"white"}}}
+firebase.auth().onAuthStateChanged(async user => {
+  if (!user) {
+    location = "login.html";
+    return;
   }
- });
+
+  const doc = await db.collection("users").doc(user.uid).get();
+  if (!doc.exists || doc.data().role !== "admin") {
+    alert("Access denied");
+    firebase.auth().signOut();
+    location = "client-auth.html";
+    return;
+  }
+
+  wireData();
+});
+
+function wireData() {
+  db.collection("bookings").onSnapshot(snapshot => {
+    state.bookings = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    renderDashboard();
+    renderBookings();
+    renderPayments();
+    renderCalendar();
+  });
+
+  db.collection("applications").onSnapshot(snapshot => {
+    state.applications = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    document.getElementById("statApplications").textContent = state.applications.length;
+    renderApplications();
+  });
 }
 
-/* LOGOUT */
-function logout(){
- firebase.auth().signOut();
+function renderDashboard() {
+  const revenue = state.bookings.filter(b => b.status === "accepted").reduce((sum, booking) => sum + (booking.price || 0), 0);
+  const paidCount = state.bookings.filter(b => b.paymentStatus === "paid").length;
+  document.getElementById("statBookings").textContent = state.bookings.length;
+  document.getElementById("statRevenue").textContent = `$${revenue}`;
+  document.getElementById("statPaid").textContent = paidCount;
+
+  const statusCounts = ["pending", "accepted", "declined"].map(status => state.bookings.filter(b => b.status === status).length);
+  const serviceMap = {};
+  const revenueMap = {};
+  state.bookings.forEach(booking => {
+    if (booking.service) serviceMap[booking.service] = (serviceMap[booking.service] || 0) + 1;
+    if (booking.status === "accepted" && booking.service) revenueMap[booking.service] = (revenueMap[booking.service] || 0) + (booking.price || 0);
+  });
+
+  const serviceLabels = Object.keys(serviceMap);
+  const serviceCounts = serviceLabels.map(label => serviceMap[label]);
+
+  if (state.statusChart) state.statusChart.destroy();
+  if (state.serviceChart) state.serviceChart.destroy();
+
+  state.statusChart = new Chart(document.getElementById("statusChart"), {
+    type: "doughnut",
+    data: { labels: ["Pending", "Accepted", "Declined"], datasets: [{ data: statusCounts, backgroundColor: ["gold", "lime", "#ff6f6f"] }] },
+    options: { plugins: { legend: { labels: { color: "white" } } } }
+  });
+
+  state.serviceChart = new Chart(document.getElementById("serviceChart"), {
+    type: "bar",
+    data: { labels: serviceLabels, datasets: [{ data: serviceCounts, backgroundColor: "#a81616" }] },
+    options: {
+      scales: {
+        x: { ticks: { color: "white" } },
+        y: { ticks: { color: "white" } }
+      },
+      plugins: { legend: { display: false } }
+    }
+  });
+
+  const revenueByService = document.getElementById("revenueByService");
+  revenueByService.innerHTML = Object.keys(revenueMap).map(key => `<div class="metric-row"><span>${key}</span><strong>$${revenueMap[key]}</strong></div>`).join("") || "<p>No accepted revenue yet.</p>";
 }
+
+function bookingMatchesFilters(booking) {
+  const search = document.getElementById("bookingSearch").value.trim().toLowerCase();
+  const status = document.getElementById("bookingFilter").value;
+  const payment = document.getElementById("paymentFilter").value;
+  if (status !== "all" && booking.status !== status) return false;
+  if (payment !== "all" && (booking.paymentStatus || "unpaid") !== payment) return false;
+  if (!search) return true;
+  const haystack = [booking.name, booking.email, booking.service].join(" ").toLowerCase();
+  return haystack.includes(search);
+}
+
+function sortBookings(bookings) {
+  const sortMode = document.getElementById("bookingSort").value;
+  return [...bookings].sort((a, b) => {
+    if (sortMode === "oldest") return new Date(a.created?.seconds ? a.created.seconds * 1000 : a.created || 0) - new Date(b.created?.seconds ? b.created.seconds * 1000 : b.created || 0);
+    if (sortMode === "date") return String(a.date || "").localeCompare(String(b.date || ""));
+    return new Date(b.created?.seconds ? b.created.seconds * 1000 : b.created || 0) - new Date(a.created?.seconds ? a.created.seconds * 1000 : a.created || 0);
+  });
+}
+
+function renderBookings() {
+  const container = document.getElementById("bookingList");
+  const filtered = sortBookings(state.bookings.filter(bookingMatchesFilters));
+  container.innerHTML = "";
+
+  filtered.forEach(booking => {
+    const wrap = document.createElement("div");
+    wrap.className = "card admin-card";
+    wrap.innerHTML = `
+      <h3>${booking.name || "Unnamed booking"}</h3>
+      <p><strong>Service:</strong> ${booking.service || "-"}</p>
+      <p><strong>Email:</strong> ${booking.email || "-"}</p>
+      <p><strong>Date:</strong> ${booking.date || "-"} | <strong>Time:</strong> ${booking.time || "-"}</p>
+      <p><strong>Status:</strong> <span class="${booking.status || "pending"}">${(booking.status || "pending").toUpperCase()}</span></p>
+      <p><strong>Payment:</strong> ${(booking.paymentStatus || "deposit_pending").replaceAll("_", " ")}</p>
+      <p><strong>Price:</strong> $${booking.price || 0}</p>
+      <p><strong>Submitted:</strong> ${booking.submittedAt || "-"}</p>
+      <p><strong>Accepted:</strong> ${booking.acceptedAt || "-"}</p>
+      <p><strong>Declined:</strong> ${booking.declinedAt || "-"}</p>
+      <p><strong>Client note:</strong> ${booking.clientNote || "-"}</p>
+      <div class="field-group"><label>Internal note</label><textarea data-note="${booking.id}">${booking.internalNote || ""}</textarea></div>
+      <div class="field-group"><label>Client-visible note</label><textarea data-client-note="${booking.id}">${booking.clientNote || ""}</textarea></div>
+      <div class="admin-actions">
+        <button type="button" data-accept="${booking.id}">Accept</button>
+        <button type="button" data-decline="${booking.id}">Decline</button>
+        <button type="button" data-paid="${booking.id}">Mark Paid</button>
+        <button type="button" data-unpaid="${booking.id}">Mark Deposit Pending</button>
+        <button type="button" data-save-notes="${booking.id}">Save Notes</button>
+      </div>
+    `;
+    container.appendChild(wrap);
+  });
+
+  container.querySelectorAll("[data-accept]").forEach(button => button.addEventListener("click", () => acceptBooking(button.dataset.accept)));
+  container.querySelectorAll("[data-decline]").forEach(button => button.addEventListener("click", () => declineBooking(button.dataset.decline)));
+  container.querySelectorAll("[data-paid]").forEach(button => button.addEventListener("click", () => updatePayment(button.dataset.paid, "paid")));
+  container.querySelectorAll("[data-unpaid]").forEach(button => button.addEventListener("click", () => updatePayment(button.dataset.unpaid, "deposit_pending")));
+  container.querySelectorAll("[data-save-notes]").forEach(button => button.addEventListener("click", () => saveNotes(button.dataset.saveNotes)));
+}
+
+async function acceptBooking(id) {
+  const price = prompt("Accepted price?");
+  await db.collection("bookings").doc(id).update({
+    status: "accepted",
+    price: Number(price || 0),
+    acceptedAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  });
+  showBanner("success", "Booking accepted.");
+}
+
+async function declineBooking(id) {
+  await db.collection("bookings").doc(id).update({
+    status: "declined",
+    declinedAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  });
+  showBanner("success", "Booking declined.");
+}
+
+async function updatePayment(id, status) {
+  await db.collection("bookings").doc(id).update({
+    paymentStatus: status,
+    updatedAt: new Date().toISOString()
+  });
+  showBanner("success", `Payment status updated to ${status.replace("_", " ")}.`);
+}
+
+async function saveNotes(id) {
+  const internalNote = document.querySelector(`[data-note="${id}"]`).value;
+  const clientNote = document.querySelector(`[data-client-note="${id}"]`).value;
+  await db.collection("bookings").doc(id).update({
+    internalNote,
+    clientNote,
+    updatedAt: new Date().toISOString()
+  });
+  showBanner("success", "Notes saved.");
+}
+
+function renderPayments() {
+  const container = document.getElementById("paymentsList");
+  const accepted = state.bookings.filter(booking => booking.status === "accepted");
+  container.innerHTML = accepted.map(booking => `
+    <div class="card">
+      <h3>${booking.name || "Booking"}</h3>
+      <p><strong>Service:</strong> ${booking.service || "-"}</p>
+      <p><strong>Approved price:</strong> $${booking.price || 0}</p>
+      <p><strong>Payment status:</strong> ${(booking.paymentStatus || "deposit_pending").replaceAll("_", " ")}</p>
+      <div class="admin-actions">
+        <button type="button" data-paid="${booking.id}">Mark Paid</button>
+        <button type="button" data-unpaid="${booking.id}">Mark Deposit Pending</button>
+      </div>
+    </div>
+  `).join("") || "<p>No accepted bookings yet.</p>";
+
+  container.querySelectorAll("[data-paid]").forEach(button => button.addEventListener("click", () => updatePayment(button.dataset.paid, "paid")));
+  container.querySelectorAll("[data-unpaid]").forEach(button => button.addEventListener("click", () => updatePayment(button.dataset.unpaid, "deposit_pending")));
+}
+
+function renderApplications() {
+  const container = document.getElementById("applicationsList");
+  container.innerHTML = state.applications.map(application => `
+    <div class="card">
+      <h3>${application.name || "Applicant"}</h3>
+      <p><strong>Email:</strong> ${application.email || "-"}</p>
+      <p><strong>Role:</strong> ${application.role || "-"}</p>
+      <p><strong>Bio:</strong> ${application.bio || "-"}</p>
+      <p><strong>Portfolio:</strong> ${application.link || "-"}</p>
+      <p><strong>Status:</strong> ${(application.status || "pending").toUpperCase()}</p>
+      <div class="admin-actions">
+        <button type="button" data-approve-app="${application.id}">Approve</button>
+        <button type="button" data-decline-app="${application.id}">Decline</button>
+      </div>
+    </div>
+  `).join("") || "<p>No applications yet.</p>";
+
+  container.querySelectorAll("[data-approve-app]").forEach(button => button.addEventListener("click", () => updateApplication(button.dataset.approveApp, "approved")));
+  container.querySelectorAll("[data-decline-app]").forEach(button => button.addEventListener("click", () => updateApplication(button.dataset.declineApp, "declined")));
+}
+
+async function updateApplication(id, status) {
+  await db.collection("applications").doc(id).update({ status, updatedAt: new Date().toISOString() });
+  showBanner("success", `Application marked ${status}.`);
+}
+
+function renderCalendar() {
+  const container = document.getElementById("calendarGrid");
+  const monthValue = document.getElementById("monthSelect").value || new Date().toISOString().slice(0, 7);
+  document.getElementById("monthSelect").value = monthValue;
+  const [year, month] = monthValue.split("-").map(Number);
+  const daysInMonth = new Date(year, month, 0).getDate();
+  container.innerHTML = "";
+
+  for (let day = 1; day <= daysInMonth; day++) {
+    const isoDate = `${monthValue}-${String(day).padStart(2, "0")}`;
+    const dayBookings = state.bookings.filter(booking => booking.date === isoDate);
+    const card = document.createElement("div");
+    card.className = "day-card";
+    card.innerHTML = `<strong>${day}</strong>${dayBookings.map(booking => `<div>${booking.name || "Booking"} - ${booking.status || "pending"}</div>`).join("") || "<span>No bookings</span>"}`;
+    container.appendChild(card);
+  }
+}
+
+function exportCsv(filename, rows) {
+  const csv = rows.map(row => row.map(value => `"${String(value ?? "").replaceAll('"', '""')}"`).join(",")).join("\n");
+  const blob = new Blob([csv], { type: "text/csv" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
+document.getElementById("exportBookings").addEventListener("click", () => {
+  exportCsv("bookings.csv", [
+    ["name", "email", "service", "status", "paymentStatus", "price", "date", "time"],
+    ...state.bookings.map(booking => [booking.name, booking.email, booking.service, booking.status, booking.paymentStatus, booking.price, booking.date, booking.time])
+  ]);
+});
+
+document.getElementById("exportApplications").addEventListener("click", () => {
+  exportCsv("applications.csv", [
+    ["name", "email", "role", "status", "link"],
+    ...state.applications.map(application => [application.name, application.email, application.role, application.status, application.link])
+  ]);
+});
+
+["bookingSearch", "bookingFilter", "paymentFilter", "bookingSort"].forEach(id => {
+  document.getElementById(id).addEventListener("input", renderBookings);
+  document.getElementById(id).addEventListener("change", renderBookings);
+});
+
+document.getElementById("monthSelect").addEventListener("change", renderCalendar);
 </script>
-
 </body>
 </html>
