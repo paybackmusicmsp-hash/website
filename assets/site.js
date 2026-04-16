@@ -30,7 +30,7 @@ window.MSPSite = (() => {
         <div class="site-topbar">
           <a class="brand-lockup" href="index.html" aria-label="MSP 790 Payback Music home">
             <span class="brand-mark" aria-hidden="true">
-              <img src="assets/favicon.svg" alt="">
+              <img src="assets/msp-logo-mark.svg" alt="">
             </span>
             <span class="brand-text">
               <strong>MSP 790</strong>

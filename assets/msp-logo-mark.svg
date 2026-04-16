@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">MSP 790 logo mark</title>
+  <desc id="desc">Circular MSP logo mark with metallic ring, red star accents, and glowing red MSP lettering.</desc>
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="40%" r="70%">
+      <stop offset="0%" stop-color="#171717"/>
+      <stop offset="70%" stop-color="#050505"/>
+      <stop offset="100%" stop-color="#000000"/>
+    </radialGradient>
+    <linearGradient id="ring" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#f2f2f2"/>
+      <stop offset="25%" stop-color="#b8b8b8"/>
+      <stop offset="50%" stop-color="#7a7a7a"/>
+      <stop offset="75%" stop-color="#cfcfcf"/>
+      <stop offset="100%" stop-color="#fbfbfb"/>
+    </linearGradient>
+    <linearGradient id="ringShadow" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#4a4a4a" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.38"/>
+    </linearGradient>
+    <linearGradient id="mspRed" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#ff4646"/>
+      <stop offset="45%" stop-color="#e00000"/>
+      <stop offset="100%" stop-color="#8c0000"/>
+    </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="0" stdDeviation="7" flood-color="#ff3b3b" flood-opacity="0.95"/>
+      <feDropShadow dx="0" dy="0" stdDeviation="16" flood-color="#7a0000" flood-opacity="0.82"/>
+    </filter>
+  </defs>
+
+  <circle cx="256" cy="256" r="246" fill="url(#ring)"/>
+  <circle cx="256" cy="256" r="229" fill="url(#bg)"/>
+  <circle cx="256" cy="256" r="229" fill="url(#ringShadow)"/>
+  <circle cx="256" cy="256" r="220" fill="none" stroke="#2d2d2d" stroke-width="6"/>
+
+  <g fill="#ff1616">
+    <path d="M256 60 266 98 304 88 276 116 304 144 266 134 256 172 246 134 208 144 236 116 208 88 246 98Z"/>
+    <path d="M86 256 94 286 124 278 102 300 124 322 94 314 86 344 78 314 48 322 70 300 48 278 78 286Z"/>
+    <path d="M426 256 434 286 464 278 442 300 464 322 434 314 426 344 418 314 388 322 410 300 388 278 418 286Z"/>
+    <path d="M146 144 152 165 173 159 157 175 173 191 152 185 146 206 140 185 119 191 135 175 119 159 140 165Z"/>
+    <path d="M366 144 372 165 393 159 377 175 393 191 372 185 366 206 360 185 339 191 355 175 339 159 360 165Z"/>
+  </g>
+
+  <text x="256" y="315" text-anchor="middle" font-size="210" font-family="Georgia, 'Times New Roman', serif" font-weight="700" font-style="italic" letter-spacing="-18" fill="url(#mspRed)" stroke="#fff8f8" stroke-width="10" paint-order="stroke fill" filter="url(#glow)">MSP</text>
+  <text x="256" y="404" text-anchor="middle" font-size="50" font-family="Georgia, 'Times New Roman', serif" font-style="italic" fill="#f3f3f3" letter-spacing="1.2">790 PayBack Time</text>
+</svg>
