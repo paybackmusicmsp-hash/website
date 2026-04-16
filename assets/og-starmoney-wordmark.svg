@@ -1,50 +1,42 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 320" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 360" role="img" aria-labelledby="title desc">
   <title id="title">OG StarMoney wordmark</title>
-  <desc id="desc">Custom red and black angular wordmark for OG StarMoney.</desc>
+  <desc id="desc">Outlined red neon wordmark for OG StarMoney.</desc>
   <defs>
-    <linearGradient id="strokeRed" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#ff8d8d"/>
-      <stop offset="45%" stop-color="#ff4747"/>
-      <stop offset="100%" stop-color="#8f0000"/>
-    </linearGradient>
-    <linearGradient id="fillDark" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#180202"/>
-      <stop offset="100%" stop-color="#020202"/>
-    </linearGradient>
-    <filter id="redGlow" x="-25%" y="-35%" width="150%" height="180%">
-      <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#ff5252" flood-opacity="0.65"/>
-      <feDropShadow dx="0" dy="0" stdDeviation="10" flood-color="#8b0000" flood-opacity="0.45"/>
-    </filter>
     <style>
-      .outline {
-        fill: url(#fillDark);
-        stroke: url(#strokeRed);
-        stroke-width: 14;
-        stroke-linejoin: bevel;
+      @import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap');
+
+      .wordmark {
+        font-family: "Black Ops One", Impact, Haettenschweiler, "Arial Black", sans-serif;
+        font-size: 210px;
+        letter-spacing: 10px;
+        text-transform: uppercase;
+        fill: #060000;
+        stroke: #ff5d5d;
+        stroke-width: 18px;
+        paint-order: stroke fill;
+        filter: url(#neon);
       }
+
       .inner {
-        fill: none;
-        stroke: rgba(255, 220, 220, 0.22);
-        stroke-width: 4;
-        stroke-linejoin: bevel;
+        font-family: "Black Ops One", Impact, Haettenschweiler, "Arial Black", sans-serif;
+        font-size: 210px;
+        letter-spacing: 10px;
+        text-transform: uppercase;
+        fill: transparent;
+        stroke: #ffb0b0;
+        stroke-width: 3px;
+        opacity: 0.45;
       }
     </style>
+
+    <filter id="neon" x="-20%" y="-30%" width="140%" height="180%">
+      <feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="#ff7373" flood-opacity="0.9"/>
+      <feDropShadow dx="0" dy="0" stdDeviation="16" flood-color="#7f0000" flood-opacity="0.42"/>
+    </filter>
   </defs>
 
-  <g filter="url(#redGlow)" transform="translate(44 36)">
-    <g transform="translate(0 0)">
-      <path class="outline" d="M18 26h128l32 30v132l-32 32H18L0 202V58Zm38 34-18 17v108l18 17h52l18-17V77l-18-17Z"/>
-      <path class="inner" d="M52 73h62l12 11v94l-12 11H52l-12-11V84Z"/>
-      <path class="outline" d="M226 26h74l28 28v46l-18 18 18 18v56l-28 28h-74l-28-28V54Zm40 34-16 16v22l16 16h26l16-16V76l-16-16Zm0 84-16 16v22l16 16h26l16-16v-22l-16-16Z"/>
-    </g>
-
-    <g transform="translate(392 0)">
-      <path class="outline" d="M8 26h144v38H60v46h76v36H60v40h96v34H8v-34l16-16V74L8 58Z"/>
-      <path class="outline" d="M192 26h88l34 32v58l-18 18 30 86h-54l-24-74h-16v74h-52V26Zm52 34v52h32l18-16V76l-18-16Z"/>
-      <path class="outline" d="M360 26h168v40h-56v154h-52V66h-60Z"/>
-      <path class="outline" d="M566 26h90l42 44v150h-52v-62h-54v62h-52V70Zm52 36-26 28v34h54V90l-26-28Z"/>
-      <path class="outline" d="M748 26h76l42 42v40l-24 24 24 24v64h-40l-18-18v-54l-18-18h-18v90h-52V26Zm52 34v56h18l18-18V78l-18-18Z"/>
-      <path class="outline" d="M918 26h90l42 44v150h-52v-62h-54v62h-52V70Zm52 36-26 28v34h54V90l-26-28Z"/>
-    </g>
+  <g transform="translate(800 226)">
+    <text class="wordmark" text-anchor="middle">OG STARMONEY</text>
+    <text class="inner" text-anchor="middle">OG STARMONEY</text>
   </g>
 </svg>
