@@ -102,6 +102,7 @@ window.MSPSite = (() => {
       const brandLockup = document.querySelector(".brand-lockup");
       const scrollHint = document.getElementById("scrollHint");
       const heroShell = document.querySelector(".hero-shell");
+      const mobileQuery = window.matchMedia("(max-width: 720px)");
       let railMotionTimer;
       let railHideTimer;
       let railShownByScroll = false;
@@ -116,6 +117,21 @@ window.MSPSite = (() => {
         }
         homeBody.classList.toggle("home-rail-collapsed", collapsed);
         brandLockup?.setAttribute("aria-expanded", String(!collapsed));
+      };
+      const syncMobileHomeState = () => {
+        if (!mobileQuery.matches) return false;
+        clearTimeout(railMotionTimer);
+        clearTimeout(railHideTimer);
+        railShownByScroll = false;
+        homeBody.classList.remove(
+          "home-rail-hidden",
+          "home-rail-collapsed",
+          "home-rail-visible",
+          "home-rail-collapsing",
+          "home-rail-expanding"
+        );
+        brandLockup?.setAttribute("aria-expanded", "true");
+        return true;
       };
       const setRailVisibility = visible => {
         clearTimeout(railHideTimer);
@@ -141,6 +157,13 @@ window.MSPSite = (() => {
         }
       };
       const updateHomeScrollScene = () => {
+        if (syncMobileHomeState()) {
+          if (window.scrollY > 60) {
+            homeBody.classList.remove("home-show-scroll-hint");
+            scrollHint?.setAttribute("aria-hidden", "true");
+          }
+          return;
+        }
         const scrollY = window.scrollY;
         const heroTop = heroShell ? heroShell.offsetTop : Math.max(180, window.innerHeight * 0.3);
         const railRevealThreshold = Math.max(0, heroTop - 8);
@@ -154,6 +177,7 @@ window.MSPSite = (() => {
         brandLockup?.setAttribute("aria-expanded", String(!homeBody.classList.contains("home-rail-collapsed")));
       };
       brandLockup?.addEventListener("click", event => {
+        if (mobileQuery.matches) return;
         event.preventDefault();
         homeBody.classList.remove("home-rail-hidden");
         railShownByScroll = true;
@@ -164,6 +188,7 @@ window.MSPSite = (() => {
       updateHomeScrollScene();
       window.addEventListener("scroll", updateHomeScrollScene, { passive: true });
       window.addEventListener("resize", updateHomeScrollScene);
+      mobileQuery.addEventListener("change", updateHomeScrollScene);
       updateRailState();
     }
     document.querySelectorAll(".carousel").forEach(mountCarousel);

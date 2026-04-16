@@ -1069,16 +1069,82 @@ body[data-page="home"].home-rail-collapsed .brand-mark {
     margin: 0 auto;
   }
 
+  body[data-page="home"] .home-backdrop {
+    height: clamp(300px, 48svh, 420px);
+  }
+
+  body[data-page="home"] .home-backdrop::after {
+    height: clamp(160px, 22svh, 240px);
+  }
+
   body[data-page="home"] #site-header {
     position: relative;
     top: auto;
     left: auto;
     width: auto;
     margin-bottom: 12px;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    filter: none;
+    pointer-events: auto;
+    animation: none;
   }
 
   body[data-page="home"] .home-runway {
-    height: clamp(320px, 62vh, 520px);
+    height: clamp(180px, 30svh, 260px);
+  }
+
+  body[data-page="home"] .hero-shell {
+    min-height: auto;
+    padding: 12px 0 28px;
+    transform: none;
+    filter: none;
+  }
+
+  body[data-page="home"] .hero-panel {
+    width: 100%;
+  }
+
+  body[data-page="home"] .section-shell {
+    padding: 14px;
+  }
+
+  body[data-page="home"] .section-body,
+  body[data-page="home"] .panel,
+  body[data-page="home"] .card,
+  body[data-page="home"] .glass-card,
+  body[data-page="home"] .nav-surface {
+    padding: 18px;
+  }
+
+  body[data-page="home"] .scroll-hint {
+    min-width: 0;
+    width: calc(100% - 28px);
+    bottom: 18px;
+    padding: 10px 14px 12px;
+  }
+
+  body[data-page="home"] .scroll-hint__label {
+    font-size: 0.9rem;
+  }
+
+  body[data-page="home"] .top-actions {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  body[data-page="home"] .top-actions .chip-link {
+    width: 100%;
+  }
+
+  body[data-page="home"] .site-nav {
+    gap: 6px;
+  }
+
+  body[data-page="home"] .nav-link {
+    font-size: 0.86rem;
   }
 
   .section-body,
