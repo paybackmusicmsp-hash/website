@@ -3,260 +3,459 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Book MSP 790</title>
-
+<title>Book Services | MSP 790 Payback Music</title>
+<meta name="description" content="Step through the MSP 790 booking flow for visuals, choreography, editing, audio, and website work.">
+<meta property="og:title" content="Book Services | MSP 790 Payback Music">
+<meta property="og:description" content="A structured booking flow with service summaries, project details, and account-linked requests.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="assets/hero.jpg">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
+<link rel="stylesheet" href="assets/site.css">
 <style>
-body {
-  margin: 0;
-  font-family: Arial;
-  background: #0a0a0a;
-  color: white;
-  text-align: center;
-}
-
-.container {
-  max-width: 600px;
-  margin: auto;
-  padding: 40px 20px 140px;
-  box-sizing: border-box;
-}
-
-h1 {
-  font-size: clamp(2rem, 6vw, 3rem);
-}
-
-.service {
-  background: #111;
-  padding: 15px;
-  margin: 10px 0;
-  border-radius: 10px;
-  cursor: pointer;
-  text-align: left;
-  transition: 0.3s;
-}
-
-.service:hover {
-  border: 1px solid #800000;
-  box-shadow: 0 0 10px rgba(128,0,0,0.4);
-}
-
-.service-content {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.4s ease;
-  margin-top: 10px;
-  color: #aaa;
-}
-
-.service.active .service-content {
-  max-height: 400px;
-}
-
-input, select, textarea {
-  width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-  border: 1px solid #222;
-  background: #111;
-  color: white;
-  border-radius: 6px;
-  font-size: 16px;
-}
-
-button {
-  width: 100%;
-  padding: 12px;
-  background: #800000;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
-button:hover {
-  background: red;
-}
-
-footer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  background: #111;
-  padding: 12px;
-  border-top: 1px solid #222;
-  font-size: 14px;
+.stepper { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; margin-bottom:18px; }
+.step-pill { padding:12px; border-radius:18px; border:1px solid var(--line); background:rgba(0,0,0,0.24); text-align:center; }
+.step-pill.active { background:rgba(168,22,22,0.22); }
+.step-view { display:none; }
+.step-view.active { display:block; }
+.service-pick { display:grid; gap:12px; }
+.service-option { border:1px solid var(--line); border-radius:18px; padding:16px; background:rgba(0,0,0,0.22); cursor:pointer; }
+.service-option.selected { border-color: rgba(216,55,55,0.5); background: rgba(168,22,22,0.16); }
+.summary-card { position:sticky; top:20px; }
+.service-grid { display:grid; grid-template-columns:1.2fr 0.8fr; gap:18px; }
+.button-row { display:flex; gap:10px; justify-content:space-between; margin-top:18px; flex-wrap:wrap; }
+.faq-grid { margin-top:18px; }
+.policy-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; }
+.helper-list { display:grid; gap:12px; }
+.inline-note { margin-top:8px; font-size:0.9rem; color:var(--muted); }
+.file-list { font-size:0.9rem; color:var(--muted); }
+@media (max-width: 820px) {
+  .service-grid, .policy-grid, .stepper { grid-template-columns:1fr; }
+  .summary-card { position:static; }
 }
 </style>
 </head>
+<body data-page="services">
+<div class="page-wrap">
+  <div id="site-header"></div>
+  <div class="page-header">
+    <h1 class="page-title">Book Services</h1>
+    <p class="page-subtitle">Use the guided intake so the request arrives with the right service, scope, timing, contact preferences, and project context from the start.</p>
+  </div>
 
-<body>
+  <div class="banner" id="formBanner" aria-live="polite"></div>
 
-<div class="container">
+  <section class="section-shell">
+    <div class="section-body">
+      <div class="stepper" id="stepper">
+        <div class="step-pill active">1. Service</div>
+        <div class="step-pill">2. Project</div>
+        <div class="step-pill">3. Contact</div>
+        <div class="step-pill">4. Review</div>
+      </div>
 
-<h1>Book Our Services</h1>
+      <div class="service-grid">
+        <div>
+          <form id="bookingForm" novalidate>
+            <div class="step-view active" data-step="0">
+              <div class="service-pick" id="serviceOptions"></div>
+              <div class="button-row">
+                <span></span>
+                <button type="button" id="nextStep0">Next</button>
+              </div>
+            </div>
 
-<!-- 🎬 Video Editing -->
-<div class="service" onclick="toggleService(this)">
-🎬 Video Editing — $75+
-<div class="service-content">
-Professional editing including cuts, transitions, color grading, and audio cleanup.<br>
-Ideal for music videos, social media content, and promotional clips.<br>
-<strong>Turnaround:</strong> 2–5 days<br>
-<strong>Includes:</strong> 1–2 revisions<br>
-<strong>Handled by K-Money</strong>
+            <div class="step-view" data-step="1">
+              <div class="form-grid">
+                <div class="field-group">
+                  <label for="projectDetails">Project details</label>
+                  <textarea id="projectDetails" name="details" required aria-describedby="projectHelp"></textarea>
+                  <small id="projectHelp" class="field-help">Explain what you need, what stage you are in, and what success looks like.</small>
+                </div>
+                <div class="grid-2">
+                  <div class="field-group">
+                    <label for="budget">Budget range</label>
+                    <select id="budget" name="budget" required>
+                      <option value="">Select budget</option>
+                      <option>$50-$150</option>
+                      <option>$150-$300</option>
+                      <option>$300-$600</option>
+                      <option>$600+</option>
+                    </select>
+                  </div>
+                  <div class="field-group">
+                    <label for="deadline">Deadline</label>
+                    <input id="deadline" name="deadline" type="date" required>
+                  </div>
+                </div>
+                <div class="grid-2">
+                  <div class="field-group">
+                    <label for="calendar">Preferred booking date</label>
+                    <input id="calendar" placeholder="Pick a date" required>
+                  </div>
+                  <div class="field-group">
+                    <label for="time">Preferred time</label>
+                    <input id="time" type="time" name="time" min="14:00" max="19:00" required>
+                  </div>
+                </div>
+                <div class="grid-2">
+                  <div class="field-group">
+                    <label for="locationField">Location</label>
+                    <input id="locationField" name="location" placeholder="City, borough, studio, or remote">
+                  </div>
+                  <div class="field-group">
+                    <label for="deliverables">Deliverables</label>
+                    <input id="deliverables" name="deliverables" placeholder="Example: 1 music video edit, 3 teaser cuts">
+                  </div>
+                </div>
+                <div class="field-group">
+                  <label for="references">Reference files</label>
+                  <input id="references" type="file" multiple aria-describedby="fileHelp">
+                  <small id="fileHelp" class="field-help">File names are saved with the request for reference. Actual uploads are not stored in this version.</small>
+                  <div id="fileList" class="file-list"></div>
+                </div>
+              </div>
+              <div class="button-row">
+                <button type="button" class="button-secondary" id="prevStep1">Back</button>
+                <button type="button" id="nextStep1">Next</button>
+              </div>
+            </div>
+
+            <div class="step-view" data-step="2">
+              <div class="form-grid">
+                <div class="grid-2">
+                  <div class="field-group">
+                    <label for="name">Name</label>
+                    <input id="name" name="name" autocomplete="name" required>
+                  </div>
+                  <div class="field-group">
+                    <label for="email">Email</label>
+                    <input id="email" name="email" type="email" autocomplete="email" required>
+                  </div>
+                </div>
+                <div class="grid-2">
+                  <div class="field-group">
+                    <label for="phone">Phone</label>
+                    <input id="phone" name="phone" type="tel" autocomplete="tel">
+                  </div>
+                  <div class="field-group">
+                    <label for="contactMethod">Preferred contact method</label>
+                    <select id="contactMethod" name="contactMethod" required>
+                      <option value="">Select method</option>
+                      <option>Email</option>
+                      <option>Phone</option>
+                      <option>Text</option>
+                      <option>Instagram DM</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="field-group">
+                  <label for="contactHandle">Backup handle or contact note</label>
+                  <input id="contactHandle" name="contactHandle" placeholder="Instagram handle, alternate email, or other note">
+                </div>
+              </div>
+              <div class="button-row">
+                <button type="button" class="button-secondary" id="prevStep2">Back</button>
+                <button type="button" id="nextStep2">Next</button>
+              </div>
+            </div>
+
+            <div class="step-view" data-step="3">
+              <div class="card">
+                <h3>Review Your Request</h3>
+                <div id="reviewOutput" class="helper-list"></div>
+              </div>
+              <div class="button-row">
+                <button type="button" class="button-secondary" id="prevStep3">Back</button>
+                <button type="submit" id="submitButton">Submit Request</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="summary-card">
+          <div class="card">
+            <p class="eyebrow">Live Summary</p>
+            <h3 id="summaryService">Select a service</h3>
+            <p id="summaryRange">Pricing range will appear here.</p>
+            <p id="summaryDescription">Choose a service to see the scope, owner, and next-step summary.</p>
+            <div class="status-pill">Mon-Fri | 2PM-7PM</div>
+            <div class="status-pill">50% deposit after approval</div>
+            <div class="status-pill">No auto-payment on submit</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-shell">
+    <div class="section-body policy-grid">
+      <div class="card">
+        <p class="eyebrow">Booking Policy</p>
+        <h3>How pricing and approval work</h3>
+        <p>Pricing starts at the listed ranges and may change based on scope, turnaround, complexity, travel, and revisions. Accepted requests require a 50% deposit before work begins.</p>
+      </div>
+      <div class="card">
+        <p class="eyebrow">After Submission</p>
+        <h3>What happens next</h3>
+        <div class="timeline">
+          <div class="timeline-step">Your request is saved under your signed-in account.</div>
+          <div class="timeline-step">The team reviews scope, availability, and fit.</div>
+          <div class="timeline-step">If approved, you receive pricing and deposit instructions.</div>
+          <div class="timeline-step">Once payment is confirmed, the booking moves forward.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-shell">
+    <div class="section-body">
+      <p class="eyebrow">FAQ</p>
+      <h2>Before You Submit</h2>
+      <div class="faq faq-grid">
+        <div class="faq-item"><h3>Can I book without an account?</h3><p>No. Requests are attached to the signed-in client account so booking history and status stay tied to the correct person.</p></div>
+        <div class="faq-item"><h3>Is the listed price final?</h3><p>No. The ranges are starting points. Final pricing is confirmed after review.</p></div>
+        <div class="faq-item"><h3>Can I send references?</h3><p>Yes. This version stores your selected file names with the request so the team knows what references you planned to send.</p></div>
+        <div class="faq-item"><h3>Can weekends be booked?</h3><p>The default booking calendar only allows weekday requests right now.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <div id="site-footer"></div>
 </div>
-</div>
 
-<!-- 🎥 Video Production -->
-<div class="service" onclick="toggleService(this)">
-🎥 Video Production — $250+
-<div class="service-content">
-Full-service production from planning to final edit.<br>
-Includes filming, directing, and post-production.<br>
-Best for artists, brands, and businesses.<br>
-<strong>Turnaround:</strong> 3–7 days<br>
-<strong>Handled by K-Money</strong>
-</div>
-</div>
-
-<!-- 📹 Filming -->
-<div class="service" onclick="toggleService(this)">
-📹 Filming — $150+
-<div class="service-content">
-High-quality on-site video capture with proper framing and composition.<br>
-Raw footage delivery or bundle with editing.<br>
-<strong>Pricing varies based on scope</strong><br>
-<strong>Handled by K-Money</strong>
-</div>
-</div>
-
-<!-- 🎧 Audio -->
-<div class="service" onclick="toggleService(this)">
-🎧 Audio Production — $100+
-<div class="service-content">
-Mixing, editing, and sound enhancement for clean, polished audio.<br>
-Perfect for music, podcasts, and recordings.<br>
-<strong>Turnaround:</strong> 2–4 days<br>
-<strong>Handled by K-Money</strong>
-</div>
-</div>
-
-<!-- 💃 Dance Lessons -->
-<div class="service" onclick="toggleService(this)">
-💃 Dance Lessons — $60/session
-<div class="service-content">
-Personalized dance training led by <strong>StarMoney</strong>, a professional dancer and choreographer specializing in R&B, Hip Hop, Pop, Reggaeton/Perreo, and Reggae.<br>
-Focused on improving technique, timing, confidence, and performance ability.<br>
-Perfect for beginners and experienced dancers.<br>
-<strong>1-on-1 or small group sessions</strong>
-</div>
-</div>
-
-<!-- 🎬 Choreography -->
-<div class="service" onclick="toggleService(this)">
-🎬 Dance Choreography — $100+
-<div class="service-content">
-Custom choreography created and taught by <strong>StarMoney</strong>, a professional dance choreographer.<br>
-Includes full routine development, performance coaching, and stage presence training.<br>
-Ideal for music videos, performances, and events.<br>
-<strong>Pricing varies based on complexity</strong>
-</div>
-</div>
-
-<!-- 💻 Website -->
-<div class="service" onclick="toggleService(this)">
-💻 Website Creation — $200+
-<div class="service-content">
-Modern, mobile-friendly website built for your brand or business.<br>
-Includes clean design, contact setup, and optimization.<br>
-<strong>Portfolio:</strong> You're looking at it.<br>
-<strong>Turnaround:</strong> 3–7 days<br>
-<strong>Handled by K-Money</strong>
-</div>
-</div>
-
-<p><strong>Availability:</strong> Mon–Fri | 2PM–7PM</p>
-<p style="color:red;">50% Deposit required after approval, no refunds.</p>
-
-<form id="bookingForm">
-<input name="name" placeholder="Name" required>
-<input name="email" placeholder="Email" required>
-
-<select name="service" required>
-<option value="">Select Service</option>
-<option>Video Editing</option>
-<option>Video Production</option>
-<option>Filming</option>
-<option>Audio Production</option>
-<option>Dance Lessons</option>
-<option>Dance Choreography</option>
-<option>Website Creation</option>
-</select>
-
-<input id="calendar" placeholder="Pick a date" required>
-<input type="time" name="time" min="14:00" max="19:00" required>
-
-<textarea name="details" placeholder="Project details"></textarea>
-
-<button type="submit">Submit Request</button>
-</form>
-
-<p>We will respond within 24–48 hours.</p>
-
-</div>
-
-<footer>
-📧 paybackmusicmsp@gmail.com | 💰 CashApp | Zelle | PayPal
-</footer>
-
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-
+<script src="assets/site.js"></script>
 <script>
-firebase.initializeApp({
-  apiKey: "AIzaSyC1pKUto9-16yt6jcYxzyPOfF4VBWeAit4",
-  authDomain: "booking-8bc2d.firebaseapp.com",
-  projectId: "booking-8bc2d"
-});
-
+MSPSite.initFirebase();
 const db = firebase.firestore();
 
-flatpickr("#calendar", {
-  dateFormat: "Y-m-d",
-  disable: [
-    date => (date.getDay() === 0 || date.getDay() === 6)
-  ]
-});
+const services = [
+  { name: "Video Editing", range: "$75+", owner: "K-Money", description: "Cuts, transitions, color grading, and cleanup for content and music visuals." },
+  { name: "Video Production", range: "$250+", owner: "K-Money", description: "Planning, filming, and post-production support for complete video projects." },
+  { name: "Filming", range: "$150+", owner: "K-Money", description: "On-site capture for artists, brands, and performance work." },
+  { name: "Audio Production", range: "$100+", owner: "K-Money", description: "Mixing, editing, and audio polish for music or spoken-word work." },
+  { name: "Dance Lessons", range: "$60/session", owner: "OG StarMoney", description: "Technique, confidence, timing, and performance coaching." },
+  { name: "Dance Choreography", range: "$100+", owner: "OG StarMoney", description: "Custom routines for visuals, performances, and rehearsal prep." },
+  { name: "Website Creation", range: "$200+", owner: "K-Money", description: "Brand websites with cleaner presentation and mobile support." }
+];
 
-function toggleService(el) {
-  document.querySelectorAll(".service").forEach(s => {
-    if (s !== el) s.classList.remove("active");
-  });
-  el.classList.toggle("active");
+const state = { step: 0, selectedService: null, blockedDates: [], submitting: false };
+const bookingForm = document.getElementById("bookingForm");
+const banner = document.getElementById("formBanner");
+const reviewOutput = document.getElementById("reviewOutput");
+const fileList = document.getElementById("fileList");
+const submitButton = document.getElementById("submitButton");
+const emailField = document.getElementById("email");
+const serviceOptions = document.getElementById("serviceOptions");
+let currentUser = null;
+let calendarPicker;
+
+function showBanner(type, text) {
+  banner.className = `banner visible ${type}`;
+  banner.textContent = text;
 }
 
-document.getElementById("bookingForm").addEventListener("submit", async e => {
-  e.preventDefault();
+function clearBanner() {
+  banner.className = "banner";
+  banner.textContent = "";
+}
 
-  let f = e.target;
-
-  await db.collection("bookings").add({
-    name: f.name.value,
-    email: f.email.value,
-    service: f.service.value,
-    date: calendar.value,
-    time: f.time.value,
-    details: f.details.value,
-    status: "pending",
-    created: new Date()
+function updateStepper() {
+  document.querySelectorAll(".step-pill").forEach((pill, index) => {
+    pill.classList.toggle("active", index === state.step);
   });
+  document.querySelectorAll(".step-view").forEach((view, index) => {
+    view.classList.toggle("active", index === state.step);
+  });
+}
 
-  alert("Request sent. We’ll contact you within 24–48 hours.");
-  window.location.href = "pay.html";
+function renderServiceOptions() {
+  serviceOptions.innerHTML = services.map(service => `
+    <button type="button" class="service-option${state.selectedService?.name === service.name ? " selected" : ""}" data-service="${service.name}">
+      <strong>${service.name}</strong><br>
+      <span>${service.range} | ${service.owner}</span><br>
+      <span>${service.description}</span>
+    </button>
+  `).join("");
+
+  serviceOptions.querySelectorAll("[data-service]").forEach(button => {
+    button.addEventListener("click", () => {
+      state.selectedService = services.find(service => service.name === button.dataset.service);
+      bookingForm.service.value = state.selectedService.name;
+      updateSummary();
+      renderServiceOptions();
+      clearBanner();
+    });
+  });
+}
+
+function updateSummary() {
+  const service = state.selectedService;
+  document.getElementById("summaryService").textContent = service ? service.name : "Select a service";
+  document.getElementById("summaryRange").textContent = service ? `${service.range} | Lead: ${service.owner}` : "Pricing range will appear here.";
+  document.getElementById("summaryDescription").textContent = service ? service.description : "Choose a service to see the scope, owner, and next-step summary.";
+}
+
+function validateStep(step) {
+  clearBanner();
+  if (step === 0 && !state.selectedService) {
+    showBanner("error", "Choose a service before continuing.");
+    return false;
+  }
+
+  if (step === 1) {
+    const requiredIds = ["projectDetails", "budget", "deadline", "calendar", "time"];
+    const missing = requiredIds.find(id => !document.getElementById(id).value.trim());
+    if (missing) {
+      showBanner("error", "Fill in the required project details before continuing.");
+      return false;
+    }
+  }
+
+  if (step === 2) {
+    const requiredIds = ["name", "email", "contactMethod"];
+    const missing = requiredIds.find(id => !document.getElementById(id).value.trim());
+    if (missing) {
+      showBanner("error", "Complete the required contact fields before continuing.");
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function goToStep(step) {
+  state.step = step;
+  if (state.step === 3) buildReview();
+  updateStepper();
+}
+
+function buildReview() {
+  const entries = [
+    ["Service", state.selectedService?.name || "-"],
+    ["Budget", bookingForm.budget.value || "-"],
+    ["Deadline", bookingForm.deadline.value || "-"],
+    ["Preferred date", document.getElementById("calendar").value || "-"],
+    ["Preferred time", bookingForm.time.value || "-"],
+    ["Location", bookingForm.location.value || "-"],
+    ["Preferred contact", bookingForm.contactMethod.value || "-"],
+    ["Contact note", bookingForm.contactHandle.value || "-"],
+    ["Reference files", [...document.getElementById("references").files].map(file => file.name).join(", ") || "None selected"]
+  ];
+
+  reviewOutput.innerHTML = entries.map(([label, value]) => `<div class="card"><strong>${label}</strong><p>${value}</p></div>`).join("");
+}
+
+function loadBlockedDates() {
+  db.collection("bookings").where("status", "==", "accepted").onSnapshot(snapshot => {
+    state.blockedDates = snapshot.docs.map(doc => doc.data().date).filter(Boolean);
+    if (calendarPicker) {
+      calendarPicker.set("disable", [
+        date => date.getDay() === 0 || date.getDay() === 6,
+        ...state.blockedDates
+      ]);
+    }
+  });
+}
+
+function wireStepButtons() {
+  document.getElementById("nextStep0").addEventListener("click", () => validateStep(0) && goToStep(1));
+  document.getElementById("nextStep1").addEventListener("click", () => validateStep(1) && goToStep(2));
+  document.getElementById("nextStep2").addEventListener("click", () => validateStep(2) && goToStep(3));
+  document.getElementById("prevStep1").addEventListener("click", () => goToStep(0));
+  document.getElementById("prevStep2").addEventListener("click", () => goToStep(1));
+  document.getElementById("prevStep3").addEventListener("click", () => goToStep(2));
+}
+
+document.getElementById("references").addEventListener("change", event => {
+  const names = [...event.target.files].map(file => file.name);
+  fileList.textContent = names.length ? `Selected: ${names.join(", ")}` : "";
+});
+
+firebase.auth().onAuthStateChanged(user => {
+  currentUser = user;
+  if (!user) {
+    showBanner("error", "Please log in before booking a service.");
+    setTimeout(() => { window.location.href = "client-auth.html"; }, 1000);
+    return;
+  }
+
+  emailField.value = user.email || "";
+  emailField.readOnly = true;
+});
+
+bookingForm.insertAdjacentHTML("beforeend", `<input type="hidden" name="service">`);
+
+calendarPicker = flatpickr("#calendar", {
+  dateFormat: "Y-m-d",
+  disable: [date => date.getDay() === 0 || date.getDay() === 6]
+});
+
+wireStepButtons();
+renderServiceOptions();
+updateSummary();
+loadBlockedDates();
+
+bookingForm.addEventListener("submit", async event => {
+  event.preventDefault();
+  if (state.submitting || !validateStep(2) || !state.selectedService) return;
+  state.submitting = true;
+  submitButton.disabled = true;
+  submitButton.textContent = "Submitting...";
+  clearBanner();
+
+  const referenceFiles = [...document.getElementById("references").files].map(file => file.name);
+  const payload = {
+    ownerUid: currentUser.uid,
+    ownerEmail: currentUser.email || "",
+    name: bookingForm.name.value.trim(),
+    email: currentUser.email || "",
+    phone: bookingForm.phone.value.trim(),
+    contactMethod: bookingForm.contactMethod.value,
+    contactHandle: bookingForm.contactHandle.value.trim(),
+    service: state.selectedService.name,
+    priceRange: state.selectedService.range,
+    serviceLead: state.selectedService.owner,
+    date: document.getElementById("calendar").value,
+    time: bookingForm.time.value,
+    deadline: bookingForm.deadline.value,
+    budget: bookingForm.budget.value,
+    location: bookingForm.location.value.trim(),
+    deliverables: bookingForm.deliverables.value.trim(),
+    details: bookingForm.details.value.trim(),
+    referenceFiles,
+    status: "pending",
+    paymentStatus: "deposit_pending",
+    submittedAt: new Date().toISOString(),
+    created: new Date()
+  };
+
+  try {
+    const docRef = await db.collection("bookings").add(payload);
+    localStorage.setItem("latestBooking", JSON.stringify({
+      id: docRef.id,
+      service: payload.service,
+      date: payload.date,
+      time: payload.time
+    }));
+    showBanner("success", "Request submitted. You’ll be redirected to the confirmation page.");
+    setTimeout(() => {
+      window.location.href = `pay.html?id=${encodeURIComponent(docRef.id)}`;
+    }, 900);
+  } catch (error) {
+    showBanner("error", error.message || "We could not submit your request. Please try again.");
+  } finally {
+    state.submitting = false;
+    submitButton.disabled = false;
+    submitButton.textContent = "Submit Request";
+  }
 });
 </script>
-
 </body>
 </html>

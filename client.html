@@ -1,194 +1,126 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Client Portal</title>
-
-<style>
-body{
-  margin:0;
-  background:#0a0a0a;
-  color:white;
-  font-family:Arial;
-}
-
-/* HEADER */
-.header{
-  background:#111;
-  padding:15px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-/* MAIN */
-.container{
-  padding:20px;
-  max-width:900px;
-  margin:auto;
-}
-
-/* CARDS */
-.card{
-  background:#111;
-  padding:15px;
-  margin:15px 0;
-  border-radius:10px;
-  box-shadow:0 0 10px rgba(128,0,0,0.2);
-}
-
-/* BUTTONS */
-button{
-  background:#800000;
-  color:white;
-  border:none;
-  padding:10px;
-  margin:5px;
-  cursor:pointer;
-  border-radius:6px;
-}
-button:hover{background:red}
-
-/* STATUS */
-.pending{color:gold}
-.accepted{color:lime}
-.declined{color:red}
-
-/* EMPTY */
-.empty{
-  text-align:center;
-  margin-top:40px;
-  color:#777;
-}
-
-/* GRID */
-.grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:15px;
-}
-</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Client Portal | MSP 790 Payback Music</title>
+<meta name="description" content="View your booking history, payment status, approved pricing, and admin notes in the MSP 790 client portal.">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="stylesheet" href="assets/site.css">
 </head>
-
-<body>
-
-<div class="header">
-  <h2>📊 Client Dashboard</h2>
-  <button onclick="logout()">🚪 Logout</button>
-</div>
-
-<div class="container">
-
-<!-- ACTIONS -->
-<div class="grid">
-
-  <div class="card">
-    <h3>📅 Book a Service</h3>
-    <p>Schedule your next project with us.</p>
-    <button onclick="go('book.html')">➡️ Book Now</button>
+<body data-page="">
+<div class="page-wrap">
+  <div id="site-header"></div>
+  <div class="page-header">
+    <h1 class="page-title">Client Portal</h1>
+    <p class="page-subtitle">Track request status, approved price, payment state, and any client-visible updates from the team.</p>
   </div>
 
-  <div class="card">
-    <h3>🎤 Join the Label</h3>
-    <p>Apply to become part of MSP 790.</p>
-    <button onclick="go('join.html')">🔥 Apply</button>
+  <div class="grid-2">
+    <div class="card"><h3>Book a Service</h3><p>Go through the guided intake for visuals, editing, choreography, audio, or website work.</p><a class="button-link" href="book.html">Start a Booking</a></div>
+    <div class="card"><h3>Join the Label</h3><p>If you want to work with the movement on the artist side, use the application path.</p><a class="button-link" href="join.html">Apply to Join</a></div>
   </div>
 
+  <section class="section-shell" style="margin-top:18px;">
+    <div class="section-body">
+      <div class="top-actions" style="justify-content:space-between; margin-bottom:14px;">
+        <div>
+          <p class="eyebrow">Bookings</p>
+          <h2>Your Requests</h2>
+        </div>
+        <button type="button" id="logoutButton">Logout</button>
+      </div>
+      <div id="portalBanner" class="banner"></div>
+      <div id="loading">Loading...</div>
+      <div id="myBookings" class="card-grid"></div>
+    </div>
+  </section>
+
+  <section class="section-shell">
+    <div class="section-body">
+      <h2>Service Notes</h2>
+      <div class="card-grid">
+        <div class="card"><h3>Video &amp; Production</h3><p>Expect clearer turnaround discussions, revision scope, and pricing after review.</p></div>
+        <div class="card"><h3>Dance &amp; Performance</h3><p>Use the project details field to describe skill level, rehearsal goals, and intended outcome.</p></div>
+        <div class="card"><h3>Website Work</h3><p>Include brand links, references, and pages you know you need so the review step is faster.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <div id="site-footer"></div>
 </div>
 
-<!-- BOOKINGS -->
-<div class="card">
-  <h3>📦 Your Bookings</h3>
-  <div id="loading">Loading...</div>
-  <div id="myBookings"></div>
-</div>
-
-<!-- SERVICES -->
-<div class="card">
-  <h3>🛠️ Services</h3>
-  <p>🎬 Video Editing</p>
-  <p>🎥 Video Production</p>
-  <p>📹 Filming</p>
-  <p>🎧 Audio Production</p>
-  <p>💃 Dance Lessons</p>
-  <p>💻 Website Creation</p>
-</div>
-
-<!-- CONTACT -->
-<div class="card">
-  <h3>📞 Contact</h3>
-  <p>Phone: (718) 925-7750</p>
-  <p>Hours: Mon–Fri | 8AM – 8PM</p>
-  <p>Email: your@email.com</p>
-</div>
-
-</div>
-
-<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-
+<script src="assets/site.js"></script>
 <script>
-firebase.initializeApp({
- apiKey:"AIzaSyC1pKUto9-16yt6jcYxzyPOfF4VBWeAit4",
- authDomain:"booking-8bc2d.firebaseapp.com",
- projectId:"booking-8bc2d"
-});
-
+MSPSite.initFirebase();
 const db = firebase.firestore();
+const loadingEl = document.getElementById("loading");
+const myBookingsEl = document.getElementById("myBookings");
+const banner = document.getElementById("portalBanner");
 
-/* AUTH */
-firebase.auth().onAuthStateChanged(user=>{
- if(!user){
-   location="client-login.html";
-   return;
- }
- loadBookings(user.email);
+document.getElementById("logoutButton").addEventListener("click", () => firebase.auth().signOut());
+
+firebase.auth().onAuthStateChanged(user => {
+  if(!user){
+    location = "client-auth.html";
+    return;
+  }
+  loadBookings(user.uid);
 });
 
-/* LOAD BOOKINGS */
-function loadBookings(email){
- db.collection("bookings")
- .where("email","==",email)
- .onSnapshot(snap=>{
-
-   loading.style.display="none";
-   myBookings.innerHTML="";
-
-   if(snap.empty){
-     myBookings.innerHTML = `
-       <div class="empty">
-         No bookings yet 👀
-       </div>`;
-     return;
-   }
-
-   snap.forEach(doc=>{
-     let b = doc.data();
-
-     myBookings.innerHTML += `
-     <div class="card">
-       <h3>${b.service}</h3>
-       <p>📅 ${b.date}</p>
-       <p>⏰ ${b.time || "-"}</p>
-       <p class="${b.status}">📌 ${b.status.toUpperCase()}</p>
-       <p>${b.paid ? "💰 Paid" : "❌ Not Paid"}</p>
-     </div>`;
-   });
-
- });
+function bookingDate(value) {
+  return value || "-";
 }
 
-/* NAV */
-function go(page){
- window.location.href = page;
+function createBookingCard(booking){
+  const card = document.createElement("div");
+  card.className = "card";
+  card.innerHTML = `
+    <p class="eyebrow">${booking.service || "Booking"}</p>
+    <h3>${booking.service || "Booking"}</h3>
+    <p><strong>Status:</strong> <span class="${booking.status || "pending"}">${(booking.status || "pending").toUpperCase()}</span></p>
+    <p><strong>Payment:</strong> ${(booking.paymentStatus || "deposit_pending").replaceAll("_", " ")}</p>
+    <p><strong>Approved price:</strong> $${booking.price || 0}</p>
+    <p><strong>Preferred date:</strong> ${bookingDate(booking.date)}</p>
+    <p><strong>Preferred time:</strong> ${booking.time || "-"}</p>
+    <p><strong>Budget:</strong> ${booking.budget || "-"}</p>
+    <p><strong>Deadline:</strong> ${booking.deadline || "-"}</p>
+    <p><strong>Submitted:</strong> ${booking.submittedAt || "-"}</p>
+    <p><strong>Accepted:</strong> ${booking.acceptedAt || "-"}</p>
+    <p><strong>Declined:</strong> ${booking.declinedAt || "-"}</p>
+    <p><strong>Client note:</strong> ${booking.clientNote || "No note yet."}</p>
+  `;
+  return card;
 }
 
-/* LOGOUT */
-function logout(){
- firebase.auth().signOut();
+function loadBookings(ownerUid){
+  db.collection("bookings")
+  .where("ownerUid","==",ownerUid)
+  .onSnapshot(snapshot => {
+    loadingEl.style.display = "none";
+    myBookingsEl.replaceChildren();
+
+    if(snapshot.empty){
+      myBookingsEl.innerHTML = `<div class="card"><h3>No bookings yet</h3><p>Once you submit a request, it will appear here with status, pricing, and payment updates.</p></div>`;
+      return;
+    }
+
+    const bookings = snapshot.docs.map(doc => doc.data()).sort((a, b) => String(b.submittedAt || "").localeCompare(String(a.submittedAt || "")));
+    const hasPendingPayment = bookings.some(booking => booking.status === "accepted" && booking.paymentStatus !== "paid");
+    if (hasPendingPayment) {
+      banner.className = "banner visible";
+      banner.textContent = "You have at least one accepted booking waiting on deposit payment.";
+    } else {
+      banner.className = "banner";
+      banner.textContent = "";
+    }
+
+    bookings.forEach(booking => myBookingsEl.appendChild(createBookingCard(booking)));
+  });
 }
 </script>
-
 </body>
 </html>

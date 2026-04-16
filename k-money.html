@@ -3,116 +3,35 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>K-Money</title>
-
+<title>K-Money | MSP 790 Payback Music</title>
+<meta name="description" content="Profile page for K-Money Music, CFO and execution lead across services and production support.">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;700&display=swap');
-
-body {
-  margin: 0;
-  font-family: 'Inter', sans-serif;
-  background: black;
-  color: white;
-  opacity: 0;
-  transition: opacity 0.6s ease;
-}
-
-body.active { opacity: 1; }
-
-/* HERO */
-.hero {
-  height: 80vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  text-align: center;
-}
-
-.hero h1 {
-  font-family: 'Bebas Neue';
-  font-size: 4rem;
-  text-shadow: 0 0 20px red;
-}
-
-/* IMAGE */
-.artist-img {
-  width: 300px;
-  border-radius: 12px;
-  margin-top: 20px;
-}
-
-/* BIO */
-.bio {
-  max-width: 700px;
-  margin: 40px auto;
-  text-align: center;
-  padding: 0 20px;
-}
-
-/* PLATFORMS */
-.platforms {
-  text-align: center;
-  margin-top: 30px;
-}
-
-.platforms i {
-  font-size: 2rem;
-  margin: 10px;
-  transition: 0.3s;
-}
-
-.platforms i:hover {
-  color: red;
-  transform: scale(1.2);
-}
-
-/* BACK */
-.back {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  font-family: 'Bebas Neue';
-  cursor: pointer;
-}
-</style>
+<link rel="stylesheet" href="assets/site.css">
 </head>
-
-<body>
-
-<div class="back" onclick="goBack()">← BACK</div>
-
-<div class="hero">
-  <h1>K-Money</h1>
-  <img src="assets/k-money.svg" class="artist-img">
+<body data-page="">
+<div class="page-wrap narrow">
+  <div id="site-header"></div>
+  <div class="page-header">
+    <h1 class="page-title">K-Money</h1>
+    <p class="page-subtitle">Execution support across filming, editing, websites, and service systems that help the platform run sharper.</p>
+  </div>
+  <section class="section-shell"><div class="section-body">
+    <div class="grid-2">
+      <div class="media-card"><img src="assets/k-money.svg" sizes="(max-width: 720px) 100vw, 50vw" alt="K-Money"></div>
+      <div class="card">
+        <h3>Profile</h3>
+        <p>K-Money Music brings a production mindset to the platform, helping connect visual work, client delivery, and site presentation into a cleaner overall experience.</p>
+        <div class="icon-row">
+          <a href="services.html" aria-label="Services"><i class="fas fa-film"></i></a>
+          <a href="book.html" aria-label="Book"><i class="fas fa-calendar-check"></i></a>
+          <a href="contact.html" aria-label="Contact"><i class="fas fa-envelope"></i></a>
+        </div>
+      </div>
+    </div>
+  </div></section>
+  <div id="site-footer"></div>
 </div>
-
-<div class="bio">
-  <p>Full artist profile coming soon.</p>
-</div>
-
-<div class="platforms">
-  <i class="fab fa-spotify"></i>
-  <i class="fab fa-apple"></i>
-  <i class="fab fa-youtube"></i>
-  <i class="fab fa-soundcloud"></i>
-</div>
-
-<script>
-function goBack() {
-  document.body.classList.remove("active");
-  setTimeout(() => {
-    window.location.href = "index.html";
-  }, 500);
-}
-
-/* FADE IN */
-window.addEventListener("load", () => {
-  document.body.classList.add("active");
-});
-</script>
-
+<script src="assets/site.js"></script>
 </body>
 </html>

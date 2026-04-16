@@ -1,123 +1,102 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Join</title>
-<style>
-body{
-  margin:0;
-  font-family:Inter;
-  background:linear-gradient(180deg,#000,#0a0a0a);
-  color:white;
-}
-
-.container{
-  max-width:800px;
-  margin:auto;
-  padding:80px 20px;
-}
-
-h1{
-  text-align:center;
-  font-size:2.8rem;
-}
-
-.hero-text{
-  text-align:center;
-  color:#bbb;
-  line-height:1.7;
-  margin-bottom:40px;
-}
-
-.card{
-  background:#111;
-  padding:30px;
-  border-radius:12px;
-  box-shadow:0 0 25px rgba(255,0,0,0.15);
-}
-
-input,textarea,select{
-  width:100%;
-  padding:12px;
-  margin:10px 0;
-  background:#0a0a0a;
-  border:1px solid #222;
-  color:white;
-  border-radius:6px;
-}
-
-button{
-  width:100%;
-  padding:14px;
-  background:#800000;
-  border:none;
-  color:white;
-  font-size:1rem;
-  border-radius:8px;
-  cursor:pointer;
-}
-
-button:hover{
-  background:red;
-}
-</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Join the Label | MSP 790 Payback Music</title>
+<meta name="description" content="Apply to join MSP 790 Payback Music as an artist, producer, videographer, dancer, or web designer.">
+<meta property="og:title" content="Join the Label | MSP 790 Payback Music">
+<meta property="og:description" content="Apply to join the MSP 790 movement with a cleaner, structured application flow.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="assets/Capture.PNG">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="stylesheet" href="assets/site.css">
 </head>
-<body>
-
-<div class="container">
-<h1>Join The Label</h1>
-
-<p>
-starmoneymsp.com isn't just a collective — it’s a platform for serious creators ready to elevate their craft.
-We work with artists, producers, filmmakers, and innovators who are committed to growth, discipline, and building something real.
-If you’re looking for more than exposure — if you’re ready for structure, collaboration, and opportunity — this is where you step in.
-</p>
-
-<div class="card">
-<form id="joinForm">
-<input name="name" placeholder="Full Name" required>
-<input name="email" placeholder="Email" required>
-<select name="role" required>
-<option value="">Role</option>
-<option>Artist</option>
-<option>Producer</option>
-<option>Videographer</option>
-<option>Dancer</option>
-<option>Web Designer</option>
-</select>
-<textarea name="bio" placeholder="Bio"></textarea>
-<input name="link" placeholder="Portfolio">
-<button type="submit">Submit</button>
-</form>
-<p id="msg"></p>
+<body data-page="work">
+<div class="page-wrap narrow">
+  <div id="site-header"></div>
+  <div class="page-header">
+    <h1 class="page-title">Join The Label</h1>
+    <p class="page-subtitle">Use this application if you are serious about growth, collaboration, discipline, and building something with structure behind it.</p>
+  </div>
+  <div id="joinBanner" class="banner" aria-live="polite"></div>
+  <section class="section-shell"><div class="section-body">
+    <p class="lede">MSP 790 Payback Music is built for artists, producers, filmmakers, dancers, and creators who want more than surface-level visibility. The point is to move with intent, polish, and real commitment.</p>
+    <form id="joinForm" class="form-grid" novalidate>
+      <div class="grid-2">
+        <div class="field-group">
+          <label for="name">Full name</label>
+          <input id="name" name="name" autocomplete="name" required>
+        </div>
+        <div class="field-group">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" autocomplete="email" required>
+        </div>
+      </div>
+      <div class="field-group">
+        <label for="role">Role</label>
+        <select id="role" name="role" required>
+          <option value="">Role</option>
+          <option>Artist</option>
+          <option>Producer</option>
+          <option>Videographer</option>
+          <option>Dancer</option>
+          <option>Web Designer</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label for="bio">Bio</label>
+        <textarea id="bio" name="bio" placeholder="Tell us what you do, what you are building, and why you want in."></textarea>
+      </div>
+      <div class="field-group">
+        <label for="link">Portfolio or link</label>
+        <input id="link" name="link" placeholder="Website, reel, music link, or social profile" autocomplete="url">
+      </div>
+      <button id="joinSubmit" type="submit">Submit Application</button>
+    </form>
+  </div></section>
+  <div id="site-footer"></div>
 </div>
-</div>
-
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-
+<script src="assets/site.js"></script>
 <script>
-firebase.initializeApp({
- apiKey:"AIzaSyC1pKUto9-16yt6jcYxzyPOfF4VBWeAit4",
- authDomain:"booking-8bc2d.firebaseapp.com",
- projectId:"booking-8bc2d"
-});
-const db=firebase.firestore();
+MSPSite.initFirebase();
+const db = firebase.firestore();
+const joinForm = document.getElementById("joinForm");
+const joinSubmit = document.getElementById("joinSubmit");
+const joinBanner = document.getElementById("joinBanner");
 
-joinForm.addEventListener("submit",async e=>{
- e.preventDefault();
- await db.collection("applications").add({
-  name:joinForm.name.value,
-  email:joinForm.email.value,
-  role:joinForm.role.value,
-  bio:joinForm.bio.value,
-  link:joinForm.link.value,
-  status:"pending",
-  created:new Date()
- });
- msg.innerText="Application submitted.";
- joinForm.reset();
+function showJoinBanner(type, text) {
+  joinBanner.className = `banner visible ${type}`;
+  joinBanner.textContent = text;
+}
+
+joinForm.addEventListener("submit", async event => {
+  event.preventDefault();
+  if (!joinForm.name.value.trim() || !joinForm.email.value.trim() || !joinForm.role.value) {
+    showJoinBanner("error", "Fill in the required fields before submitting.");
+    return;
+  }
+
+  joinSubmit.disabled = true;
+  joinSubmit.textContent = "Submitting...";
+
+  await db.collection("applications").add({
+    name: joinForm.name.value.trim(),
+    email: joinForm.email.value.trim(),
+    role: joinForm.role.value,
+    bio: joinForm.bio.value.trim(),
+    link: joinForm.link.value.trim(),
+    status: "pending",
+    created: new Date()
+  });
+
+  joinForm.reset();
+  joinSubmit.disabled = false;
+  joinSubmit.textContent = "Submit Application";
+  showJoinBanner("success", "Application submitted.");
 });
 </script>
-
 </body>
 </html>

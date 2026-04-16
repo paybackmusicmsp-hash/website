@@ -1,54 +1,76 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Admin Login</title>
-<style>
-body{background:#0a0a0a;color:white;display:flex;justify-content:center;align-items:center;height:100vh;font-family:Arial}
-.box{background:#111;padding:30px;border-radius:12px;width:320px}
-input,button{width:100%;padding:12px;margin:10px 0}
-button{background:#800000;color:white;border:none;cursor:pointer}
-</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Login | MSP 790 Payback Music</title>
+<meta name="description" content="Admin login for MSP 790 Payback Music.">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="stylesheet" href="assets/site.css">
 </head>
-<body>
-
-<div class="box">
-<h2>Admin Login</h2>
-
-<input id="email" placeholder="Email">
-<input id="pass" type="password" placeholder="Password">
-
-<button onclick="login()">Login</button>
-
+<body data-page="">
+<div class="page-wrap narrow">
+  <div id="site-header"></div>
+  <div class="page-header">
+    <h1 class="page-title">Admin Login</h1>
+    <p class="page-subtitle">Restricted access for admin accounts managing bookings, payments, and applications.</p>
+  </div>
+  <div id="adminAuthBanner" class="banner" aria-live="polite"></div>
+  <section class="section-shell"><div class="section-body">
+    <form class="form-grid" novalidate>
+      <div class="field-group">
+        <label for="email">Email</label>
+        <input id="email" type="email" autocomplete="email" required>
+      </div>
+      <div class="field-group">
+        <label for="pass">Password</label>
+        <input id="pass" type="password" autocomplete="current-password" required>
+      </div>
+      <button type="button" id="adminLoginButton">Login</button>
+    </form>
+  </div></section>
+  <div id="site-footer"></div>
 </div>
-
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-
+<script src="assets/site.js"></script>
 <script>
-firebase.initializeApp({
- apiKey:"AIzaSyC1pKUto9-16yt6jcYxzyPOfF4VBWeAit4",
- authDomain:"booking-8bc2d.firebaseapp.com",
- projectId:"booking-8bc2d"
-});
-
+MSPSite.initFirebase();
 const db = firebase.firestore();
+const email = document.getElementById("email");
+const pass = document.getElementById("pass");
+const adminAuthBanner = document.getElementById("adminAuthBanner");
+const adminLoginButton = document.getElementById("adminLoginButton");
 
-function login(){
- firebase.auth().signInWithEmailAndPassword(email.value, pass.value)
- .then(async cred=>{
-   const doc = await db.collection("users").doc(cred.user.uid).get();
-
-   if(doc.exists && doc.data().role === "admin"){
-     location="admin.html";
-   } else {
-     alert("Not an admin");
-     firebase.auth().signOut();
-   }
- })
- .catch(err=>alert(err.message));
+function showBanner(type, text) {
+  adminAuthBanner.className = `banner visible ${type}`;
+  adminAuthBanner.textContent = text;
 }
-</script>
 
+adminLoginButton.addEventListener("click", async () => {
+  if (!email.value.trim() || !pass.value.trim()) {
+    showBanner("error", "Enter email and password first.");
+    return;
+  }
+  adminLoginButton.disabled = true;
+  adminLoginButton.textContent = "Logging In...";
+  try {
+    const cred = await firebase.auth().signInWithEmailAndPassword(email.value, pass.value);
+    const doc = await db.collection("users").doc(cred.user.uid).get();
+    if (doc.exists && doc.data().role === "admin") {
+      location = "admin.html";
+    } else {
+      showBanner("error", "Not an admin account.");
+      firebase.auth().signOut();
+    }
+  } catch (err) {
+    showBanner("error", err.message);
+  } finally {
+    adminLoginButton.disabled = false;
+    adminLoginButton.textContent = "Login";
+  }
+});
+</script>
 </body>
 </html>

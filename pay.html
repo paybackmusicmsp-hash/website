@@ -1,32 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Invoice</title>
-<style>
-body{background:black;color:white;font-family:Arial;text-align:center;padding:40px}
-.box{background:#111;padding:20px;border-radius:10px;margin:20px}
-button{padding:12px;background:#800000;color:white;border:none}
-</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Booking Received | MSP 790 Payback Music</title>
+<meta name="description" content="Confirmation page for booking requests submitted to MSP 790 Payback Music.">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="stylesheet" href="assets/site.css">
 </head>
-<body>
-
-<h1>Invoice</h1>
-
-<div class="box">
-<p>Send payment to:</p>
-<p>CashApp: $YourTag</p>
-<p>Zelle: your@email.com</p>
-<p>PayPal: your@email.com</p>
+<body data-page="">
+<div class="page-wrap narrow">
+  <div id="site-header"></div>
+  <div class="page-header">
+    <h1 class="page-title">Booking Received</h1>
+    <p class="page-subtitle">Your request is saved under your account and now waiting on review.</p>
+  </div>
+  <section class="section-shell"><div class="section-body" style="text-align:center;">
+    <p id="bookingMessage">Your request has been submitted successfully.</p>
+    <p class="status-pill" id="bookingMeta"></p>
+    <p>We do not collect payment automatically on this page yet.</p>
+    <p>Your request will be reviewed first, then you will receive the correct deposit amount and payment instructions directly.</p>
+    <a class="button-link" href="client.html">Go to Client Portal</a>
+  </div></section>
+  <div id="site-footer"></div>
 </div>
-
-<button onclick="pay()">Proceed to Payment</button>
-
+<script src="assets/site.js"></script>
 <script>
-function pay(){
- alert("Redirecting to payment...");
- window.open("https://cash.app","_blank");
+const params = new URLSearchParams(window.location.search);
+const latestBooking = JSON.parse(localStorage.getItem("latestBooking") || "null");
+const bookingId = params.get("id") || (latestBooking && latestBooking.id);
+const bookingMessage = document.getElementById("bookingMessage");
+const bookingMeta = document.getElementById("bookingMeta");
+if (bookingId) {
+  bookingMessage.textContent = "Your booking request is pending review.";
+  bookingMeta.textContent = `Booking ID: ${bookingId}`;
+}
+if (latestBooking && latestBooking.id === bookingId) {
+  bookingMeta.textContent = `Booking ID: ${bookingId} | ${latestBooking.service || "Service"} | ${latestBooking.date || "-"} ${latestBooking.time || ""}`.trim();
 }
 </script>
-
 </body>
 </html>
