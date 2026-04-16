@@ -104,9 +104,9 @@ window.MSPSite = (() => {
       let railMotionTimer;
       const updateHomeScrollScene = () => {
         const scrollY = window.scrollY;
-        const fadeDistance = Math.max(window.innerHeight * 0.9, 620);
+        const fadeDistance = Math.max(window.innerHeight * 0.68, 420);
         const backdropOpacity = Math.max(0, 1 - scrollY / fadeDistance);
-        const backdropDim = Math.min(1, scrollY / Math.max(window.innerHeight * 0.8, 540));
+        const backdropDim = Math.min(1, scrollY / Math.max(window.innerHeight * 0.5, 300));
         root.style.setProperty("--home-backdrop-opacity", backdropOpacity.toFixed(3));
         root.style.setProperty("--home-backdrop-dim", backdropDim.toFixed(3));
         if (scrollY > 80) {
