@@ -102,6 +102,7 @@ window.MSPSite = (() => {
       const brandLockup = document.querySelector(".brand-lockup");
       const scrollHint = document.getElementById("scrollHint");
       const heroShell = document.querySelector(".hero-shell");
+      const homeBackdrop = document.querySelector(".home-backdrop");
       const mobileQuery = window.matchMedia("(max-width: 720px)");
       let railMotionTimer;
       let railHideTimer;
@@ -165,8 +166,13 @@ window.MSPSite = (() => {
           return;
         }
         const scrollY = window.scrollY;
-        const heroTop = heroShell ? heroShell.offsetTop : Math.max(180, window.innerHeight * 0.3);
-        const railRevealThreshold = Math.max(0, heroTop - 8);
+        const rootStyles = window.getComputedStyle(homeBody);
+        const parsedFadeHeight = parseFloat(rootStyles.getPropertyValue("--home-fade-height"));
+        const fadeHeight = Number.isFinite(parsedFadeHeight) ? parsedFadeHeight : 0;
+        const backdropHeight = homeBackdrop ? homeBackdrop.offsetHeight : 0;
+        const fadeStart = backdropHeight > fadeHeight ? backdropHeight - fadeHeight : 0;
+        const fallbackThreshold = heroShell ? heroShell.offsetTop : Math.max(180, window.innerHeight * 0.3);
+        const railRevealThreshold = Math.max(0, (fadeStart || fallbackThreshold) - 8);
         setRailVisibility(scrollY > railRevealThreshold);
         if (scrollY > 80) {
           homeBody.classList.remove("home-show-scroll-hint");
