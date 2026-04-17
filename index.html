@@ -160,69 +160,107 @@
 .hero-panel {
   position: relative;
   z-index: 1;
-  width: min(820px, calc(100% - 24px));
+  width: min(1180px, calc(100% - 24px));
 }
 .hero-card {
   display: grid;
-  gap: 12px;
+  gap: 16px;
   text-align: center;
   position: relative;
-  overflow: hidden;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  overflow: visible;
 }
-.hero-card::before {
-  content: "";
-  position: absolute;
-  inset: 12px;
-  border-radius: 28px;
-  border: 1px solid rgba(216, 55, 55, 0.18);
-  box-shadow: inset 0 0 40px rgba(168, 22, 22, 0.08);
-  pointer-events: none;
+.hero-stage {
+  position: relative;
+  width: min(980px, 100%);
+  margin: 0 auto;
+  display: grid;
+  gap: 14px;
+  justify-items: center;
+}
+.hero-band {
+  width: fit-content;
+  max-width: 100%;
+  padding: 10px 24px;
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.01) 18%, rgba(64,0,0,0.24) 38%, rgba(0,0,0,0.74) 100%),
+    rgba(10, 0, 0, 0.52);
+  border: 1px solid rgba(255, 56, 56, 0.24);
+  box-shadow:
+    0 0 26px rgba(210, 0, 0, 0.16),
+    inset 0 1px 0 rgba(255,255,255,0.08),
+    inset 0 -10px 18px rgba(0,0,0,0.2);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.hero-band--main {
+  padding: 12px 28px 10px;
+}
+.hero-band--thin {
+  padding: 8px 22px;
+}
+.hero-tagline {
+  margin: 0;
+  font-family: 'Black Ops One', var(--font-display);
+  font-size: clamp(0.92rem, 1.25vw, 1.18rem);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #ffe9e9;
+  text-shadow:
+    0 0 12px rgba(255, 42, 42, 0.48),
+    0 0 26px rgba(160, 0, 0, 0.28),
+    0 2px 0 rgba(0,0,0,0.9);
 }
 .hero-title {
-  font-family: var(--font-display);
-  font-size: clamp(3.3rem, 8vw, 6.4rem);
-  line-height: 0.92;
-  letter-spacing: 0.08em;
+  font-family: 'Anton', var(--font-display);
+  font-size: clamp(3.7rem, 8.8vw, 6.8rem);
+  line-height: 0.95;
+  letter-spacing: 0.03em;
   text-transform: uppercase;
   margin: 0;
   color: #fff5f5;
   text-shadow:
-    0 0 14px rgba(216, 55, 55, 0.45),
-    0 0 34px rgba(168, 22, 22, 0.32),
-    0 10px 40px rgba(0, 0, 0, 0.45);
+    0 0 18px rgba(255, 42, 42, 0.5),
+    0 0 42px rgba(168, 22, 22, 0.34),
+    0 10px 40px rgba(0, 0, 0, 0.5);
 }
 .hero-chip {
-  padding: 14px 16px;
-  border-radius: 20px;
-  border: 1px solid var(--line);
-  background: linear-gradient(180deg, rgba(20,0,0,0.38), rgba(0,0,0,0.2));
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 8px 26px rgba(0,0,0,0.22);
+  padding: 0;
+  border-radius: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
 }
 .hero-chip-title {
-  font-family: var(--font-display);
-  font-size: clamp(1.15rem, 2.2vw, 1.7rem);
-  letter-spacing: 0.12em;
+  font-family: 'Anton', var(--font-display);
+  font-size: clamp(1.2rem, 2.3vw, 1.95rem);
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #fff4f4;
   text-shadow:
-    0 0 12px rgba(182, 26, 26, 0.28),
-    0 0 22px rgba(110, 0, 0, 0.22);
+    0 0 16px rgba(255, 42, 42, 0.42),
+    0 0 28px rgba(110, 0, 0, 0.26);
 }
 .hero-chip-wordmark {
-  gap: 10px;
-  padding: 18px 18px 20px;
+  gap: 0;
+  padding: 0;
 }
 .hero-kicker {
   display: block;
-  font-size: clamp(0.86rem, 1.15vw, 1rem);
-  letter-spacing: 0.2em;
-  color: rgba(255, 238, 238, 0.9);
+  font-family: 'Anton', var(--font-display);
+  font-size: clamp(1.15rem, 1.7vw, 1.8rem);
+  letter-spacing: 0.08em;
+  color: rgba(255, 245, 245, 0.96);
   text-shadow:
-    0 0 10px rgba(182, 26, 26, 0.24),
-    0 0 18px rgba(110, 0, 0, 0.18);
+    0 0 16px rgba(255, 42, 42, 0.46),
+    0 0 30px rgba(110, 0, 0, 0.24);
 }
 .hero-wordmark {
-  width: min(100%, 760px);
+  width: min(100%, 980px);
   margin: 0 auto;
 }
 .hero-wordmark-svg {
@@ -231,17 +269,29 @@
   height: auto;
   overflow: visible;
   filter:
-    drop-shadow(0 0 8px rgba(255, 58, 58, 0.24))
-    drop-shadow(0 0 18px rgba(179, 0, 0, 0.16));
+    drop-shadow(0 0 16px rgba(255, 58, 58, 0.36))
+    drop-shadow(0 0 34px rgba(179, 0, 0, 0.2));
 }
 .hero-mid {
+  font-family: 'Anton', var(--font-display);
+  font-size: clamp(1.1rem, 1.85vw, 1.75rem);
   font-weight: 800;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
+  color: #fff4f4;
+  text-shadow:
+    0 0 14px rgba(255, 42, 42, 0.32),
+    0 0 24px rgba(110, 0, 0, 0.22);
 }
 .hero-sub {
-  line-height: 1.9;
-  color: var(--muted);
+  font-family: 'Anton', var(--font-display);
+  font-size: clamp(1.25rem, 2.2vw, 2.2rem);
+  line-height: 1.08;
+  letter-spacing: 0.03em;
+  color: #fff4f4;
+  text-shadow:
+    0 0 18px rgba(255, 42, 42, 0.38),
+    0 0 30px rgba(110, 0, 0, 0.24);
 }
 .hero-actions {
   display: flex;
@@ -366,20 +416,32 @@
   <section class="hero-shell">
     <div class="hero-panel section-shell">
       <div class="section-body hero-card">
-        <p class="eyebrow">Bronx New York | Label, Visuals, Performance, Booking</p>
-        <div class="hero-chip hero-chip-title hero-chip-wordmark">
-          <span class="hero-kicker">The Founder &amp; CEO</span>
+        <div class="hero-stage">
+          <p class="hero-tagline">Bronx New York | Label, Visuals, Performance, Booking</p>
+          <div class="hero-band hero-band--thin">
+            <div class="hero-chip hero-chip-title hero-chip-wordmark">
+              <span class="hero-kicker">The Founder &amp; CEO OG StarMoney</span>
+            </div>
+          </div>
           <span class="hero-wordmark" aria-label="OG StarMoney">
             <img class="hero-wordmark-svg" src="assets/og-starmoney-juelz-style.svg" alt="OG StarMoney" loading="eager" decoding="async">
           </span>
-        </div>
-        <h1 class="hero-title">MSP 790 PAYBACK MUSIC</h1>
-        <div class="hero-chip hero-mid">183rd Davidson</div>
-        <div class="hero-chip hero-sub">Uptown Boogie Down Bronx New York Finest</div>
-        <div class="hero-chip hero-chip-title">CTO K-Money Music</div>
-        <div class="hero-actions">
+          <div class="hero-band hero-band--main">
+            <h1 class="hero-title">MSP 790 PAYBACK MUSIC</h1>
+          </div>
+          <div class="hero-band hero-band--thin">
+            <div class="hero-chip hero-mid">183rd Davidson</div>
+          </div>
+          <div class="hero-band hero-band--thin">
+            <div class="hero-chip hero-sub">Uptown Boogie Down Bronx New York Finest</div>
+          </div>
+          <div class="hero-band hero-band--thin">
+            <div class="hero-chip hero-chip-title">CTO K-Money Music</div>
+          </div>
+          <div class="hero-actions">
           <a class="button-link" href="#artists">Meet the Artists</a>
           <a class="button-secondary chip-link" href="work-with-us.html">Work With Us</a>
+        </div>
         </div>
       </div>
     </div>
