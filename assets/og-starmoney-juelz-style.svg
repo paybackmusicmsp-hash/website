@@ -1,0 +1,84 @@
+<svg width="1600" height="520" viewBox="0 0 1600 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">OG StarMoney wordmark</title>
+  <desc id="desc">Custom black and red stacked wordmark inspired by the Juelz Santana cover lettering style.</desc>
+  <defs>
+    <linearGradient id="redStroke" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffd1d1"/>
+      <stop offset="12%" stop-color="#ff6b6b"/>
+      <stop offset="45%" stop-color="#e11212"/>
+      <stop offset="78%" stop-color="#790000"/>
+      <stop offset="100%" stop-color="#2a0000"/>
+    </linearGradient>
+    <linearGradient id="redInner" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ff8d8d"/>
+      <stop offset="34%" stop-color="#d31818"/>
+      <stop offset="100%" stop-color="#540000"/>
+    </linearGradient>
+    <filter id="softShadow" x="-20%" y="-30%" width="140%" height="180%">
+      <feOffset dx="0" dy="10" result="off"/>
+      <feGaussianBlur in="off" stdDeviation="10" result="blur"/>
+      <feColorMatrix in="blur" type="matrix"
+        values="0 0 0 0 0
+                0 0 0 0 0
+                0 0 0 0 0
+                0 0 0 .62 0" result="shadow"/>
+      <feMerge>
+        <feMergeNode in="shadow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="redGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3.2" result="blur"/>
+      <feColorMatrix in="blur" type="matrix"
+        values="1 0 0 0 0
+                0 0.2 0 0 0
+                0 0 0.2 0 0
+                0 0 0 .46 0" result="red"/>
+      <feMerge>
+        <feMergeNode in="red"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <style>
+      .word {
+        font-family: Impact, "Arial Black", sans-serif;
+        font-weight: 900;
+        fill: #040404;
+        stroke: url(#redStroke);
+        paint-order: stroke fill;
+        stroke-linejoin: bevel;
+        letter-spacing: 5px;
+      }
+      .top {
+        font-size: 200px;
+        stroke-width: 16px;
+      }
+      .bottom {
+        font-size: 202px;
+        stroke-width: 18px;
+      }
+      .inner {
+        fill: none;
+        stroke: url(#redInner);
+        stroke-linejoin: bevel;
+      }
+    </style>
+  </defs>
+
+  <g filter="url(#softShadow)">
+    <g transform="translate(800 192) skewX(-14) scale(1.16 1)">
+      <text class="word top" text-anchor="middle" dominant-baseline="middle" filter="url(#redGlow)">OG</text>
+      <text class="inner top" text-anchor="middle" dominant-baseline="middle" stroke-width="4.5">OG</text>
+    </g>
+
+    <g transform="translate(800 360) skewX(-14) scale(1.1 1)">
+      <text class="word bottom" text-anchor="middle" dominant-baseline="middle" filter="url(#redGlow)">STARMONEY</text>
+      <text class="inner bottom" text-anchor="middle" dominant-baseline="middle" stroke-width="5.5">STARMONEY</text>
+    </g>
+
+    <g opacity=".4">
+      <path d="M352 232h896" stroke="url(#redInner)" stroke-width="6" stroke-linecap="square"/>
+      <path d="M280 250h1040" stroke="#230000" stroke-width="8" stroke-linecap="square"/>
+    </g>
+  </g>
+</svg>
