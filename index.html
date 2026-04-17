@@ -128,11 +128,11 @@
 }
 .hero-shell {
   position: relative;
-  min-height: 86vh;
+  min-height: calc(var(--home-scene-height) - 48px);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 36px 0 46px;
+  padding: 12px 0 28px;
   overflow: hidden;
   z-index: 1;
 }
@@ -160,7 +160,7 @@
 .hero-panel {
   position: relative;
   z-index: 1;
-  width: min(1180px, calc(100% - 24px));
+  width: min(1240px, calc(100% - 24px));
   background: transparent !important;
   border: 0 !important;
   box-shadow: none !important;
@@ -190,11 +190,12 @@
 }
 .hero-stage {
   position: relative;
-  width: min(980px, 100%);
+  width: min(900px, calc(100% - 56px));
   margin: 0 auto;
   display: grid;
   gap: 8px;
   justify-items: center;
+  transform: translateY(-2.2vh);
 }
 .hero-band {
   width: fit-content;
@@ -209,6 +210,7 @@
 }
 .hero-band--main {
   padding: 0;
+  width: 100%;
 }
 .hero-band--thin {
   padding: 0;
@@ -228,12 +230,16 @@
 }
 .hero-title {
   font-family: 'Anton', var(--font-display);
-  font-size: clamp(4rem, 8.4vw, 6.8rem);
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  font-size: clamp(3.2rem, 7.1vw, 5.7rem);
   line-height: 0.9;
-  letter-spacing: 0.055em;
+  letter-spacing: 0.038em;
   text-transform: uppercase;
   margin: 0;
   color: #fff7f7;
+  text-align: center;
   text-shadow:
     0 0 18px rgba(255, 42, 42, 0.36),
     0 0 38px rgba(145, 0, 0, 0.22),
@@ -241,7 +247,8 @@
     0 14px 30px rgba(0, 0, 0, 0.56);
 }
 .hero-band--main .hero-title {
-  white-space: nowrap;
+  white-space: normal;
+  text-wrap: balance;
 }
 .hero-chip {
   padding: 0;
@@ -277,7 +284,7 @@
     0 10px 24px rgba(0,0,0,0.34);
 }
 .hero-wordmark {
-  width: min(100%, 980px);
+  width: min(100%, 900px);
   margin: 0 auto;
 }
 .hero-wordmark-svg {
@@ -396,8 +403,8 @@
   .pillar-left,.pillar-right { display:none; }
   .artist-grid,.split-embed { grid-template-columns: 1fr; }
   .hero-stage { width: min(100%, 760px); }
-  .hero-band--main .hero-title { white-space: normal; }
   .hero-title { line-height: 0.94; }
+  .hero-stage { transform: none; }
 }
 @media (max-width: 720px) {
   .hero-actions { flex-direction: column; }
