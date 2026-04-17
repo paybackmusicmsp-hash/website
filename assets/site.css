@@ -1204,6 +1204,19 @@ body[data-page="home"] .page-wrap > .section-shell {
   pointer-events: none;
 }
 
+body[data-page="home"].home-locked #site-header,
+body[data-page="home"].home-locked .hero-pillars,
+body[data-page="home"].home-locked .hero-shell,
+body[data-page="home"].home-locked .page-wrap > .section-shell,
+body[data-page="home"].home-locked #scrollHint {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  animation: none !important;
+  filter: none !important;
+  transform: none !important;
+}
+
 body[data-page="home"].home-rail-visible #site-header,
 body[data-page="home"].home-reveal-hero .hero-pillars,
 body[data-page="home"].home-reveal-hero .hero-shell,
