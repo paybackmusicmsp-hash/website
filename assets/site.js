@@ -45,7 +45,7 @@ window.MSPSite = (() => {
         <div class="nav-shell">
           <div class="nav-surface">
             <nav class="site-nav" aria-label="Primary">
-              ${navLinks.map(link => `<a class="nav-link${page === link.page ? " active" : ""}" href="${link.href}" data-short="${link.label.charAt(0)}"><span class="nav-label">${link.label}</span></a>`).join("")}
+              ${navLinks.map(link => `<a class="nav-link${page === link.page ? " active" : ""}" href="${link.href}" data-short="${link.label.charAt(0)}" title="${link.label}" aria-label="${link.label}"><span class="nav-label">${link.label}</span></a>`).join("")}
             </nav>
           </div>
         </div>

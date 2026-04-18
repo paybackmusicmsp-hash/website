@@ -1455,7 +1455,7 @@ body[data-page="home"] .eyebrow {
 }
 
 body[data-page="home"].home-rail-collapsed #site-header {
-  width: 92px;
+  width: 78px;
 }
 
 body[data-page="home"].home-rail-collapsed .page-wrap {
@@ -1463,8 +1463,18 @@ body[data-page="home"].home-rail-collapsed .page-wrap {
 }
 
 body[data-page="home"].home-rail-collapsed .brand-lockup {
-  justify-content: center;
-  padding-inline: 12px;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: 64px;
+  padding: 10px 10px 10px 11px;
+  border-radius: 0 14px 14px 0;
+  border-left: 0;
+  box-shadow:
+    0 14px 30px rgba(0,0,0,0.34),
+    inset 0 1px 0 rgba(255,255,255,0.04),
+    inset 0 0 0 1px rgba(255, 60, 60, 0.035),
+    inset 0 -1px 0 rgba(0,0,0,0.24),
+    0 0 10px rgba(255, 90, 90, 0.04);
 }
 
 body[data-page="home"].home-rail-collapsing .brand-mark img {
@@ -1475,17 +1485,39 @@ body[data-page="home"].home-rail-collapsing .brand-mark img {
 body[data-page="home"].home-rail-collapsed .brand-text,
 body[data-page="home"].home-rail-collapsed .top-actions {
   opacity: 0;
+  width: 0;
   max-height: 0;
   overflow: hidden;
   pointer-events: none;
 }
 
+body[data-page="home"] .brand-text,
+body[data-page="home"] .top-actions,
+body[data-page="home"] .nav-label {
+  transition: opacity 0.24s ease, width 0.24s ease, max-height 0.24s ease;
+}
+
+body[data-page="home"].home-rail-collapsed .site-topbar {
+  gap: 0;
+}
+
+body[data-page="home"].home-rail-collapsed .brand-mark {
+  flex: 0 0 42px;
+  width: 42px;
+  height: 42px;
+  margin: 0;
+}
+
 body[data-page="home"].home-rail-collapsed .nav-shell {
-  padding: 8px;
+  margin-top: 6px;
+  padding: 7px 7px 8px;
+  border-radius: 0 14px 14px 0;
+  border-left: 0;
 }
 
 body[data-page="home"].home-rail-collapsed .nav-surface {
-  padding: 8px;
+  padding: 6px;
+  border-radius: 10px;
 }
 
 body[data-page="home"] .nav-label {
@@ -1493,15 +1525,18 @@ body[data-page="home"] .nav-label {
 }
 
 body[data-page="home"].home-rail-collapsed .nav-link {
-  min-height: 42px;
-  padding: 10px 0;
+  min-height: 40px;
+  padding: 8px 0;
   font-size: 0;
+  justify-content: center;
+  border-radius: 8px;
 }
 
 body[data-page="home"].home-rail-collapsed .nav-link::after {
   content: attr(data-short);
-  font-size: 0.92rem;
-  letter-spacing: 0.12em;
+  font-size: 0.82rem;
+  line-height: 1;
+  letter-spacing: 0.14em;
 }
 
 body[data-page="home"].home-rail-collapsed .brand-mark {
