@@ -28,7 +28,7 @@ window.MSPSite = (() => {
     if (header) {
       header.innerHTML = `
         ${page === "home" ? `
-          <button class="rail-tab-toggle" type="button" aria-label="Open sidebar" aria-expanded="false">
+          <button class="rail-tab-toggle" type="button" aria-label="Open sidebar" title="Open sidebar" aria-expanded="false">
             <span class="rail-tab-mark" aria-hidden="true">
               <img src="assets/msp-logo-mark.svg" alt="">
             </span>
@@ -145,6 +145,8 @@ window.MSPSite = (() => {
         const expanded = String(open);
         brandLockup?.setAttribute("aria-expanded", expanded);
         railToggle?.setAttribute("aria-expanded", expanded);
+        railToggle?.setAttribute("aria-label", open ? "Close sidebar" : "Open sidebar");
+        railToggle?.setAttribute("title", open ? "Close sidebar" : "Open sidebar");
       };
       const syncMobileHomeState = () => {
         if (!mobileQuery.matches) return false;
@@ -163,6 +165,8 @@ window.MSPSite = (() => {
         );
         brandLockup?.setAttribute("aria-expanded", "true");
         railToggle?.setAttribute("aria-expanded", "true");
+        railToggle?.setAttribute("aria-label", "Close sidebar");
+        railToggle?.setAttribute("title", "Close sidebar");
         return true;
       };
       const setRailVisibility = visible => {
@@ -181,6 +185,8 @@ window.MSPSite = (() => {
           homeBody.classList.add("home-rail-hidden", "home-rail-offscreen");
           brandLockup?.setAttribute("aria-expanded", "false");
           railToggle?.setAttribute("aria-expanded", "false");
+          railToggle?.setAttribute("aria-label", "Open sidebar");
+          railToggle?.setAttribute("title", "Open sidebar");
           return;
         }
         homeBody.classList.remove("home-rail-offscreen");

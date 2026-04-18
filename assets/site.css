@@ -1054,19 +1054,19 @@ body[data-page="home"] #site-header {
 
 body[data-page="home"] .rail-tab-toggle {
   position: absolute;
-  top: 12px;
-  right: -46px;
-  width: 54px;
-  height: 72px;
-  padding: 12px 8px;
+  top: clamp(220px, calc(50vh - 62px), 520px);
+  right: -48px;
+  width: 58px;
+  height: 86px;
+  padding: 10px 8px 14px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 0 14px 14px 0;
+  border-radius: 0 16px 16px 0;
   border: 1px solid rgba(255, 60, 60, 0.12);
   border-left: 0;
   background:
-    linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.004) 16%, rgba(24,0,0,0.16) 34%, rgba(10,10,10,0.96) 100%),
+    linear-gradient(180deg, rgba(255,255,255,0.024), rgba(255,255,255,0.005) 14%, rgba(28,0,0,0.16) 32%, rgba(10,10,10,0.96) 100%),
     rgba(10,10,10,0.96);
   box-shadow:
     0 14px 26px rgba(0,0,0,0.32),
@@ -1077,6 +1077,17 @@ body[data-page="home"] .rail-tab-toggle {
   cursor: pointer;
   z-index: 2;
   transition: transform 0.1s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.22s ease, border-color 0.22s ease, background 0.22s ease;
+}
+
+body[data-page="home"] .rail-tab-toggle::after {
+  content: "";
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 10px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 60, 60, 0.34), transparent);
+  opacity: 0.78;
 }
 
 body[data-page="home"] .rail-tab-mark {
@@ -1392,6 +1403,11 @@ body[data-page="home"].home-rail-tab-leading .rail-tab-toggle {
   transform: translateX(4px);
 }
 
+body[data-page="home"] .site-topbar,
+body[data-page="home"] .nav-shell {
+  transition: opacity 0.18s ease, transform 0.24s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
 body[data-page="home"] .hero-pillars {
   transform: translateY(54px);
   filter: blur(14px);
@@ -1541,39 +1557,22 @@ body[data-page="home"].home-rail-hidden .nav-label {
   pointer-events: none;
 }
 
-body[data-page="home"].home-rail-hidden .site-topbar {
-  gap: 0;
-}
-
-body[data-page="home"].home-rail-hidden .nav-shell {
-  margin-top: 6px;
-  padding: 7px 7px 8px;
-  border-radius: 0 14px 14px 0;
-  border-left: 0;
-}
-
-body[data-page="home"].home-rail-hidden .nav-surface {
-  padding: 6px;
-  border-radius: 10px;
-}
-
 body[data-page="home"] .nav-label {
   display: inline-block;
 }
 
-body[data-page="home"].home-rail-hidden .nav-link {
-  min-height: 40px;
-  padding: 8px 0;
-  font-size: 0;
-  justify-content: center;
-  border-radius: 8px;
+body[data-page="home"].home-rail-hidden .site-topbar,
+body[data-page="home"].home-rail-hidden .nav-shell {
+  opacity: 0;
+  transform: translateX(-16px);
+  pointer-events: none;
 }
 
-body[data-page="home"].home-rail-hidden .nav-link::after {
-  content: attr(data-short);
-  font-size: 0.82rem;
-  line-height: 1;
-  letter-spacing: 0.14em;
+body[data-page="home"].home-rail-open .site-topbar,
+body[data-page="home"].home-rail-open .nav-shell {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
 }
 
 @keyframes homeTabReveal {
