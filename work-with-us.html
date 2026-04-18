@@ -4,28 +4,305 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Work With Us | MSP 790 Payback Music</title>
-<meta name="description" content="Start the right relationship with MSP 790 Payback Music whether you want services, collaboration, or label involvement.">
+<meta name="description" content="Reach out to MSP 790 Payback Music with a clear intake form for artists, clients, collaborators, and creatives building something real.">
 <meta property="og:title" content="Work With Us | MSP 790 Payback Music">
-<meta property="og:description" content="Booking, joining, and contact paths in one place.">
+<meta property="og:description" content="A structured intake page for artists, clients, collaborators, and creatives at every stage.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="assets/hero.jpg">
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="stylesheet" href="assets/site.css">
 </head>
 <body data-page="work">
-<div class="page-wrap">
+<div class="page-wrap narrow">
   <div id="site-header"></div>
   <div class="page-header">
     <h1 class="page-title">Work With Us</h1>
-    <p class="page-subtitle">Use the right lane depending on what you actually need: structured service work, label-side application, or a direct business conversation.</p>
+    <p class="page-subtitle">We build with artists, clients, and creatives at all stages. Whether you&rsquo;re just starting or already moving, this is a place to develop something real. Tell us where you&rsquo;re at and what you&rsquo;re working toward &mdash; we&rsquo;ll meet you there.</p>
   </div>
-  <section class="section-shell"><div class="section-body grid-3">
-    <div class="card"><h3>Need a Service?</h3><p>Start the booking flow for artist development, visuals, choreography, performance work, or platform support that needs real structure behind it.</p><a class="button-link" href="book.html">Start Booking</a></div>
-    <div class="card"><h3>Want to Join?</h3><p>Use the application path if you want to step into the movement as an artist or creative collaborator and build with the label side directly.</p><a class="button-link" href="join.html">Apply to Join</a></div>
-    <div class="card"><h3>Need a Conversation?</h3><p>For partnerships, appearances, business inquiries, or anything that needs context before action, use the direct contact route.</p><a class="button-link" href="contact.html">Open Contact</a></div>
-  </div></section>
+
+  <div id="workWithUsBanner" class="banner" aria-live="polite"></div>
+
+  <section class="section-shell">
+    <div class="section-body">
+      <p class="lede">This page is here to create clarity. The more direct you are about where you&rsquo;re at and what you need, the easier it is for MSP 790 Payback Music to understand how to move with you.</p>
+
+      <form id="workWithUsForm" class="form-grid intake-form" novalidate>
+        <section class="card intake-section" aria-labelledby="intakeWho">
+          <div class="intake-section-header">
+            <p class="eyebrow">Section 1</p>
+            <h2 id="intakeWho" class="intake-title">Tell us who you are</h2>
+            <p>Start with the basics so we know what lane you&rsquo;re coming from.</p>
+          </div>
+
+          <div class="form-grid">
+            <div class="field-group">
+              <label for="reachOutAs">I&rsquo;m reaching out as</label>
+              <select id="reachOutAs" name="reachOutAs" required>
+                <option value="">Select one</option>
+                <option>Artist</option>
+                <option>Client</option>
+                <option>Collaborator</option>
+                <option>Creative / Media</option>
+                <option>Other</option>
+              </select>
+            </div>
+
+            <div class="grid-2">
+              <div class="field-group">
+                <label for="displayName">Name / Artist Name</label>
+                <input id="displayName" name="displayName" autocomplete="name" required>
+              </div>
+              <div class="field-group">
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" autocomplete="email" required>
+              </div>
+            </div>
+
+            <div class="grid-2">
+              <div class="field-group">
+                <label for="location">Location</label>
+                <input id="location" name="location" autocomplete="address-level2" placeholder="Bronx, NYC, remote, or wherever you&rsquo;re based" required>
+              </div>
+              <div class="field-group">
+                <label for="primaryLink">Primary link</label>
+                <input id="primaryLink" name="primaryLink" type="url" autocomplete="url" placeholder="Music link, socials, website, or portfolio" required>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card intake-section" aria-labelledby="intakeBuild">
+          <div class="intake-section-header">
+            <p class="eyebrow">Section 2</p>
+            <h2 id="intakeBuild" class="intake-title">What are you working toward?</h2>
+            <p>Give us a clear idea of what you&rsquo;re trying to build or improve right now.</p>
+          </div>
+
+          <fieldset class="field-set">
+            <legend class="field-legend">What are you looking for?</legend>
+            <div class="choice-grid">
+              <label class="choice-option">
+                <input type="checkbox" name="supportFocus" value="Recording / music development">
+                <span>Recording / music development</span>
+              </label>
+              <label class="choice-option">
+                <input type="checkbox" name="supportFocus" value="Visuals / content">
+                <span>Visuals / content</span>
+              </label>
+              <label class="choice-option">
+                <input type="checkbox" name="supportFocus" value="Artist development">
+                <span>Artist development</span>
+              </label>
+              <label class="choice-option">
+                <input type="checkbox" name="supportFocus" value="Branding / creative direction">
+                <span>Branding / creative direction</span>
+              </label>
+              <label class="choice-option">
+                <input type="checkbox" name="supportFocus" value="Website / digital work">
+                <span>Website / digital work</span>
+              </label>
+              <label class="choice-option">
+                <input type="checkbox" name="supportFocus" value="Performance / rollout support">
+                <span>Performance / rollout support</span>
+              </label>
+              <label class="choice-option">
+                <input type="checkbox" name="supportFocus" value="Other">
+                <span>Other</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <div class="field-group">
+            <label for="goals">What are you trying to accomplish in the next 3&ndash;6 months?</label>
+            <textarea id="goals" name="goals" rows="5" placeholder="Tell us what you want to build, improve, launch, or tighten up in the near term." required></textarea>
+          </div>
+        </section>
+
+        <section class="card intake-section" aria-labelledby="intakeStage">
+          <div class="intake-section-header">
+            <p class="eyebrow">Section 3</p>
+            <h2 id="intakeStage" class="intake-title">Where are you right now?</h2>
+            <p>No pressure &mdash; this just helps us understand how to approach things.</p>
+          </div>
+
+          <fieldset class="field-set">
+            <legend class="field-legend">Current stage</legend>
+            <div class="choice-grid choice-grid-compact">
+              <label class="choice-option">
+                <input type="radio" name="stage" value="Just getting started" required>
+                <span>Just getting started</span>
+              </label>
+              <label class="choice-option">
+                <input type="radio" name="stage" value="Building momentum">
+                <span>Building momentum</span>
+              </label>
+              <label class="choice-option">
+                <input type="radio" name="stage" value="Already active and looking to grow">
+                <span>Already active and looking to grow</span>
+              </label>
+            </div>
+          </fieldset>
+        </section>
+
+        <section class="card intake-section" aria-labelledby="intakeDirection">
+          <div class="intake-section-header">
+            <p class="eyebrow">Section 4</p>
+            <h2 id="intakeDirection" class="intake-title">Help us understand your direction</h2>
+          </div>
+
+          <div class="form-grid">
+            <div class="field-group">
+              <label for="whyMsp">What made you reach out to MSP 790 Payback Music?</label>
+              <textarea id="whyMsp" name="whyMsp" rows="4" placeholder="Tell us what connected, what stood out, or why now felt like the time." required></textarea>
+            </div>
+
+            <div class="field-group">
+              <label for="recentWork">Share anything you&rsquo;ve worked on <span class="optional-copy">(optional)</span></label>
+              <textarea id="recentWork" name="recentWork" rows="4" placeholder="Projects, releases, ideas, visuals, performances, or anything that gives context."></textarea>
+            </div>
+
+            <div class="grid-2">
+              <div class="field-group">
+                <label for="audience">Current audience / following <span class="optional-copy">(optional)</span></label>
+                <input id="audience" name="audience" placeholder="Streams, followers, local reach, or where you currently stand">
+              </div>
+              <div class="field-group">
+                <label for="budget">Budget range <span class="optional-copy">(optional)</span></label>
+                <select id="budget" name="budget">
+                  <option value="">Choose a range if you know it</option>
+                  <option>Under $150</option>
+                  <option>$150 - $400</option>
+                  <option>$400 - $800</option>
+                  <option>$800+</option>
+                  <option>Not sure yet</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card intake-section" aria-labelledby="intakeElse">
+          <div class="intake-section-header">
+            <p class="eyebrow">Section 5</p>
+            <h2 id="intakeElse" class="intake-title">Anything else we should know?</h2>
+            <p>If there&rsquo;s context, ideas, or questions, put it here.</p>
+          </div>
+
+          <div class="field-group">
+            <label for="extraContext">Additional context</label>
+            <textarea id="extraContext" name="extraContext" rows="5" placeholder="Use this space for anything that helps us understand the bigger picture."></textarea>
+          </div>
+
+          <div class="submission-note">
+            <p>We review every submission and prioritize based on fit, timing, and clarity.</p>
+            <p>If it makes sense, we&rsquo;ll reach out and move from there.</p>
+          </div>
+
+          <div class="button-row intake-actions">
+            <button id="workWithUsSubmit" type="submit">Send Intake</button>
+            <a class="button-secondary" href="services.html">See Services First</a>
+          </div>
+        </section>
+      </form>
+    </div>
+  </section>
+
+  <section class="section-shell">
+    <div class="section-body grid-2">
+      <div class="card">
+        <p class="eyebrow">How We Use This</p>
+        <h3>Clarity first</h3>
+        <p>The point is to understand what you need, what you&rsquo;re building, and what kind of support makes sense right now.</p>
+      </div>
+      <div class="card">
+        <p class="eyebrow">Who This Is For</p>
+        <h3>Different stages, real work</h3>
+        <p>Artists, clients, collaborators, and local creatives don&rsquo;t all come in at the same point. This intake helps MSP 790 Payback Music meet people where they are without turning the page into a gatekeeping process.</p>
+      </div>
+    </div>
+  </section>
+
   <div id="site-footer"></div>
 </div>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <script src="assets/site.js"></script>
+<script>
+MSPSite.initFirebase();
+const db = firebase.firestore();
+
+const workWithUsForm = document.getElementById("workWithUsForm");
+const workWithUsBanner = document.getElementById("workWithUsBanner");
+const workWithUsSubmit = document.getElementById("workWithUsSubmit");
+
+function showWorkWithUsBanner(type, text) {
+  workWithUsBanner.className = `banner visible ${type}`;
+  workWithUsBanner.textContent = text;
+}
+
+function clearWorkWithUsBanner() {
+  workWithUsBanner.className = "banner";
+  workWithUsBanner.textContent = "";
+}
+
+function getCheckedValues(name) {
+  return [...workWithUsForm.querySelectorAll(`input[name="${name}"]:checked`)].map(input => input.value);
+}
+
+workWithUsForm.addEventListener("submit", async event => {
+  event.preventDefault();
+  clearWorkWithUsBanner();
+
+  const supportFocus = getCheckedValues("supportFocus");
+  const stage = workWithUsForm.querySelector('input[name="stage"]:checked')?.value || "";
+
+  if (
+    !workWithUsForm.reachOutAs.value ||
+    !workWithUsForm.displayName.value.trim() ||
+    !workWithUsForm.email.value.trim() ||
+    !workWithUsForm.location.value.trim() ||
+    !workWithUsForm.primaryLink.value.trim() ||
+    !supportFocus.length ||
+    !workWithUsForm.goals.value.trim() ||
+    !stage ||
+    !workWithUsForm.whyMsp.value.trim()
+  ) {
+    showWorkWithUsBanner("error", "Fill in the required fields so we can understand where you're at and what you need.");
+    return;
+  }
+
+  workWithUsSubmit.disabled = true;
+  workWithUsSubmit.textContent = "Sending...";
+
+  try {
+    await db.collection("workWithUs").add({
+      reachOutAs: workWithUsForm.reachOutAs.value,
+      displayName: workWithUsForm.displayName.value.trim(),
+      email: workWithUsForm.email.value.trim(),
+      location: workWithUsForm.location.value.trim(),
+      primaryLink: workWithUsForm.primaryLink.value.trim(),
+      supportFocus,
+      goals: workWithUsForm.goals.value.trim(),
+      stage,
+      whyMsp: workWithUsForm.whyMsp.value.trim(),
+      recentWork: workWithUsForm.recentWork.value.trim(),
+      audience: workWithUsForm.audience.value.trim(),
+      budget: workWithUsForm.budget.value,
+      extraContext: workWithUsForm.extraContext.value.trim(),
+      status: "new",
+      createdAt: new Date().toISOString(),
+      created: new Date()
+    });
+
+    workWithUsForm.reset();
+    showWorkWithUsBanner("success", "Intake received. If the timing and fit line up, MSP 790 Payback Music will reach out from here.");
+  } catch (error) {
+    showWorkWithUsBanner("error", error.message || "We couldn't send your intake right now. Please try again.");
+  } finally {
+    workWithUsSubmit.disabled = false;
+    workWithUsSubmit.textContent = "Send Intake";
+  }
+});
+</script>
 </body>
 </html>
