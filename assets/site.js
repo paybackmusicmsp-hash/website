@@ -27,6 +27,13 @@ window.MSPSite = (() => {
 
     if (header) {
       header.innerHTML = `
+        ${page === "home" ? `
+          <button class="rail-tab-toggle" type="button" aria-label="Open sidebar" aria-expanded="false">
+            <span class="rail-tab-mark" aria-hidden="true">
+              <img src="assets/msp-logo-mark.svg" alt="">
+            </span>
+          </button>
+        ` : ""}
         <div class="site-topbar">
           <a class="brand-lockup" href="index.html" aria-label="MSP 790 Payback Music home" aria-expanded="true">
             <span class="brand-mark" aria-hidden="true">
@@ -100,56 +107,85 @@ window.MSPSite = (() => {
     if (document.body.dataset.page === "home") {
       const homeBody = document.body;
       const brandLockup = document.querySelector(".brand-lockup");
+      const railToggle = document.querySelector(".rail-tab-toggle");
+      const siteHeader = document.getElementById("site-header");
       const scrollHint = document.getElementById("scrollHint");
       const heroShell = document.querySelector(".hero-shell");
       const homeBackdrop = document.querySelector(".home-backdrop");
       const mobileQuery = window.matchMedia("(max-width: 720px)");
       let railMotionTimer;
       let railHideTimer;
+      let railLeadTimer;
       let railShownByScroll = false;
-      const setRailCollapsed = (collapsed, animate = false) => {
-        homeBody.classList.remove("home-rail-collapsing", "home-rail-expanding");
-        if (animate) {
-          homeBody.classList.add(collapsed ? "home-rail-collapsing" : "home-rail-expanding");
-          clearTimeout(railMotionTimer);
+      const setRailOpen = (open, leadWithTab = false) => {
+        clearTimeout(railLeadTimer);
+        clearTimeout(railMotionTimer);
+        homeBody.classList.remove("home-rail-opening", "home-rail-closing", "home-rail-tab-leading");
+        if (open) {
+          if (leadWithTab) {
+            homeBody.classList.add("home-rail-tab-leading");
+            railLeadTimer = window.setTimeout(() => {
+              homeBody.classList.remove("home-rail-hidden", "home-rail-tab-leading");
+              homeBody.classList.add("home-rail-open", "home-rail-opening");
+              railMotionTimer = window.setTimeout(() => {
+                homeBody.classList.remove("home-rail-opening");
+              }, 340);
+            }, 96);
+          } else {
+            homeBody.classList.remove("home-rail-hidden");
+            homeBody.classList.add("home-rail-open");
+          }
+        } else {
+          homeBody.classList.remove("home-rail-open", "home-rail-opening");
+          homeBody.classList.add("home-rail-hidden", "home-rail-closing");
           railMotionTimer = window.setTimeout(() => {
-            homeBody.classList.remove("home-rail-collapsing", "home-rail-expanding");
-          }, 860);
+            homeBody.classList.remove("home-rail-closing");
+          }, 300);
         }
-        homeBody.classList.toggle("home-rail-collapsed", collapsed);
-        brandLockup?.setAttribute("aria-expanded", String(!collapsed));
+        const expanded = String(open);
+        brandLockup?.setAttribute("aria-expanded", expanded);
+        railToggle?.setAttribute("aria-expanded", expanded);
       };
       const syncMobileHomeState = () => {
         if (!mobileQuery.matches) return false;
+        clearTimeout(railLeadTimer);
         clearTimeout(railMotionTimer);
         clearTimeout(railHideTimer);
         railShownByScroll = false;
         homeBody.classList.remove(
+          "home-rail-open",
           "home-rail-hidden",
-          "home-rail-collapsed",
+          "home-rail-offscreen",
           "home-rail-visible",
-          "home-rail-collapsing",
-          "home-rail-expanding"
+          "home-rail-opening",
+          "home-rail-closing",
+          "home-rail-tab-leading"
         );
         brandLockup?.setAttribute("aria-expanded", "true");
+        railToggle?.setAttribute("aria-expanded", "true");
         return true;
       };
       const setRailVisibility = visible => {
         clearTimeout(railHideTimer);
         if (!visible) {
           railShownByScroll = false;
-          if (!homeBody.classList.contains("home-rail-hidden")) {
-            setRailCollapsed(true, true);
-            homeBody.classList.remove("home-rail-visible");
-            railHideTimer = window.setTimeout(() => {
-              homeBody.classList.add("home-rail-hidden");
-            }, 420);
-          }
+          clearTimeout(railLeadTimer);
+          clearTimeout(railMotionTimer);
+          homeBody.classList.remove(
+            "home-rail-open",
+            "home-rail-opening",
+            "home-rail-closing",
+            "home-rail-tab-leading",
+            "home-rail-visible"
+          );
+          homeBody.classList.add("home-rail-hidden", "home-rail-offscreen");
+          brandLockup?.setAttribute("aria-expanded", "false");
+          railToggle?.setAttribute("aria-expanded", "false");
           return;
         }
-        homeBody.classList.remove("home-rail-hidden");
+        homeBody.classList.remove("home-rail-offscreen");
         if (!railShownByScroll) {
-          setRailCollapsed(false, false);
+          homeBody.classList.add("home-rail-hidden");
           homeBody.classList.add("home-rail-visible");
           railShownByScroll = true;
           window.setTimeout(() => {
@@ -180,15 +216,27 @@ window.MSPSite = (() => {
         }
       };
       const updateRailState = () => {
-        brandLockup?.setAttribute("aria-expanded", String(!homeBody.classList.contains("home-rail-collapsed")));
+        const expanded = String(homeBody.classList.contains("home-rail-open"));
+        brandLockup?.setAttribute("aria-expanded", expanded);
+        railToggle?.setAttribute("aria-expanded", expanded);
       };
-      brandLockup?.addEventListener("click", event => {
+      railToggle?.addEventListener("click", event => {
         if (mobileQuery.matches) return;
         event.preventDefault();
-        homeBody.classList.remove("home-rail-hidden");
         railShownByScroll = true;
-        const willCollapse = !homeBody.classList.contains("home-rail-collapsed");
-        setRailCollapsed(willCollapse, true);
+        const willOpen = !homeBody.classList.contains("home-rail-open");
+        setRailOpen(willOpen, willOpen);
+        updateRailState();
+      });
+      document.addEventListener("pointerdown", event => {
+        if (mobileQuery.matches || !homeBody.classList.contains("home-rail-open")) return;
+        if (siteHeader?.contains(event.target)) return;
+        setRailOpen(false, false);
+        updateRailState();
+      });
+      document.addEventListener("keydown", event => {
+        if (event.key !== "Escape" || mobileQuery.matches || !homeBody.classList.contains("home-rail-open")) return;
+        setRailOpen(false, false);
         updateRailState();
       });
       updateHomeScrollScene();

@@ -731,7 +731,7 @@ async function enterSite() {
   enterScreen.classList.add("fade-out");
   setTimeout(() => {
     enterScreen.style.display = "none";
-    homeBody.classList.add("home-rail-hidden", "home-rail-collapsed");
+    homeBody.classList.add("home-rail-hidden", "home-rail-offscreen");
     homeBody.classList.remove("home-locked");
   }, 800);
   setTimeout(() => {
