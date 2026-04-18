@@ -1055,15 +1055,15 @@ body[data-page="home"] #site-header {
 
 body[data-page="home"] .rail-tab-toggle {
   position: absolute;
-  top: clamp(220px, calc(50vh - 62px), 520px);
+  top: 50%;
   right: -48px;
-  width: 58px;
-  height: 86px;
-  padding: 10px 8px 14px;
+  width: 64px;
+  height: 84px;
+  padding: 12px 10px 14px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 0 16px 16px 0;
+  border-radius: 0 16px 14px 0;
   border: 1px solid rgba(255, 60, 60, 0.12);
   border-left: 0;
   background:
@@ -1077,15 +1077,35 @@ body[data-page="home"] .rail-tab-toggle {
     0 0 10px rgba(255, 90, 90, 0.04);
   cursor: pointer;
   z-index: 2;
+  transform: translateY(-50%);
   transition: transform 0.1s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.22s ease, border-color 0.22s ease, background 0.22s ease;
+}
+
+body[data-page="home"] .rail-tab-toggle::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -10px;
+  width: 28px;
+  height: 12px;
+  border: 1px solid rgba(255, 60, 60, 0.12);
+  border-bottom: 0;
+  border-left: 0;
+  border-radius: 0 12px 0 0;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.004) 50%, rgba(10,10,10,0.94) 100%),
+    rgba(10,10,10,0.94);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.035),
+    inset 0 0 0 1px rgba(255, 60, 60, 0.02);
 }
 
 body[data-page="home"] .rail-tab-toggle::after {
   content: "";
   position: absolute;
-  left: 12px;
-  right: 12px;
-  bottom: 10px;
+  left: 14px;
+  right: 14px;
+  bottom: 12px;
   height: 1px;
   background: linear-gradient(90deg, transparent, rgba(255, 60, 60, 0.34), transparent);
   opacity: 0.78;
@@ -1401,7 +1421,7 @@ body[data-page="home"].home-rail-offscreen #site-header {
 }
 
 body[data-page="home"].home-rail-tab-leading .rail-tab-toggle {
-  transform: translateX(4px);
+  transform: translateY(-50%) translateX(4px);
 }
 
 body[data-page="home"] .site-topbar,
