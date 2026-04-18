@@ -1048,8 +1048,9 @@ body[data-page="home"] #site-header {
   left: 0;
   width: 156px;
   z-index: 30;
-  --home-tab-peek: 58px;
+  --home-tab-peek: 10px;
   transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.22s ease, filter 0.22s ease;
+  overflow: visible;
 }
 
 body[data-page="home"] .rail-tab-toggle {
