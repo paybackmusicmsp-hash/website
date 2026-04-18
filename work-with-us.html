@@ -228,12 +228,10 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <script src="assets/site.js"></script>
 <script>
-MSPSite.initFirebase();
-const db = firebase.firestore();
-
 const workWithUsForm = document.getElementById("workWithUsForm");
 const workWithUsBanner = document.getElementById("workWithUsBanner");
 const workWithUsSubmit = document.getElementById("workWithUsSubmit");
+let db = null;
 
 function showWorkWithUsBanner(type, text) {
   workWithUsBanner.className = `banner visible ${type}`;
@@ -249,9 +247,25 @@ function getCheckedValues(name) {
   return [...workWithUsForm.querySelectorAll(`input[name="${name}"]:checked`)].map(input => input.value);
 }
 
+try {
+  const firebaseApp = MSPSite.initFirebase();
+  if (!firebaseApp || !window.firebase?.firestore) {
+    throw new Error("Firebase failed to load.");
+  }
+  db = window.firebase.firestore();
+} catch (error) {
+  workWithUsSubmit.disabled = true;
+  showWorkWithUsBanner("error", "This form is temporarily offline. Please try again shortly or reach out through the contact page.");
+}
+
 workWithUsForm.addEventListener("submit", async event => {
   event.preventDefault();
   clearWorkWithUsBanner();
+
+  if (!db) {
+    showWorkWithUsBanner("error", "This form is temporarily offline. Please try again shortly or reach out through the contact page.");
+    return;
+  }
 
   const supportFocus = getCheckedValues("supportFocus");
   const stage = workWithUsForm.querySelector('input[name="stage"]:checked')?.value || "";
@@ -275,23 +289,48 @@ workWithUsForm.addEventListener("submit", async event => {
   workWithUsSubmit.textContent = "Sending...";
 
   try {
-    await db.collection("workWithUs").add({
-      reachOutAs: workWithUsForm.reachOutAs.value,
-      displayName: workWithUsForm.displayName.value.trim(),
-      email: workWithUsForm.email.value.trim(),
-      location: workWithUsForm.location.value.trim(),
-      primaryLink: workWithUsForm.primaryLink.value.trim(),
+    const reachOutAs = workWithUsForm.reachOutAs.value;
+    const displayName = workWithUsForm.displayName.value.trim();
+    const email = workWithUsForm.email.value.trim();
+    const location = workWithUsForm.location.value.trim();
+    const primaryLink = workWithUsForm.primaryLink.value.trim();
+    const goals = workWithUsForm.goals.value.trim();
+    const whyMsp = workWithUsForm.whyMsp.value.trim();
+    const recentWork = workWithUsForm.recentWork.value.trim();
+    const audience = workWithUsForm.audience.value.trim();
+    const budget = workWithUsForm.budget.value;
+    const extraContext = workWithUsForm.extraContext.value.trim();
+    const submittedAt = new Date();
+
+    await db.collection("applications").add({
+      type: "work_with_us",
+      name: displayName,
+      email,
+      role: reachOutAs,
+      link: primaryLink,
+      bio: [
+        `Goal window: ${goals}`,
+        `Why MSP 790 Payback Music: ${whyMsp}`,
+        recentWork ? `Recent work: ${recentWork}` : "",
+        audience ? `Audience: ${audience}` : "",
+        budget ? `Budget: ${budget}` : "",
+        extraContext ? `Extra context: ${extraContext}` : ""
+      ].filter(Boolean).join("\n\n"),
+      reachOutAs,
+      location,
+      primaryLink,
       supportFocus,
-      goals: workWithUsForm.goals.value.trim(),
+      goals,
       stage,
-      whyMsp: workWithUsForm.whyMsp.value.trim(),
-      recentWork: workWithUsForm.recentWork.value.trim(),
-      audience: workWithUsForm.audience.value.trim(),
-      budget: workWithUsForm.budget.value,
-      extraContext: workWithUsForm.extraContext.value.trim(),
-      status: "new",
-      createdAt: new Date().toISOString(),
-      created: new Date()
+      whyMsp,
+      recentWork,
+      audience,
+      budget,
+      extraContext,
+      status: "pending",
+      submittedAt: submittedAt.toISOString(),
+      createdAt: submittedAt.toISOString(),
+      created: submittedAt
     });
 
     workWithUsForm.reset();
