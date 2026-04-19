@@ -40,6 +40,18 @@
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
+    <filter id="greenGlow" x="-35%" y="-35%" width="170%" height="170%">
+      <feGaussianBlur stdDeviation="5.4" result="blur"/>
+      <feColorMatrix in="blur" type="matrix"
+        values="0 .10 0 0 0
+                0 .92 0 0 0
+                0 .20 0 0 0
+                0 0 0 .28 0" result="green"/>
+      <feMerge>
+        <feMergeNode in="green"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
     <g id="line-top">
       <path d="M202 0Q162 0 128.0 20.0Q94 40 74.0 74.0Q54 108 54 148V572Q54 613 74.0 646.5Q94 680 128.0 700.0Q162 720 202 720H626Q666 720 699.5 700.0Q733 680 753.5 646.5Q774 613 774 572V148Q774 108 753.5 74.0Q733 40 699.5 20.0Q666 0 626 0ZM209 156H617Q617 156 617.0 156.0Q617 156 617 156V564Q617 564 617.0 564.0Q617 564 617 564H209Q209 564 209.0 564.0Q209 564 209 564V156Q209 156 209.0 156.0Q209 156 209 156Z" transform="translate(-142.562,0) scale(0.178000,-0.178000)"/>
       <path d="M204 0Q164 0 130.0 20.0Q96 40 76.0 74.0Q56 108 56 148V572Q56 613 76.0 646.5Q96 680 130.0 700.0Q164 720 204 720H627Q668 720 701.5 700.0Q735 680 755.5 646.5Q776 613 776 572V504H619V564Q619 564 619.0 564.0Q619 564 619 564H211Q211 564 211.0 564.0Q211 564 211 564V156Q211 156 211.0 156.0Q211 156 211 156H619Q619 156 619.0 156.0Q619 156 619 156V264H463V420H776V148Q776 108 755.5 74.0Q735 40 701.5 20.0Q668 0 627 0Z" transform="translate(-5.178,0) scale(0.178000,-0.178000)"/>
@@ -58,6 +70,14 @@
   </defs>
 
   <g filter="url(#softShadow)">
+    <g filter="url(#greenGlow)" opacity="0.82">
+      <g transform="translate(800 182) skewX(-10) scale(1.03 1.06)">
+        <use href="#line-top" fill="none" stroke="#58ff6f" stroke-width="3.2" stroke-linejoin="bevel" opacity="0.34"/>
+      </g>
+      <g transform="translate(800 358) skewX(-10) scale(1.0 1.08)">
+        <use href="#line-bottom" fill="none" stroke="#58ff6f" stroke-width="3.8" stroke-linejoin="bevel" opacity="0.36"/>
+      </g>
+    </g>
     <g transform="translate(800 182) skewX(-10) scale(1.03 1.06)">
       <use href="#line-top" fill="#240202" stroke="#000000" stroke-width="26" stroke-linejoin="bevel" opacity="0.24"/>
       <use href="#line-top" fill="url(#redInner)" stroke="#060606" stroke-width="15" stroke-linejoin="bevel" paint-order="stroke fill" filter="url(#redGlow)"/>
