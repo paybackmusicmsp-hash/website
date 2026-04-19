@@ -17,8 +17,10 @@
   --edge-red-soft: rgba(255, 60, 60, 0.1);
   --edge-red: rgba(255, 60, 60, 0.14);
   --edge-red-hot: rgba(255, 60, 60, 0.2);
+  --edge-red-razor: rgba(255, 110, 110, 0.26);
   --glow-red-soft: rgba(255, 90, 90, 0.08);
   --glow-red: rgba(255, 90, 90, 0.14);
+  --glow-red-tight: rgba(255, 90, 90, 0.22);
   --panel:
     linear-gradient(180deg, rgba(255,255,255,0.022), rgba(255,255,255,0.005) 9%, rgba(42,8,8,0.16) 26%, rgba(20,20,20,0.95) 62%, rgba(13,13,13,0.995) 100%),
     linear-gradient(135deg, rgba(52,0,0,0.14), rgba(20,20,20,0.94) 34%, rgba(14,14,14,0.99));
@@ -79,7 +81,7 @@ body {
     linear-gradient(180deg, rgba(255,255,255,0.012), rgba(255,255,255,0) 10%),
     radial-gradient(circle at 18% 12%, rgba(122,0,0,0.12), transparent 22%),
     radial-gradient(circle at 80% 14%, rgba(96,0,0,0.08), transparent 20%),
-    linear-gradient(180deg, rgba(18,18,18,0.26), rgba(10,10,10,0.96)),
+    linear-gradient(180deg, rgba(8,8,8,0.18), rgba(8,8,8,0.5) 22%, rgba(10,10,10,0.98)),
     url('home-background-neon-green.png') center/cover fixed;
   line-height: 1.6;
 }
@@ -219,8 +221,8 @@ h2,
 .page-title {
   text-shadow:
     0 2px 0 rgba(0,0,0,0.94),
-    0 8px 20px rgba(0,0,0,0.5),
-    0 0 14px rgba(176, 18, 18, 0.2);
+    0 12px 28px rgba(0,0,0,0.56),
+    0 0 11px rgba(176, 18, 18, 0.16);
 }
 
 h3,
@@ -229,7 +231,7 @@ h3,
 .brand-text strong {
   text-shadow:
     0 1px 0 rgba(0,0,0,0.95),
-    0 0 8px rgba(170, 18, 18, 0.12);
+    0 0 6px rgba(170, 18, 18, 0.1);
 }
 
 .brand-text {
@@ -266,7 +268,7 @@ button,
   font: inherit;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
 }
 
 .chip-link {
@@ -280,7 +282,8 @@ button,
     inset 0 0 0 1px rgba(255,255,255,0.012),
     inset 0 -12px 18px rgba(0,0,0,0.2),
     0 12px 24px rgba(0,0,0,0.28),
-    0 0 0 1px rgba(255,255,255,0.01);
+    0 0 0 1px rgba(255,255,255,0.01),
+    0 0 10px rgba(86, 132, 255, 0.04);
 }
 
 .button-link,
@@ -297,7 +300,8 @@ button,
     inset 0 0 0 1px rgba(255, 60, 60, 0.035),
     inset 0 -12px 18px rgba(0,0,0,0.22),
     0 14px 28px rgba(0,0,0,0.32),
-    0 0 0 1px rgba(255,255,255,0.012);
+    0 0 0 1px rgba(255,255,255,0.012),
+    0 0 10px rgba(140, 0, 0, 0.08);
 }
 
 .button-secondary {
@@ -319,13 +323,13 @@ button,
 .button-primary:hover,
 button:not(.button-secondary):hover {
   transform: translateY(-2px);
-  filter: brightness(1.038);
+  filter: brightness(1.05);
   border-color: rgba(255, 60, 60, 0.4);
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.075),
-    inset 0 0 0 1px rgba(255, 60, 60, 0.14),
+    inset 0 0 0 1px rgba(255, 60, 60, 0.1),
     0 16px 30px rgba(0,0,0,0.34),
-    0 0 10px rgba(255, 60, 60, 0.26);
+    0 0 14px rgba(255, 60, 60, 0.24);
 }
 
 .chip-link:hover,
@@ -335,9 +339,9 @@ button:not(.button-secondary):hover {
   border-color: var(--blue-edge);
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.06),
-    inset 0 0 0 1px rgba(86, 132, 255, 0.09),
+    inset 0 0 0 1px rgba(86, 132, 255, 0.065),
     0 14px 26px rgba(0,0,0,0.3),
-    0 0 10px rgba(86, 132, 255, 0.2);
+    0 0 12px rgba(86, 132, 255, 0.16);
 }
 
 .nav-link:hover {
@@ -348,7 +352,7 @@ button:not(.button-secondary):hover {
     inset 0 1px 0 rgba(255,255,255,0.03),
     inset 0 0 0 1px rgba(86, 132, 255, 0.05),
     0 12px 24px rgba(0,0,0,0.26),
-    0 0 8px rgba(86, 132, 255, 0.18);
+    0 0 9px rgba(86, 132, 255, 0.14);
 }
 
 .nav-shell,
@@ -358,12 +362,12 @@ button:not(.button-secondary):hover {
   background: var(--shell-surface);
   border: 1px solid var(--edge-red);
   box-shadow:
-    0 28px 74px rgba(0,0,0,0.58),
+    0 30px 80px rgba(0,0,0,0.62),
     0 1px 0 rgba(255,255,255,0.022),
-    inset 0 1px 0 rgba(255,255,255,0.02),
-    inset 0 0 0 1px var(--surface-inner-red),
+    inset 0 1px 0 rgba(255,255,255,0.03),
+    inset 0 0 0 1px rgba(255, 60, 60, 0.06),
     inset 0 -1px 0 rgba(0,0,0,0.26),
-    inset 0 -16px 22px rgba(0,0,0,0.18),
+    inset 0 -16px 22px rgba(0,0,0,0.2),
     0 10px 22px rgba(0,0,0,0.24),
     0 0 10px var(--glow-red-soft);
 }
@@ -374,12 +378,12 @@ button:not(.button-secondary):hover {
 .glass-card {
   border: 1px solid var(--edge-red);
   box-shadow:
-    0 18px 42px rgba(0,0,0,0.4),
+    0 20px 46px rgba(0,0,0,0.42),
     0 0 0 1px rgba(255,255,255,0.02),
-    inset 0 1px 0 rgba(255,255,255,0.035),
-    inset 0 -14px 22px rgba(0,0,0,0.18),
-    inset 0 0 0 1px var(--surface-inner-red),
-    0 0 8px rgba(255, 90, 90, 0.04);
+    inset 0 1px 0 rgba(255,255,255,0.045),
+    inset 0 -16px 24px rgba(0,0,0,0.19),
+    inset 0 0 0 1px rgba(255, 60, 60, 0.05),
+    0 0 8px rgba(255, 90, 90, 0.035);
 }
 
 .nav-surface,
@@ -393,12 +397,12 @@ button:not(.button-secondary):hover {
   background: var(--surface-elevated);
   box-shadow:
     0 16px 38px rgba(0,0,0,0.36),
-    inset 0 1px 0 rgba(255,255,255,0.018),
-    inset 0 0 0 1px rgba(255, 60, 60, 0.04),
+    inset 0 1px 0 rgba(255,255,255,0.026),
+    inset 0 0 0 1px rgba(255, 60, 60, 0.045),
     inset 0 -1px 0 rgba(0,0,0,0.24),
-    inset 0 -14px 22px rgba(0,0,0,0.14),
+    inset 0 -14px 22px rgba(0,0,0,0.16),
     0 8px 18px rgba(0,0,0,0.18),
-    0 0 8px rgba(255, 90, 90, 0.045);
+    0 0 7px rgba(255, 90, 90, 0.04);
 }
 
 .site-nav {
@@ -428,7 +432,7 @@ button:not(.button-secondary):hover {
   box-shadow:
     inset 0 -2px 0 rgba(214, 38, 38, 0.56),
     inset 0 0 0 1px rgba(255, 60, 60, 0.04),
-    0 0 8px rgba(176, 18, 18, 0.08);
+    0 0 10px rgba(176, 18, 18, 0.08);
 }
 
 .section-shell {
@@ -437,13 +441,13 @@ button:not(.button-secondary):hover {
   background: var(--shell-surface);
   border: 1px solid var(--edge-red);
   box-shadow:
-    0 30px 76px rgba(0,0,0,0.56),
+    0 32px 80px rgba(0,0,0,0.6),
     0 0 0 1px rgba(255,255,255,0.03),
-    inset 0 1px 0 rgba(255,255,255,0.022),
-    inset 0 0 0 1px rgba(255, 60, 60, 0.05),
+    inset 0 1px 0 rgba(255,255,255,0.03),
+    inset 0 0 0 1px rgba(255, 60, 60, 0.06),
     inset 0 -1px 0 rgba(0,0,0,0.26),
-    inset 0 -16px 24px rgba(0,0,0,0.16),
-    0 0 10px rgba(255, 90, 90, 0.05);
+    inset 0 -18px 26px rgba(0,0,0,0.18),
+    0 0 10px rgba(255, 90, 90, 0.045);
 }
 
 .section-body,
@@ -477,15 +481,15 @@ button:not(.button-secondary):hover {
 .gallery-card:hover,
 .video-frame:hover {
   transform: translateY(-2px);
-  filter: brightness(1.012);
-  border-color: rgba(255, 60, 60, 0.16);
+  filter: brightness(1.016);
+  border-color: var(--edge-red-razor);
   box-shadow:
-    0 20px 44px rgba(0,0,0,0.44),
+    0 22px 46px rgba(0,0,0,0.44),
     0 0 0 1px rgba(255,255,255,0.025),
-    inset 0 1px 0 rgba(255,255,255,0.045),
-    inset 0 -12px 20px rgba(0,0,0,0.18),
-    inset 0 0 0 1px var(--surface-inner-red-strong),
-    0 0 10px rgba(255, 60, 60, 0.14);
+    inset 0 1px 0 rgba(255,255,255,0.05),
+    inset 0 -14px 22px rgba(0,0,0,0.2),
+    inset 0 0 0 1px rgba(255, 60, 60, 0.08),
+    0 0 10px rgba(255, 60, 60, 0.08);
 }
 
 .page-title,
@@ -1905,55 +1909,55 @@ body[data-page="home"].home-rail-open .nav-shell {
     position: fixed;
     top: max(12px, env(safe-area-inset-top, 0px) + 8px);
     left: 0;
-    width: min(78vw, 290px);
+    width: min(72vw, 274px);
     margin-bottom: 0;
     z-index: 34;
   }
 
   body[data-page="home"] .brand-lockup {
-    background: rgba(10, 12, 18, 0.68);
-    border-color: rgba(255, 60, 60, 0.1);
+    background: rgba(8, 10, 16, 0.54);
+    border-color: rgba(255, 60, 60, 0.12);
     box-shadow:
-      0 16px 30px rgba(0,0,0,0.26),
+      0 16px 30px rgba(0,0,0,0.24),
       inset 0 1px 0 rgba(255,255,255,0.05),
-      inset 0 0 0 1px rgba(255, 60, 60, 0.025);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+      inset 0 0 0 1px rgba(255, 60, 60, 0.03);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
   }
 
   body[data-page="home"] .top-actions .chip-link {
     background:
-      linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.004) 16%, rgba(20,22,28,0.12) 30%, rgba(10,12,18,0.72) 100%);
+      linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.004) 16%, rgba(20,22,28,0.12) 30%, rgba(10,12,18,0.56) 100%);
     box-shadow:
       inset 0 1px 0 rgba(255,255,255,0.04),
       inset 0 0 0 1px rgba(255,255,255,0.015),
       0 10px 18px rgba(0,0,0,0.16);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     color: rgba(255, 246, 246, 0.95);
   }
 
   body[data-page="home"] .nav-shell {
     padding: 6px;
-    background: rgba(10, 12, 18, 0.66);
-    border-color: rgba(255, 60, 60, 0.1);
+    background: rgba(8, 10, 16, 0.5);
+    border-color: rgba(255, 60, 60, 0.11);
     box-shadow:
-      0 16px 28px rgba(0,0,0,0.2),
-      inset 0 1px 0 rgba(255,255,255,0.025),
-      inset 0 0 0 1px rgba(255, 60, 60, 0.025);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+      0 16px 28px rgba(0,0,0,0.18),
+      inset 0 1px 0 rgba(255,255,255,0.03),
+      inset 0 0 0 1px rgba(255, 60, 60, 0.03);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
   }
 
   body[data-page="home"] .nav-surface {
     padding: 6px;
-    background: rgba(10, 12, 18, 0.54);
+    background: rgba(8, 10, 16, 0.44);
     box-shadow:
-      0 10px 20px rgba(0,0,0,0.14),
+      0 10px 20px rgba(0,0,0,0.12),
       inset 0 1px 0 rgba(255,255,255,0.02),
-      inset 0 0 0 1px rgba(255, 60, 60, 0.022);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+      inset 0 0 0 1px rgba(255, 60, 60, 0.025);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
   }
 
   body[data-page="home"] .home-runway {
@@ -2040,8 +2044,8 @@ body[data-page="home"].home-rail-open .nav-shell {
   body[data-page="home"] .nav-link {
     font-size: 0.86rem;
     padding: 8px 10px;
-    color: rgba(255, 242, 242, 0.84);
-    background: linear-gradient(180deg, rgba(255,255,255,0.014), rgba(255,255,255,0.002) 20%, rgba(10,12,18,0.32) 100%);
+    color: rgba(255, 242, 242, 0.8);
+    background: linear-gradient(180deg, rgba(255,255,255,0.014), rgba(255,255,255,0.002) 20%, rgba(10,12,18,0.24) 100%);
     box-shadow:
       inset 0 1px 0 rgba(255,255,255,0.018),
       inset 0 0 0 1px rgba(255,255,255,0.012);

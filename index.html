@@ -141,8 +141,9 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 50% 18%, rgba(170, 22, 22, 0.28), transparent 34%),
-    radial-gradient(circle at 50% 62%, rgba(255, 255, 255, 0.05), transparent 30%);
+    radial-gradient(circle at 50% 18%, rgba(170, 22, 22, 0.34), transparent 33%),
+    radial-gradient(circle at 50% 62%, rgba(255, 255, 255, 0.055), transparent 28%),
+    linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.16) 48%, rgba(0,0,0,0.28) 100%);
   pointer-events: none;
   z-index: 0;
 }
@@ -202,8 +203,9 @@
   position: absolute;
   inset: -42px -72px -36px;
   background:
-    radial-gradient(circle at 50% 42%, rgba(0,0,0,0.46), transparent 56%),
-    radial-gradient(circle at 50% 18%, rgba(150, 16, 16, 0.16), transparent 34%);
+    radial-gradient(circle at 50% 42%, rgba(0,0,0,0.56), transparent 56%),
+    radial-gradient(circle at 50% 18%, rgba(150, 16, 16, 0.22), transparent 32%),
+    radial-gradient(circle at 50% 68%, rgba(0,0,0,0.18), transparent 34%);
   pointer-events: none;
   z-index: -1;
 }
@@ -235,10 +237,10 @@
   text-align: center;
   max-width: 18ch;
   text-shadow:
-    0 0 14px rgba(255, 50, 50, 0.42),
-    0 0 24px rgba(186, 0, 0, 0.18),
+    0 0 10px rgba(255, 50, 50, 0.3),
+    0 0 18px rgba(186, 0, 0, 0.14),
     0 2px 0 rgba(0,0,0,0.96),
-    0 8px 16px rgba(0,0,0,0.42);
+    0 10px 22px rgba(0,0,0,0.5);
 }
 .hero-title {
   font-family: 'Anton', var(--font-display);
@@ -253,10 +255,10 @@
   color: #fff7f7;
   text-align: center;
   text-shadow:
-    0 0 14px rgba(214, 38, 38, 0.28),
-    0 0 24px rgba(145, 0, 0, 0.18),
+    0 0 12px rgba(214, 38, 38, 0.22),
+    0 0 22px rgba(145, 0, 0, 0.14),
     0 3px 0 rgba(0, 0, 0, 0.96),
-    0 14px 30px rgba(0, 0, 0, 0.62);
+    0 18px 38px rgba(0, 0, 0, 0.72);
 }
 .hero-band--main .hero-title {
   white-space: normal;
@@ -304,8 +306,9 @@
   height: auto;
   overflow: visible;
   filter:
-    drop-shadow(0 0 10px rgba(255, 58, 58, 0.26))
-    drop-shadow(0 0 18px rgba(179, 0, 0, 0.16));
+    drop-shadow(0 0 10px rgba(255, 58, 58, 0.18))
+    drop-shadow(0 0 18px rgba(179, 0, 0, 0.14))
+    drop-shadow(0 18px 30px rgba(0, 0, 0, 0.32));
 }
 .hero-mid {
   font-family: 'Anton', var(--font-display);
@@ -445,8 +448,8 @@
     max-width:none;
     max-height:none;
     object-fit:contain;
-    opacity:0.42;
-    filter: drop-shadow(0 16px 28px rgba(0,0,0,0.5)) saturate(0.84) brightness(0.76);
+    opacity:0.5;
+    filter: drop-shadow(0 18px 30px rgba(0,0,0,0.56)) saturate(0.88) brightness(0.82);
     border:0;
     background:none;
     box-shadow:none;
@@ -482,9 +485,9 @@
   }
   .hero-shell::before {
     background:
-      radial-gradient(circle at 50% 24%, rgba(170, 22, 22, 0.24), transparent 36%),
-      radial-gradient(circle at 50% 58%, rgba(255, 255, 255, 0.04), transparent 28%),
-      linear-gradient(180deg, rgba(0,0,0,0.04), rgba(0,0,0,0.18));
+      radial-gradient(circle at 50% 24%, rgba(170, 22, 22, 0.22), transparent 34%),
+      radial-gradient(circle at 50% 58%, rgba(255, 255, 255, 0.038), transparent 27%),
+      linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.14) 48%, rgba(0,0,0,0.26));
   }
   .hero-shell {
     min-height: calc(var(--home-scene-height) - 140px);
@@ -497,10 +500,10 @@
   }
   .pillar-left,.pillar-right {
     width: 42vw;
-    opacity: 0.34;
+    opacity: 0.44;
   }
   .pillar-left { left: -14vw; }
-  .pillar-right { right: -6vw; }
+  .pillar-right { right: -4vw; }
   .hero-tagline {
     font-size: 0.78rem;
     letter-spacing: 0.1em;
@@ -531,6 +534,7 @@
     gap: 10px;
     justify-items: center;
     text-align: center;
+    padding-top: 2px;
   }
   .hero-mobile-actions {
     width: 100%;
