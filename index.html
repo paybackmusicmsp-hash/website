@@ -406,7 +406,41 @@
   color: var(--text);
 }
 @media (max-width: 860px) {
-  .pillar-left,.pillar-right { display:none; }
+  .hero-pillars {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: min(100%, calc(100% - 20px));
+    height: auto;
+    margin: 0 auto 14px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    z-index: 1;
+  }
+  .pillar-left,.pillar-right {
+    display:block;
+    position:relative;
+    left:auto;
+    right:auto;
+    top:auto;
+    width:100%;
+    height:auto;
+    max-width:none;
+    max-height:220px;
+    object-fit:cover;
+    object-position:center;
+    border-radius:24px;
+    border:1px solid rgba(255, 60, 60, 0.12);
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.006) 18%, rgba(0,0,0,0.16) 100%),
+      rgba(10, 10, 10, 0.74);
+    box-shadow:
+      0 18px 36px rgba(0,0,0,0.42),
+      inset 0 1px 0 rgba(255,255,255,0.05),
+      inset 0 0 0 1px rgba(255, 60, 60, 0.03),
+      0 0 14px rgba(255, 60, 60, 0.05);
+  }
   .artist-grid,.split-embed { grid-template-columns: 1fr; }
   .hero-stage { width: min(100%, 760px); }
   .hero-title { line-height: 0.94; }
@@ -452,8 +486,8 @@
 </div>
 
 <div class="hero-pillars" aria-hidden="true">
-  <img src="assets/pillar-left(1).png" class="pillar-left" alt="" loading="eager" decoding="async" sizes="(max-width: 860px) 0px, 320px">
-  <img src="assets/pillar-right.png" class="pillar-right" alt="" loading="eager" decoding="async" sizes="(max-width: 860px) 0px, 320px">
+  <img src="assets/pillar-left(1).png" class="pillar-left" alt="" loading="eager" decoding="async" sizes="(max-width: 860px) 100vw, 320px">
+  <img src="assets/pillar-right.png" class="pillar-right" alt="" loading="eager" decoding="async" sizes="(max-width: 860px) 100vw, 320px">
 </div>
 
 <div class="page-wrap">
