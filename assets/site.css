@@ -1811,6 +1811,14 @@ body[data-page="home"].home-rail-open .nav-shell {
   }
 }
 
+@media (max-width: 768px) {
+  body[data-page="home"] .home-backdrop {
+    background:
+      linear-gradient(180deg, rgba(2,2,2,0) 0%, rgba(2,2,2,0) calc(100% - var(--home-fade-height)), #020202 100%),
+      url('Untitled(6).png') center 30% / 110% no-repeat;
+  }
+}
+
 @media (max-width: 720px) {
   body {
     background-attachment: scroll;
