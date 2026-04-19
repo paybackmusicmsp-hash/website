@@ -40,13 +40,13 @@
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
-    <filter id="greenGlow" x="-45%" y="-45%" width="190%" height="190%">
-      <feGaussianBlur stdDeviation="8.5" result="blur"/>
+    <filter id="greenGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="14" result="blur"/>
       <feColorMatrix in="blur" type="matrix"
-        values="0 .18 0 0 0
-                0 1.18 0 0 0
-                0 .28 0 0 0
-                0 0 0 .52 0" result="green"/>
+        values="0 .28 0 0 0
+                0 1.45 0 0 0
+                0 .36 0 0 0
+                0 0 0 .82 0" result="green"/>
       <feMerge>
         <feMergeNode in="green"/>
         <feMergeNode in="SourceGraphic"/>
@@ -72,10 +72,18 @@
   <g filter="url(#softShadow)">
     <g filter="url(#greenGlow)" opacity="1">
       <g transform="translate(800 182) skewX(-10) scale(1.03 1.06)">
-        <use href="#line-top" fill="none" stroke="#71ff73" stroke-width="6.2" stroke-linejoin="bevel" opacity="0.52"/>
+        <use href="#line-top" fill="none" stroke="#79ff59" stroke-width="14" stroke-linejoin="bevel" opacity="0.88"/>
       </g>
       <g transform="translate(800 358) skewX(-10) scale(1.0 1.08)">
-        <use href="#line-bottom" fill="none" stroke="#71ff73" stroke-width="7.2" stroke-linejoin="bevel" opacity="0.56"/>
+        <use href="#line-bottom" fill="none" stroke="#79ff59" stroke-width="16" stroke-linejoin="bevel" opacity="0.92"/>
+      </g>
+    </g>
+    <g opacity="0.5">
+      <g transform="translate(800 182) skewX(-10) scale(1.03 1.06)">
+        <use href="#line-top" fill="none" stroke="#b6ff8d" stroke-width="4.6" stroke-linejoin="bevel"/>
+      </g>
+      <g transform="translate(800 358) skewX(-10) scale(1.0 1.08)">
+        <use href="#line-bottom" fill="none" stroke="#b6ff8d" stroke-width="5.2" stroke-linejoin="bevel"/>
       </g>
     </g>
     <g transform="translate(800 182) skewX(-10) scale(1.03 1.06)">
