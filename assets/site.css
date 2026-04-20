@@ -839,8 +839,8 @@ a:focus {
 .gallery-card img {
   width: 100%;
   display: block;
-  height: 240px;
-  object-fit: cover;
+  height: auto;
+  object-fit: none;
   filter: brightness(0.72) contrast(1.15) saturate(0.86);
   transition: filter 0.2s ease, transform 0.2s ease;
 }
