@@ -13,96 +13,30 @@
   <div id="site-header"></div>
   <div class="page-header">
     <h1 class="page-title">Booking Received</h1>
-    <p class="page-subtitle">Your request is saved under your account and payment status is tracked directly on the booking.</p>
+    <p class="page-subtitle">Your request is saved under your account and now waiting on review.</p>
   </div>
   <section class="section-shell"><div class="section-body" style="text-align:center;">
     <p id="bookingMessage">Your request has been submitted successfully.</p>
     <p class="status-pill" id="bookingMeta"></p>
-    <p id="bookingStatusText">Secure Stripe Checkout is now part of the booking flow.</p>
-    <p id="bookingStatusHint">If payment was completed, this page will reflect that once the booking record syncs.</p>
-    <a class="button-link" id="retryCheckout" href="#" hidden>Continue to Stripe Checkout</a>
+    <p>Your booking request is saved first, then the current launch flow sends you to a hosted Stripe payment link for deposit payment.</p>
+    <p>If you close that payment page, you can return to the booking form and submit again or contact the team directly.</p>
     <a class="button-link" href="client.html">Go to Client Portal</a>
   </div></section>
   <div id="site-footer"></div>
 </div>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-functions-compat.js"></script>
 <script src="assets/site.js"></script>
 <script>
-MSPSite.initFirebase();
-const db = firebase.firestore();
-const functions = firebase.app().functions("us-central1");
 const params = new URLSearchParams(window.location.search);
 const latestBooking = JSON.parse(localStorage.getItem("latestBooking") || "null");
 const bookingId = params.get("id") || (latestBooking && latestBooking.id);
-const checkoutState = params.get("checkout");
 const bookingMessage = document.getElementById("bookingMessage");
 const bookingMeta = document.getElementById("bookingMeta");
-const bookingStatusText = document.getElementById("bookingStatusText");
-const bookingStatusHint = document.getElementById("bookingStatusHint");
-const retryCheckout = document.getElementById("retryCheckout");
 if (bookingId) {
   bookingMessage.textContent = "Your booking request is pending review.";
   bookingMeta.textContent = `Booking ID: ${bookingId}`;
 }
 if (latestBooking && latestBooking.id === bookingId) {
   bookingMeta.textContent = `Booking ID: ${bookingId} | ${latestBooking.service || "Service"} | ${latestBooking.date || "-"} ${latestBooking.time || ""}`.trim();
-}
-
-if (checkoutState === "success") {
-  bookingMessage.textContent = "Stripe Checkout completed.";
-  bookingStatusText.textContent = "We are confirming your payment against the booking now.";
-  bookingStatusHint.textContent = "If the paid status does not appear right away, refresh in a moment or check the client portal.";
-}
-
-if (checkoutState === "cancel") {
-  bookingMessage.textContent = "Checkout was canceled.";
-  bookingStatusText.textContent = "Your booking is still saved and can be paid later.";
-  bookingStatusHint.textContent = "Use the button below to reopen Stripe Checkout for this booking.";
-  retryCheckout.hidden = false;
-}
-
-if (bookingId) {
-  db.collection("bookings").doc(bookingId).onSnapshot(snapshot => {
-    if (!snapshot.exists) return;
-    const booking = snapshot.data() || {};
-    const paymentStatus = booking.paymentStatus || "deposit_pending";
-    bookingStatusText.textContent = `Payment status: ${paymentStatus.replaceAll("_", " ")}.`;
-
-    if (paymentStatus === "paid") {
-      bookingMessage.textContent = "Deposit received.";
-      bookingStatusHint.textContent = "Your booking record shows payment received and is ready for review.";
-      retryCheckout.hidden = true;
-    } else if (paymentStatus === "checkout_created") {
-      bookingStatusHint.textContent = "A Stripe Checkout session has been created for this booking.";
-      retryCheckout.hidden = false;
-    } else if (paymentStatus === "deposit_pending") {
-      retryCheckout.hidden = false;
-    }
-  });
-
-  retryCheckout.addEventListener("click", async event => {
-    event.preventDefault();
-    retryCheckout.textContent = "Redirecting...";
-    retryCheckout.setAttribute("aria-disabled", "true");
-    try {
-      const createCheckoutSession = functions.httpsCallable("createStripeCheckoutSession");
-      const checkoutResult = await createCheckoutSession({
-        bookingId,
-        origin: window.location.origin
-      });
-      if (!checkoutResult.data?.url) {
-        throw new Error("Stripe Checkout did not return a redirect URL.");
-      }
-      window.location.href = checkoutResult.data.url;
-    } catch (error) {
-      bookingStatusHint.textContent = error.message || "Could not reopen Stripe Checkout right now.";
-      retryCheckout.textContent = "Continue to Stripe Checkout";
-      retryCheckout.removeAttribute("aria-disabled");
-    }
-  });
 }
 </script>
 </body>

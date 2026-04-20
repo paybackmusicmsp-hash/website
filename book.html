@@ -183,7 +183,7 @@
             <p id="summaryDescription">Choose a service to see the scope, owner, and next-step summary.</p>
             <div class="status-pill">Mon-Fri | 2PM-7PM</div>
             <div class="status-pill">Booking saved first</div>
-            <div class="status-pill">Secure Stripe Checkout after submit</div>
+            <div class="status-pill">Deposit link opens after submit</div>
           </div>
         </div>
       </div>
@@ -195,16 +195,16 @@
       <div class="card">
         <p class="eyebrow">Booking Policy</p>
         <h3>How pricing and approval work</h3>
-        <p>Pricing starts at the listed ranges and may change based on scope, turnaround, complexity, travel, and revisions. This launch version sends you to a Stripe Checkout deposit immediately after the booking is saved.</p>
+        <p>Pricing starts at the listed ranges and may change based on scope, turnaround, complexity, travel, and revisions. This launch version sends you to a Stripe payment link immediately after the booking is saved.</p>
       </div>
       <div class="card">
         <p class="eyebrow">After Submission</p>
         <h3>What happens next</h3>
         <div class="timeline">
           <div class="timeline-step">Your request is saved under your signed-in account.</div>
-          <div class="timeline-step">You are redirected to secure Stripe Checkout.</div>
-          <div class="timeline-step">Payment status syncs back into your booking record.</div>
+          <div class="timeline-step">You are redirected to the Stripe payment link for deposit payment.</div>
           <div class="timeline-step">The team reviews scope, availability, and fit from there.</div>
+          <div class="timeline-step">Payment confirmation is handled temporarily through Stripe's hosted page.</div>
         </div>
       </div>
     </div>
@@ -230,12 +230,11 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-functions-compat.js"></script>
 <script src="assets/site.js"></script>
 <script>
 MSPSite.initFirebase();
 const db = firebase.firestore();
-const functions = firebase.app().functions("us-central1");
+const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/4gMdR256tg6Yc0egzn67S01";
 
 const services = [
   { name: "Video Editing", range: "$75+", owner: "K-Money", description: "Cuts, transitions, color grading, and cleanup for content and music visuals." },
@@ -440,22 +439,14 @@ bookingForm.addEventListener("submit", async event => {
 
   try {
     const docRef = await db.collection("bookings").add(payload);
-    const createCheckoutSession = functions.httpsCallable("createStripeCheckoutSession");
-    const checkoutResult = await createCheckoutSession({
-      bookingId: docRef.id,
-      origin: window.location.origin
-    });
     localStorage.setItem("latestBooking", JSON.stringify({
       id: docRef.id,
       service: payload.service,
       date: payload.date,
       time: payload.time
     }));
-    if (!checkoutResult.data?.url) {
-      throw new Error("Stripe Checkout did not return a redirect URL.");
-    }
-    showBanner("success", "Request saved. Redirecting to secure Stripe Checkout...");
-    window.location.href = checkoutResult.data.url;
+    showBanner("success", "Request saved. Redirecting to the Stripe deposit link...");
+    window.location.href = STRIPE_PAYMENT_LINK;
   } catch (error) {
     showBanner("error", error.message || "We could not submit your request. Please try again.");
   } finally {
