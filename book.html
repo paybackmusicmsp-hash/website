@@ -182,8 +182,8 @@
             <p id="summaryRange">Pricing range will appear here.</p>
             <p id="summaryDescription">Choose a service to see the scope, owner, and next-step summary.</p>
             <div class="status-pill">Mon-Fri | 2PM-7PM</div>
-            <div class="status-pill">50% deposit after approval</div>
-            <div class="status-pill">No auto-payment on submit</div>
+            <div class="status-pill">Booking saved first</div>
+            <div class="status-pill">Deposit link opens after submit</div>
           </div>
         </div>
       </div>
@@ -195,16 +195,16 @@
       <div class="card">
         <p class="eyebrow">Booking Policy</p>
         <h3>How pricing and approval work</h3>
-        <p>Pricing starts at the listed ranges and may change based on scope, turnaround, complexity, travel, and revisions. Accepted requests require a 50% deposit before work begins.</p>
+        <p>Pricing starts at the listed ranges and may change based on scope, turnaround, complexity, travel, and revisions. This launch version sends you to a Stripe payment link immediately after the booking is saved.</p>
       </div>
       <div class="card">
         <p class="eyebrow">After Submission</p>
         <h3>What happens next</h3>
         <div class="timeline">
           <div class="timeline-step">Your request is saved under your signed-in account.</div>
-          <div class="timeline-step">The team reviews scope, availability, and fit.</div>
-          <div class="timeline-step">If approved, you receive pricing and deposit instructions.</div>
-          <div class="timeline-step">Once payment is confirmed, the booking moves forward.</div>
+          <div class="timeline-step">You are redirected to the Stripe payment link for deposit payment.</div>
+          <div class="timeline-step">The team reviews scope, availability, and fit from there.</div>
+          <div class="timeline-step">Payment confirmation is handled temporarily through Stripe's hosted page.</div>
         </div>
       </div>
     </div>
@@ -234,6 +234,7 @@
 <script>
 MSPSite.initFirebase();
 const db = firebase.firestore();
+const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/4gMdR256tg6Yc0egzn67S01";
 
 const services = [
   { name: "Video Editing", range: "$75+", owner: "K-Money", description: "Cuts, transitions, color grading, and cleanup for content and music visuals." },
@@ -444,10 +445,8 @@ bookingForm.addEventListener("submit", async event => {
       date: payload.date,
       time: payload.time
     }));
-    showBanner("success", "Request submitted. You’ll be redirected to the confirmation page.");
-    setTimeout(() => {
-      window.location.href = `pay.html?id=${encodeURIComponent(docRef.id)}`;
-    }, 900);
+    showBanner("success", "Request saved. Redirecting to the Stripe deposit link...");
+    window.location.href = STRIPE_PAYMENT_LINK;
   } catch (error) {
     showBanner("error", error.message || "We could not submit your request. Please try again.");
   } finally {
@@ -459,3 +458,4 @@ bookingForm.addEventListener("submit", async event => {
 </script>
 </body>
 </html>
+

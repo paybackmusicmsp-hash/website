@@ -95,3 +95,12 @@ If Firestore rejects the write:
 
 - the page shows the real error message when available
 - otherwise it falls back to a generic retry message
+
+## Temporary booking payment flow
+
+The current launch-safe payment setup keeps Firebase as the source of truth:
+
+1. `book.html` writes a pending booking into `bookings`
+2. after the Firestore write succeeds, the user is redirected to a hosted Stripe Payment Link
+
+There is no custom payment backend in the current temporary setup.
