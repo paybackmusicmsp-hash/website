@@ -839,14 +839,13 @@ a:focus {
 .gallery-card img {
   width: 100%;
   display: block;
-  height: 100%;
+  height: auto;
   object-fit: contain;
   filter: brightness(0.72) contrast(1.15) saturate(0.86);
   transition: filter 0.2s ease, transform 0.2s ease;
 }
 
 .gallery-card {
-  height: 240px;
   border-radius: 20px;
   overflow: hidden;
   border: 1px solid rgba(255, 60, 60, 0.1);
