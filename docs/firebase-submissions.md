@@ -95,3 +95,16 @@ If Firestore rejects the write:
 
 - the page shows the real error message when available
 - otherwise it falls back to a generic retry message
+
+## Stripe Checkout booking flow
+
+The booking page now keeps Firestore as the source of truth:
+
+1. `book.html` writes a pending booking into `bookings`
+2. the page calls a Firebase HTTPS callable function to create a Stripe Checkout session
+3. the user is redirected to Stripe Checkout
+4. Stripe webhook events write payment status updates back into the same Firestore booking
+
+Deployment and Stripe setup details are documented in:
+
+- `docs/stripe-checkout.md`
