@@ -940,27 +940,11 @@ enterScreen.addEventListener("keydown", event => {
 });
 </script>
   <script>
-const stacks = document.querySelectorAll(".gallery-stack");
-
-stacks.forEach(stack => {
-  const images = stack.querySelectorAll("img");
-  let index = 0;
-
-  setInterval(() => {
-    images[index].classList.remove("active");
-    index = (index + 1) % images.length;
-    images[index].classList.add("active");
-  }, 3000);
-});
-<script>
+document.addEventListener("DOMContentLoaded", () => {
   const galleryImageCount = 39;
-
-  const galleryImages = Array.from(
-    { length: galleryImageCount },
-    (_, i) => `assets/gallery/${i + 1}.png`
-  );
-
   const galleryGrid = document.getElementById("galleryGrid");
+
+  if (!galleryGrid) return;
 
   function shuffle(array) {
     const copy = [...array];
@@ -992,8 +976,12 @@ stacks.forEach(stack => {
     return card;
   }
 
-  const shuffled = shuffle(galleryImages);
+  const galleryImages = Array.from(
+    { length: galleryImageCount },
+    (_, i) => `assets/gallery/${i + 1}.png`
+  );
 
+  const shuffled = shuffle(galleryImages);
   const columns = 3;
   const perCard = Math.ceil(shuffled.length / columns);
 
@@ -1006,9 +994,9 @@ stacks.forEach(stack => {
     }
   }
 
-  const stacks = document.querySelectorAll(".gallery-stack");
+  const stacks = galleryGrid.querySelectorAll(".gallery-stack");
 
-  stacks.forEach(stack => {
+  stacks.forEach((stack) => {
     const images = stack.querySelectorAll("img");
     let index = 0;
 
@@ -1020,6 +1008,7 @@ stacks.forEach(stack => {
       images[index].classList.add("active");
     }, 3000);
   });
+});
 </script>
 </body>
 </html>
