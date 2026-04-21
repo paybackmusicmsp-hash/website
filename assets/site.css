@@ -2012,6 +2012,44 @@ body[data-page="home"].home-rail-open .nav-shell {
   body[data-page="home"] .card,
   body[data-page="home"] .glass-card,
   body[data-page="home"] .nav-surface {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+}
+
+/* ===== GALLERY SYSTEM ===== */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.gallery-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 4 / 5;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #0b0b10;
+}
+
+.gallery-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 🔥 THIS fixes your image visibility */
+  object-position: center;
+  display: block;
+}
+
+@media (max-width: 860px) {
+  .gallery-grid {
+    grid-template-columns: 1fr;
+  }
+}
     padding: 16px;
   }
 
