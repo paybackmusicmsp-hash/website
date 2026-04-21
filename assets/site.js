@@ -102,6 +102,82 @@ window.MSPSite = (() => {
     });
   }
 
+  function shuffleArray(array) {
+    const arr = [...array];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
+  function initializeGallery() {
+    const galleryGrid = document.getElementById("galleryGrid");
+    if (!galleryGrid) {
+      console.warn("Gallery grid container not found");
+      return;
+    }
+
+    // Generate image paths (1.png through 39.png)
+    const imageCount = 39;
+    const imagePaths = Array.from({ length: imageCount }, (_, i) => `assets/gallery/${i + 1}.png`);
+
+    // Shuffle images randomly
+    const shuffledImages = shuffleArray(imagePaths);
+
+    // Split into 3 columns evenly (39 / 3 = 13 per column)
+    const imagesPerColumn = Math.ceil(shuffledImages.length / 3);
+    const columns = [[], [], []];
+    shuffledImages.forEach((image, index) => {
+      columns[index % 3].push(image);
+    });
+
+    // Clear existing content
+    galleryGrid.innerHTML = "";
+
+    // Create gallery cards with image stacks
+    columns.forEach((images, colIndex) => {
+      const card = document.createElement("div");
+      card.className = "gallery-card";
+
+      const stack = document.createElement("div");
+      stack.className = "gallery-stack";
+
+      images.forEach((imagePath, idx) => {
+        const img = document.createElement("img");
+        img.src = imagePath;
+        img.alt = "MSP 790 artwork";
+        img.loading = "lazy";
+        img.decoding = "async";
+        if (idx === 0) {
+          img.classList.add("active");
+        }
+        stack.appendChild(img);
+      });
+
+      card.appendChild(stack);
+      galleryGrid.appendChild(card);
+
+      // Start rotation for this stack
+      if (images.length > 1) {
+        rotateImages(stack, images.length);
+      }
+    });
+
+    console.log(`Gallery initialized: 3 columns with ${imagePaths.length} images (${Math.floor(imagePaths.length / 3)} per column)`);
+  }
+
+  function rotateImages(stack, imageCount) {
+    let currentIndex = 0;
+    setInterval(() => {
+      const images = stack.querySelectorAll("img");
+      if (images.length === 0) return;
+      images[currentIndex].classList.remove("active");
+      currentIndex = (currentIndex + 1) % imageCount;
+      images[currentIndex].classList.add("active");
+    }, 3000);
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     renderChrome();
     if (document.body.dataset.page === "home") {
@@ -252,6 +328,7 @@ window.MSPSite = (() => {
       updateRailState();
     }
     document.querySelectorAll(".carousel").forEach(mountCarousel);
+    initializeGallery();
   });
 
   return {
