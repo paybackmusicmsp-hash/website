@@ -398,6 +398,25 @@
 .gallery-card {
   height: 100%;
 }
+  .gallery-stack {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.gallery-stack img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.gallery-stack img.active {
+  opacity: 1;
+}
 .gallery-card img,
 .release-card img {
   height: 220px;
@@ -944,6 +963,20 @@ enterScreen.addEventListener("keydown", event => {
     event.preventDefault();
     enterSite();
   }
+});
+</script>
+  <script>
+const stacks = document.querySelectorAll(".gallery-stack");
+
+stacks.forEach(stack => {
+  const images = stack.querySelectorAll("img");
+  let index = 0;
+
+  setInterval(() => {
+    images[index].classList.remove("active");
+    index = (index + 1) % images.length;
+    images[index].classList.add("active");
+  }, 3000);
 });
 </script>
 </body>
