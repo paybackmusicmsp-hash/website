@@ -398,11 +398,59 @@
 .gallery-card {
   height: 100%;
 }
+  .gallery-stack {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.gallery-stack img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.gallery-stack img.active {
+  opacity: 1;
+}
 .gallery-card img,
 .release-card img {
   height: 220px;
   object-fit: cover;
   width: 100%;
+}
+  .gallery-grid {
+display: grid;
+grid-template-columns: repeat(3, minmax(0, 1fr));
+gap: 18px;
+}
+
+.gallery-card {
+display: flex;
+align-items: center;
+justify-content: center;
+aspect-ratio: 4 / 5;
+border-radius: 20px;
+overflow: hidden;
+background: #0b0b10;
+}
+
+.gallery-card img {
+width: 100%;
+height: 100%;
+object-fit: cover; /* 🔥 THIS fixes your image visibility */
+object-position: center;
+display: block;
+}
+
+@media (max-width: 860px) {
+.gallery-grid {
+grid-template-columns: 1fr;
+}
 }
 .split-embed {
   display: grid;
@@ -890,6 +938,88 @@ enterScreen.addEventListener("keydown", event => {
     enterSite();
   }
 });
+</script>
+  <script>
+const stacks = document.querySelectorAll(".gallery-stack");
+
+stacks.forEach(stack => {
+  const images = stack.querySelectorAll("img");
+  let index = 0;
+
+  setInterval(() => {
+    images[index].classList.remove("active");
+    index = (index + 1) % images.length;
+    images[index].classList.add("active");
+  }, 3000);
+});
+<script>
+  const galleryImageCount = 39;
+
+  const galleryImages = Array.from(
+    { length: galleryImageCount },
+    (_, i) => `assets/gallery/${i + 1}.png`
+  );
+
+  const galleryGrid = document.getElementById("galleryGrid");
+
+  function shuffle(array) {
+    const copy = [...array];
+    for (let i = copy.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+  }
+
+  function buildGalleryCard(images) {
+    const card = document.createElement("div");
+    card.className = "gallery-card";
+
+    const stack = document.createElement("div");
+    stack.className = "gallery-stack";
+
+    images.forEach((src, index) => {
+      const img = document.createElement("img");
+      img.src = src;
+      img.alt = "MSP 790 artwork";
+      img.loading = "lazy";
+      img.decoding = "async";
+      if (index === 0) img.classList.add("active");
+      stack.appendChild(img);
+    });
+
+    card.appendChild(stack);
+    return card;
+  }
+
+  const shuffled = shuffle(galleryImages);
+
+  const columns = 3;
+  const perCard = Math.ceil(shuffled.length / columns);
+
+  for (let i = 0; i < columns; i++) {
+    const start = i * perCard;
+    const slice = shuffled.slice(start, start + perCard);
+
+    if (slice.length) {
+      galleryGrid.appendChild(buildGalleryCard(slice));
+    }
+  }
+
+  const stacks = document.querySelectorAll(".gallery-stack");
+
+  stacks.forEach(stack => {
+    const images = stack.querySelectorAll("img");
+    let index = 0;
+
+    if (images.length <= 1) return;
+
+    setInterval(() => {
+      images[index].classList.remove("active");
+      index = (index + 1) % images.length;
+      images[index].classList.add("active");
+    }, 3000);
+  });
 </script>
 </body>
 </html>
