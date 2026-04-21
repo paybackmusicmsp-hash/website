@@ -978,6 +978,74 @@ stacks.forEach(stack => {
     images[index].classList.add("active");
   }, 3000);
 });
+<script>
+  const galleryImageCount = 39;
+
+  const galleryImages = Array.from(
+    { length: galleryImageCount },
+    (_, i) => `assets/gallery/${i + 1}.png`
+  );
+
+  const galleryGrid = document.getElementById("galleryGrid");
+
+  function shuffle(array) {
+    const copy = [...array];
+    for (let i = copy.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+  }
+
+  function buildGalleryCard(images) {
+    const card = document.createElement("div");
+    card.className = "gallery-card";
+
+    const stack = document.createElement("div");
+    stack.className = "gallery-stack";
+
+    images.forEach((src, index) => {
+      const img = document.createElement("img");
+      img.src = src;
+      img.alt = "MSP 790 artwork";
+      img.loading = "lazy";
+      img.decoding = "async";
+      if (index === 0) img.classList.add("active");
+      stack.appendChild(img);
+    });
+
+    card.appendChild(stack);
+    return card;
+  }
+
+  const shuffled = shuffle(galleryImages);
+
+  const columns = 3;
+  const perCard = Math.ceil(shuffled.length / columns);
+
+  for (let i = 0; i < columns; i++) {
+    const start = i * perCard;
+    const slice = shuffled.slice(start, start + perCard);
+
+    if (slice.length) {
+      galleryGrid.appendChild(buildGalleryCard(slice));
+    }
+  }
+
+  const stacks = document.querySelectorAll(".gallery-stack");
+
+  stacks.forEach(stack => {
+    const images = stack.querySelectorAll("img");
+    let index = 0;
+
+    if (images.length <= 1) return;
+
+    setInterval(() => {
+      images[index].classList.remove("active");
+      index = (index + 1) % images.length;
+      images[index].classList.add("active");
+    }, 3000);
+  });
 </script>
 </body>
 </html>
