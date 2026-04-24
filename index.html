@@ -124,6 +124,17 @@
   height: 88vh;
   pointer-events: none;
   z-index: 0;
+  overflow: visible;
+  isolation: isolate;
+}
+.hero-pillars::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 10% 26%, rgba(8, 8, 8, 0.98) 0%, rgba(8, 8, 8, 0.94) 18%, rgba(8, 8, 8, 0.62) 36%, transparent 62%),
+    radial-gradient(ellipse at 90% 22%, rgba(8, 8, 8, 0.98) 0%, rgba(8, 8, 8, 0.94) 18%, rgba(8, 8, 8, 0.62) 36%, transparent 62%);
+  z-index: 0;
 }
 .hero-shell {
   position: relative;
@@ -153,8 +164,10 @@
   height: 100%;
   max-width: 420px;
   object-fit: contain;
-  z-index: 0;
-  filter: drop-shadow(0 18px 40px rgba(0,0,0,0.65));
+  object-position: center top;
+  z-index: 1;
+  opacity: 1;
+  filter: drop-shadow(0 20px 40px rgba(0,0,0,0.72)) saturate(1.02) brightness(0.96) contrast(1.05);
 }
 .pillar-left { left: -40px; }
 .pillar-right { right: -40px; }
@@ -361,7 +374,7 @@
 }
 .artist-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 18px;
 }
 .artist-card img {
@@ -474,40 +487,47 @@
   font-size: 1.7rem;
   color: var(--text);
 }
+@media (max-width: 1180px) {
+  .artist-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
 @media (max-width: 860px) {
   .hero-pillars {
     position: absolute;
-    top: 60px;
+    top: 84px;
     left: 0;
     width: 100%;
-    height: calc(var(--home-scene-height) + 96px);
+    height: calc(var(--home-scene-height) + 140px);
     margin: 0;
     display: block;
-    overflow: hidden;
+    overflow: visible;
     z-index: 1;
   }
   .pillar-left,.pillar-right {
     display:block;
     position:absolute;
-    top:0;
-    width:44vw;
+    top: 0;
+    width: 46vw;
     height:100%;
     max-width:none;
     max-height:none;
     object-fit:contain;
-    opacity:0.5;
-    filter: drop-shadow(0 18px 30px rgba(0,0,0,0.56)) saturate(0.88) brightness(0.82);
+    object-position: center top;
+    opacity:1;
+    filter: drop-shadow(0 22px 34px rgba(0,0,0,0.64)) saturate(1.02) brightness(0.95) contrast(1.04);
     border:0;
     background:none;
     box-shadow:none;
+    transform: translateY(14px);
   }
   .pillar-left {
-    left: -16vw;
-    object-position: left center;
+    left: -8vw;
+    object-position: left top;
   }
   .pillar-right {
-    right: -12vw;
-    object-position: right center;
+    right: -4vw;
+    object-position: right top;
   }
   .artist-grid,.split-embed { grid-template-columns: 1fr; }
   .hero-stage { width: min(100%, 760px); }
@@ -542,15 +562,16 @@
     padding: 8px 0 10px;
   }
   .hero-pillars {
-    top: 72px;
-    height: calc(var(--home-scene-height) + 58px);
+    top: 96px;
+    height: calc(var(--home-scene-height) + 110px);
   }
   .pillar-left,.pillar-right {
-    width: 42vw;
-    opacity: 0.44;
+    width: 45vw;
+    opacity: 1;
+    transform: translateY(10px);
   }
-  .pillar-left { left: -14vw; }
-  .pillar-right { right: -4vw; }
+  .pillar-left { left: -10vw; }
+  .pillar-right { right: -2vw; }
   .hero-tagline {
     font-size: 0.78rem;
     letter-spacing: 0.1em;
@@ -589,6 +610,22 @@
   }
   .hero-mobile-actions a {
     width: 100%;
+  }
+}
+@media (max-width: 480px) {
+  .hero-pillars {
+    top: 102px;
+    height: calc(var(--home-scene-height) + 124px);
+  }
+  .pillar-left,.pillar-right {
+    width: 48vw;
+    transform: translateY(8px);
+  }
+  .pillar-left {
+    left: -14vw;
+  }
+  .pillar-right {
+    right: -6vw;
   }
 }
 </style>
@@ -650,7 +687,7 @@
             <div class="hero-chip hero-chip-title">CTO K-Money Music</div>
           </div>
           <div class="hero-actions">
-          <a class="button-link" href="#artists">Meet the Artists</a>
+          <a class="button-link" href="#artists">Meet the Team</a>
           <a class="button-secondary chip-link" href="work-with-us.html">Work With Us</a>
         </div>
         </div>
@@ -669,7 +706,7 @@
         <div class="hero-chip hero-chip-title">CTO K-Money Music</div>
       </div>
       <div class="hero-mobile-actions">
-        <a class="button-link" href="#artists">Meet the Artists</a>
+        <a class="button-link" href="#artists">Meet the Team</a>
         <a class="button-secondary chip-link" href="work-with-us.html">Work With Us</a>
       </div>
     </div>
@@ -737,8 +774,8 @@
 
   <section class="section-shell" id="artists">
     <div class="section-body">
-      <p class="eyebrow">Artists</p>
-      <h2 class="home-glow-title">Meet the Artists</h2>
+      <p class="eyebrow">Team</p>
+      <h2 class="home-glow-title">Meet the Team</h2>
       <div class="artist-grid">
         <div class="artist-card">
           <div class="card">
@@ -764,6 +801,16 @@
             <div class="artist-copy">
               <h3>K-Money</h3>
               <p>Production-minded creative support across filming, editing, websites, audio, and the service-side infrastructure that keeps the brand moving.</p>
+            </div>
+          </div>
+        </div>
+        <div class="artist-card">
+          <div class="card">
+            <img src="assets/numoney.png" sizes="(max-width: 720px) 100vw, 33vw" alt="NuMoney" loading="lazy" decoding="async">
+            <div class="artist-copy">
+              <h3>NuMoney</h3>
+              <p class="eyebrow">CPCL | Content Productions Co-Lead</p>
+              <p>CPCL, Content Productions Co-Lead. NuMoney helps shape the visual side of MSP 790 Payback Music with a strong on-camera presence, creative instinct, and a steady hand in building content that feels polished, personal, and true to the movement.</p>
             </div>
           </div>
         </div>

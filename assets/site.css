@@ -2187,6 +2187,7 @@ body[data-page="home"].home-rail-open .nav-shell {
 
   .button-row > * {
     flex: 1 1 100%;
+    width: 100%;
   }
 
   .chip-link,
@@ -2240,6 +2241,17 @@ body[data-page="home"].home-rail-open .nav-shell {
     min-height: 44px;
   }
 
+  .video-frame,
+  .video-frame iframe {
+    min-height: 240px;
+  }
+
+  .artist-card img,
+  .gallery-card img,
+  .release-card img {
+    height: 220px;
+  }
+
   .section-body,
   .panel,
   .card,
@@ -2285,6 +2297,11 @@ body[data-page="home"].home-rail-open .nav-shell {
     font-size: clamp(1.8rem, 10vw, 2.5rem);
   }
 
+  .button-row,
+  .intake-actions {
+    flex-direction: column;
+  }
+
   .section-shell,
   body[data-page="home"] .section-shell {
     padding: 10px;
@@ -2305,6 +2322,17 @@ body[data-page="home"].home-rail-open .nav-shell {
 
   .scroll-hint {
     width: calc(100% - 18px);
+  }
+
+  .video-frame,
+  .video-frame iframe {
+    min-height: 220px;
+  }
+
+  .artist-card img,
+  .gallery-card img,
+  .release-card img {
+    height: 200px;
   }
 }
 
