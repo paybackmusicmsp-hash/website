@@ -178,7 +178,59 @@ window.MSPSite = (() => {
     }, 3000);
   }
 
+  function initBackgroundAudioInterruption() {
+    const backgroundAudio = (
+      document.getElementById("bg-audio") ||
+      document.getElementById("bg-music") ||
+      document.querySelector('audio source[src$="jong.mp3"]')?.closest("audio")
+    );
+    if (!backgroundAudio) return;
+
+    const mediaSelector = "video, audio, iframe, .media-wrapper";
+    const interactiveKeys = new Set([" ", "Enter", "Spacebar"]);
+
+    const isBackgroundAudioPlaying = () => !backgroundAudio.paused && !backgroundAudio.ended;
+
+    const pauseBackgroundAudio = () => {
+      if (isBackgroundAudioPlaying()) {
+        backgroundAudio.pause();
+      }
+    };
+
+    const getMediaInteractionTarget = target => {
+      if (!(target instanceof Element)) return null;
+      const mediaTarget = target.closest(mediaSelector);
+      return mediaTarget === backgroundAudio ? null : mediaTarget;
+    };
+
+    const pauseOnMediaInteraction = event => {
+      if (getMediaInteractionTarget(event.target)) {
+        pauseBackgroundAudio();
+      }
+    };
+
+    const pauseOnMediaKeyInteraction = event => {
+      if (interactiveKeys.has(event.key) && getMediaInteractionTarget(event.target)) {
+        pauseBackgroundAudio();
+      }
+    };
+
+    const pauseOnIframeFocus = () => {
+      const activeElement = document.activeElement;
+      if (activeElement instanceof HTMLIFrameElement) {
+        pauseBackgroundAudio();
+      }
+    };
+
+    document.addEventListener("pointerdown", pauseOnMediaInteraction, true);
+    document.addEventListener("touchstart", pauseOnMediaInteraction, { capture: true, passive: true });
+    document.addEventListener("play", pauseOnMediaInteraction, true);
+    document.addEventListener("keydown", pauseOnMediaKeyInteraction, true);
+    window.addEventListener("blur", pauseOnIframeFocus);
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
+    initBackgroundAudioInterruption();
     renderChrome();
     if (document.body.dataset.page === "home") {
       const homeBody = document.body;
@@ -333,6 +385,7 @@ window.MSPSite = (() => {
 
   return {
     initFirebase,
+    initBackgroundAudioInterruption,
     renderChrome
   };
 })();
